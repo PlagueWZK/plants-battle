@@ -10,26 +10,29 @@ import java.util.HashMap;
  * date: 2025/5/12 17:54
  */
 
-public class SceneManager implements Manager{
+public class SceneManager implements Manager {
 
-    private static final String SCENE_PACKAGE_PATH = "ind.plague.pvz.scene.scenes";
     private final HashMap<SceneType, Scene> scenes;
     private final boolean[] keyState;
 
     {
         scenes = new HashMap<>();
         keyState = new boolean[256];
-        SceneFactory sceneFactory = new SceneFactory(this);
 
         for (SceneType sceneType : SceneType.values()) {
-            registerScene(sceneFactory.createScene(SCENE_PACKAGE_PATH, sceneType));
+            try {
+                Class<?> clazz = sceneType.getSceneClass();
+                registerScene(sceneType, (Scene) clazz.getDeclaredConstructor().newInstance());
+            } catch (Exception e) {
+                throw new RuntimeException("反射创建场景实例失败" + sceneType, e);
+            }
         }
     }
 
     private Scene currentScene;
 
     public void update(long deltaTime) {
-        currentScene.update(deltaTime);
+        currentScene.update(deltaTime, this);
     }
 
     public void draw(Graphics2D g) {
@@ -54,8 +57,7 @@ public class SceneManager implements Manager{
         currentScene.onEnter();
     }
 
-    @Override
-    public void registerScene(Scene scene) {
-        scenes.put(scene.getSceneType(), scene);
+    public void registerScene(SceneType sceneType, Scene scene) {
+        scenes.put(sceneType, scene);
     }
 }

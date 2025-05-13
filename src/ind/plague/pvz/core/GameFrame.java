@@ -6,6 +6,7 @@ import ind.plague.pvz.util.Timer;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.concurrent.locks.LockSupport;
 
 /**
  * @author PlagueWZK
@@ -16,7 +17,7 @@ import java.awt.event.*;
 public class GameFrame {
     private static final int DEFAULT_WIDTH = 1280;
     private static final int DEFAULT_HEIGHT = 720;
-    private static final int DEFAULT_FPS = 60;
+    private static final int DEFAULT_FPS = 165;
     private static final int DEFAULT_UPS = 20;
     private static final long FRAME_TIME = 1000_000_000L / DEFAULT_FPS;
     private static final long UPDATE_TIME = 1000_000_000L / DEFAULT_UPS;
@@ -80,6 +81,20 @@ public class GameFrame {
         }
     }
 
+    public void startGameLoop() {
+        long startTime = System.nanoTime();
+        while (!Thread.currentThread().isInterrupted()) {
+            long now = System.nanoTime();
+            long deltaTime = now - startTime;
+            startTime = now;
+
+            update(deltaTime);
+            draw(deltaTime);
+
+            LockSupport.parkNanos(1);
+        }
+    }
+
     private class GamePanel extends JPanel {
         public GamePanel() {
             setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
@@ -92,6 +107,8 @@ public class GameFrame {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             sm.draw(g2d);
+            g2d.setColor(Color.BLACK);
+            g2d.drawString("FPS: " + FPS, 10, 20);
         }
     }
 

@@ -9,10 +9,9 @@ import java.awt.*;
  */
 
 public interface Scene {
-    void update(long deltaTime);
+    void update(long deltaTime, Manager manager);
     void draw(Graphics2D g);
     void onEnter();
     void onExit();
     SceneType getSceneType();
-    void setManager(Manager sceneManager);
 }

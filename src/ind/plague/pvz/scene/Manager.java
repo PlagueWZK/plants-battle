@@ -7,7 +7,6 @@ package ind.plague.pvz.scene;
  */
 
 public interface Manager {
-    void registerScene(Scene scene);
 
     void switchScene(SceneType sceneType);
 

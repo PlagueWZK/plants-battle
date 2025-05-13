@@ -1,5 +1,7 @@
 package ind.plague.pvz.scene;
 
+import ind.plague.pvz.scene.scenes.*;
+
 /**
  * @author PlagueWZK
  * description: SceneType
@@ -7,23 +9,16 @@ package ind.plague.pvz.scene;
  */
 
 public enum SceneType {
-    MENU_SCENE;
-//    SETTING_SCENE,
-//    GAME_SCENE,
-//    GAME_OVER_SCENE
+    MENU_SCENE(MenuScene.class),
+    GAME_SCENE(GameScene.class);
 
-     final String className;
+    private final Class<?> sceneClass;
 
-    SceneType() {
-        String[] split = this.name().split("_");
-        StringBuilder  sb = new StringBuilder();
-        for (String s : split) {
-            sb.append(s.charAt(0)).append(s.substring(1).toLowerCase());
-        }
-        className = sb.toString();
+    SceneType(Class<?> clazz) {
+        this.sceneClass = clazz;
     }
 
-    public String getClassName() {
-        return className;
+    public Class<?> getSceneClass() {
+        return sceneClass;
     }
 }

@@ -3,26 +3,29 @@ package ind.plague.pvz.scene.scenes;
 import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
+import ind.plague.pvz.util.Timer;
+
 
 import java.awt.*;
 
 /**
  * @author PlagueWZK
- * description: MenuScene
- * date: 2025/5/12 17:13
+ * description: GameScene
+ * date: 2025/5/13 23:34
  */
 
-public class MenuScene implements Scene {
+public class GameScene implements Scene {
+
+    Timer test = new Timer(1000, true, () -> {
+        System.out.println("更新");
+    });
     @Override
     public void update(long deltaTime, Manager manager) {
-        System.out.println("更新" + getSceneType() + "场景");
-        manager.switchScene(SceneType.GAME_SCENE);
+        test.update(deltaTime);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawRoundRect(10, 10, 100, 100, 10, 10);
-        System.out.println("绘制" + getSceneType() + "场景");
     }
 
     @Override
@@ -37,6 +40,7 @@ public class MenuScene implements Scene {
 
     @Override
     public SceneType getSceneType() {
-        return SceneType.MENU_SCENE;
+        return SceneType.GAME_SCENE;
     }
+
 }
