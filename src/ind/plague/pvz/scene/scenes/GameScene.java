@@ -2,9 +2,7 @@ package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.scene.Manager;
-import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
-import ind.plague.pvz.util.Timer;
 
 
 import java.awt.*;
@@ -17,10 +15,6 @@ import java.awt.*;
 
 public class GameScene extends BasicScene {
 
-    Timer test = new Timer(1000, true, () -> {
-        System.out.println(Thread.currentThread().getName());
-    });
-
     public GameScene(Manager manager, InputHandler inputHandler) {
         super(manager, inputHandler);
     }
@@ -28,12 +22,12 @@ public class GameScene extends BasicScene {
     @Override
     public void update(long deltaTime) {
         super.update(deltaTime);
-        test.update(deltaTime);
     }
 
     @Override
     public void draw(Graphics2D g) {
-        g.drawString("小点声", 1440, 100);
+        g.setColor(Color.PINK);
+        g.fillOval(mouseX - 5, mouseY - 5, 10, 10);
     }
 
     @Override
@@ -44,6 +38,11 @@ public class GameScene extends BasicScene {
     @Override
     public void onExit() {
         System.out.println("退出" + getSceneType() + "场景");
+    }
+
+    @Override
+    public void onInput() {
+
     }
 
     @Override

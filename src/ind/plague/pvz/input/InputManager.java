@@ -14,7 +14,7 @@ public class InputManager implements InputHandler {
 
     {
         keyState = new boolean[256];
-        mouseState = new boolean[3];
+        mouseState = new boolean[6];
     }
 
     @Override

@@ -13,7 +13,7 @@ public class Timer {
     private boolean isPaused;
     private boolean finished;
     private boolean loop;
-    private Callback callback;
+    private Runnable callback;
 
     public void update(long deltaTime) {
         if (isPaused) {
@@ -22,14 +22,14 @@ public class Timer {
         passedTime += deltaTime;
         if (passedTime >= interval) {
             if (loop || (!finished) && callback != null) {
-                callback.apply();
+                callback.run();
                 finished = true;
                 passedTime = 0;
             }
         }
     }
 
-    public Timer(long ms, boolean loop, Callback callback) {
+    public Timer(long ms, boolean loop, Runnable callback) {
         this.interval = ms * 1000_000;
         this.loop = loop;
         this.callback = callback;
@@ -58,7 +58,7 @@ public class Timer {
         this.loop = loop;
     }
 
-    public void setCallback(Callback callback) {
+    public void setCallback(Runnable callback) {
         this.callback = callback;
     }
 
@@ -68,10 +68,5 @@ public class Timer {
 
     public void resume() {
         isPaused = false;
-    }
-
-    @FunctionalInterface
-    public interface Callback {
-        void apply();
     }
 }

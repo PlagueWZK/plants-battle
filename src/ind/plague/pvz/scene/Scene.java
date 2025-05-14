@@ -13,5 +13,6 @@ public interface Scene {
     void draw(Graphics2D g);
     void onEnter();
     void onExit();
+    void onInput();
     SceneType getSceneType();
 }

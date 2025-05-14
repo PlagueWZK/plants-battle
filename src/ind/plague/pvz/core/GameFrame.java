@@ -68,15 +68,16 @@ public class GameFrame {
 
     public void update(long deltaTime) {
         updateTimer += deltaTime;
+        updateCount++;
+        PSCalculator.update(deltaTime);
+        sm.update(deltaTime);
         while (updateTimer >= UPDATE_TIME) {
             if (updateTimer > MAX_FRAME_SKIPS) {
                 updateTimer = MAX_FRAME_SKIPS;
             }
-            updateCount++;
             updateTimer -= UPDATE_TIME;
         }
-        PSCalculator.update(deltaTime);
-        sm.update(deltaTime);
+
     }
 
     public void draw(long deltaTime) {

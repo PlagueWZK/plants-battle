@@ -20,8 +20,8 @@ public class Vector2 {
         this.y = v.getY();
     }
 
-    public double getLength() {
-        return Math.sqrt(x * x + y * y);
+    public float getLength() {
+        return (float) Math.sqrt(x * x + y * y);
     }
 
     /**
@@ -30,8 +30,21 @@ public class Vector2 {
      * @return 归一化后的坐标矢量。返回一个新Vector2对象
      */
     public Vector2 normalize() {
-        double length = getLength();
-        return new Vector2((float) (x / length), (float) (y / length));
+        float length = getLength();
+        if (length == 0) return new Vector2(0, 0);
+        return new Vector2(x / length, y / length);
+    }
+
+    public Vector2 add(Vector2 vec) {
+        return new Vector2(x + vec.x, y + vec.y);
+    }
+
+    public Vector2 sub(Vector2 vec) {
+        return new Vector2(x - vec.x, y - vec.y);
+    }
+
+    public Vector2 mul(Vector2 vec) {
+        return new Vector2(x * vec.x, y * vec.y);
     }
 
     public void set(float x, float y) {

@@ -15,14 +15,22 @@ public abstract class BasicScene implements Scene {
     protected final InputHandler inputHandler;
     protected int mouseX, mouseY;
 
-    public BasicScene(Manager manager, InputHandler inputHandler) {
+    protected BasicScene(Manager manager, InputHandler inputHandler) {
         this.manager = manager;
         this.inputHandler = inputHandler;
     }
 
     @Override
     public void update(long deltaTime) {
+        onInput();
         mouseX = inputHandler.getMouseX();
         mouseY = inputHandler.getMouseY();
+    }
+
+    protected void ifKey(int keyCode, Runnable runnable) {
+        if (inputHandler.getKeyState(keyCode)) runnable.run();
+    }
+    protected void ifMouse(int buttonCode, Runnable runnable) {
+        if (inputHandler.getMouseState(buttonCode)) runnable.run();
     }
 }
