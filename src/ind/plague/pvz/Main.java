@@ -1,6 +1,10 @@
 package ind.plague.pvz;
 
 import ind.plague.pvz.core.GameFrame;
+import ind.plague.pvz.input.InputHandler;
+import ind.plague.pvz.input.InputManager;
+import ind.plague.pvz.scene.Manager;
+import ind.plague.pvz.scene.SceneFactory;
 import ind.plague.pvz.scene.SceneManager;
 import ind.plague.pvz.scene.SceneType;
 
@@ -10,13 +14,18 @@ import ind.plague.pvz.scene.SceneType;
  * date: 2025/5/12 16:19
  */
 public class Main {
-    // 目标帧时间（微秒），用于控制帧率为约60FPS
     public static void main(String[] args) {
-        SceneManager sm = new SceneManager();
+
+        initialize().startGameLoop();
+    }
+
+    public static GameFrame initialize() {
+        Manager sm = new SceneManager();
+        InputHandler ih = new InputManager();
+        for (SceneType sceneType : SceneType.values()) {
+            sm.registerScene(sceneType, SceneFactory.createScene(sceneType, sm, ih));
+        }
         sm.switchScene(SceneType.MENU_SCENE);
-
-        GameFrame gf = new GameFrame(sm);
-
-        gf.startGameLoop();
+        return new GameFrame(sm, ih);
     }
 }

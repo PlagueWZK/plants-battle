@@ -1,6 +1,7 @@
 package ind.plague.pvz.core;
 
-import ind.plague.pvz.scene.SceneManager;
+import ind.plague.pvz.input.InputHandler;
+import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.util.Timer;
 
 import javax.swing.*;
@@ -24,13 +25,16 @@ public class GameFrame {
     private static final long MAX_FRAME_SKIPS = UPDATE_TIME * 3;
 
     private final GamePanel panel;
-    private final SceneManager sm;
-    private final Timer FPSCalculator;
+    private final Manager sm;
+    private final InputHandler  ih;
+    private final Timer PSCalculator;
 
     private long drawTimer;
-    private long updateTimer;
     private int drawCount;
     private int FPS;
+    private long updateTimer;
+    private int updateCount;
+    private int UPS;
 
     {
         JFrame frame = new JFrame();
@@ -49,26 +53,29 @@ public class GameFrame {
         panel.addMouseListener(ls);
         panel.addMouseMotionListener(ls);
 
-        FPSCalculator = new Timer(1000, true, () -> {
+        PSCalculator = new Timer(1000, true, () -> {
             FPS = drawCount;
+            UPS = updateCount;
             drawCount = 0;
+            updateCount = 0;
         });
     }
 
-    public GameFrame(SceneManager sceneManager) {
+    public GameFrame(Manager sceneManager, InputHandler inputHandler) {
         sm = sceneManager;
+        ih = inputHandler;
     }
 
     public void update(long deltaTime) {
         updateTimer += deltaTime;
-//        while (updateTimer >= UPDATE_TIME) {
-//            if (updateTimer > MAX_FRAME_SKIPS) {
-//                updateTimer = MAX_FRAME_SKIPS;
-//            }
-//
-//            updateTimer -= UPDATE_TIME;
-//        }
-        FPSCalculator.update(deltaTime);
+        while (updateTimer >= UPDATE_TIME) {
+            if (updateTimer > MAX_FRAME_SKIPS) {
+                updateTimer = MAX_FRAME_SKIPS;
+            }
+            updateCount++;
+            updateTimer -= UPDATE_TIME;
+        }
+        PSCalculator.update(deltaTime);
         sm.update(deltaTime);
     }
 
@@ -82,17 +89,25 @@ public class GameFrame {
     }
 
     public void startGameLoop() {
+        new Thread(() -> {
+            long startTime = System.nanoTime();
+            while (!Thread.currentThread().isInterrupted()) {
+                long now = System.nanoTime();
+                long deltaTime = now - startTime;
+                startTime = now;
+                update(deltaTime);
+                LockSupport.parkNanos(1);
+            }
+        }).start();
         long startTime = System.nanoTime();
         while (!Thread.currentThread().isInterrupted()) {
             long now = System.nanoTime();
             long deltaTime = now - startTime;
             startTime = now;
-
-            update(deltaTime);
             draw(deltaTime);
-
             LockSupport.parkNanos(1);
         }
+
     }
 
     private class GamePanel extends JPanel {
@@ -102,13 +117,14 @@ public class GameFrame {
         }
 
         @Override
-        public void paint(Graphics g) {
-            super.paint(g);
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             sm.draw(g2d);
             g2d.setColor(Color.BLACK);
             g2d.drawString("FPS: " + FPS, 10, 20);
+            g2d.drawString("UPS: " + UPS, 10, 40);
         }
     }
 
@@ -121,12 +137,12 @@ public class GameFrame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            sm.setKeyState(e.getKeyCode(), true);
+            ih.setKeyState(e.getKeyCode(), true);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            sm.setKeyState(e.getKeyCode(), false);
+            ih.setKeyState(e.getKeyCode(), false);
         }
 
         @Override
@@ -136,12 +152,12 @@ public class GameFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-
+            ih.setMouseState(e.getButton(), true);
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-
+            ih.setMouseState(e.getButton(), false);
         }
 
         @Override
@@ -161,7 +177,8 @@ public class GameFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-
+            ih.setMouseX(e.getX());
+            ih.setMouseY(e.getY());
         }
     }
 }

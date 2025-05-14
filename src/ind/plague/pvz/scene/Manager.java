@@ -1,5 +1,7 @@
 package ind.plague.pvz.scene;
 
+import java.awt.*;
+
 /**
  * @author PlagueWZK
  * description: Manager
@@ -10,5 +12,10 @@ public interface Manager {
 
     void switchScene(SceneType sceneType);
 
-    boolean getKeyState(int keyCode);
+    void update(long deltaTime);
+
+    void draw(Graphics2D g);
+
+    void registerScene(SceneType sceneType, Scene scene);
+
 }

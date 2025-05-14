@@ -1,5 +1,6 @@
 package ind.plague.pvz.scene.scenes;
 
+import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
@@ -14,18 +15,25 @@ import java.awt.*;
  * date: 2025/5/13 23:34
  */
 
-public class GameScene implements Scene {
+public class GameScene extends BasicScene {
 
     Timer test = new Timer(1000, true, () -> {
-        System.out.println("更新");
+        System.out.println(Thread.currentThread().getName());
     });
+
+    public GameScene(Manager manager, InputHandler inputHandler) {
+        super(manager, inputHandler);
+    }
+
     @Override
-    public void update(long deltaTime, Manager manager) {
+    public void update(long deltaTime) {
+        super.update(deltaTime);
         test.update(deltaTime);
     }
 
     @Override
     public void draw(Graphics2D g) {
+        g.drawString("小点声", 1440, 100);
     }
 
     @Override
