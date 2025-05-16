@@ -8,11 +8,22 @@ package ind.plague.pvz.input;
 
 public interface InputHandler {
     void setKeyState(int keyCode, boolean state);
-    void setMouseState(int buttonCode, boolean state);
     boolean getKeyState(int keyCode);
+    boolean ifKeyPressed(int keyCode);
+    boolean ifKeyReleased(int keyCode);
+    boolean ifHaveKey();
+
+    void setMouseState(int buttonCode, boolean state);
     boolean getMouseState(int buttonCode);
-    int getMouseX();
-    int getMouseY();
+    boolean ifMousePressed(int buttonCode);
+    boolean ifMouseReleased(int buttonCode);
+
     void setMouseX(int x);
     void setMouseY(int y);
+    int getMouseX();
+    int getMouseY();
+
+    void reset();
+    void update();
+
 }

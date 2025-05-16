@@ -11,7 +11,6 @@ import java.util.HashMap;
  */
 
 public class Animation {
-    private static final HashMap<Float, AlphaComposite> ALPHA_COMPOSITE_CACHE = new HashMap<>();
 
     private int timer;
     private int interval;
@@ -19,7 +18,7 @@ public class Animation {
     private boolean loop;
 
     private Atlas atlas;
-    private final Runnable callback;
+    private Runnable callback;
 
     public Animation(Atlas atlas, int ms, boolean loop, Runnable callback) {
         this.atlas = atlas;
@@ -28,8 +27,14 @@ public class Animation {
         this.callback = callback;
     }
 
+    public Animation(Atlas atlas, int ms, boolean loop) {
+        this.atlas = atlas;
+        this.interval = ms;
+        this.loop = loop;
+    }
+
     public void update(long deltaTime) {
-        timer += (int) (deltaTime/1000_000);
+        timer += (int) (deltaTime / 1000_000);
         if (timer >= interval) {
             timer = 0;
             frameIndex++;
@@ -41,12 +46,11 @@ public class Animation {
     }
 
     public void draw(Graphics2D g, int x, int y) {
-        g.drawImage(getFrame(), x, y, null);
+        Painter.draw(g, getFrame(), x, y);
     }
 
     public void draw(Graphics2D g, int x, int y, float alpha) {
-        g.setComposite(getAlphaComposite(alpha));
-        draw(g, x, y);
+        Painter.draw(g, getFrame(), x, y, alpha);
     }
 
     public void reset() {
@@ -80,8 +84,4 @@ public class Animation {
         return frameIndex == atlas.size() - 1;
     }
 
-    private AlphaComposite getAlphaComposite(float alpha) {
-        if (alpha < 0 || alpha > 1) throw new IllegalArgumentException("alpha的值需要满足范围[0,1]");
-        return ALPHA_COMPOSITE_CACHE.computeIfAbsent(alpha, (_) -> AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
-    }
 }

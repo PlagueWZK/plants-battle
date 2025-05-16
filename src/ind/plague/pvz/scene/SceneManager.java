@@ -41,4 +41,5 @@ public class SceneManager implements Manager {
     public void registerScene(SceneType sceneType, Scene scene) {
         scenes.put(sceneType, scene);
     }
+
 }

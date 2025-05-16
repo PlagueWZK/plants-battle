@@ -19,7 +19,7 @@ public class GameFrame {
     private static final int DEFAULT_WIDTH = 1280;
     private static final int DEFAULT_HEIGHT = 720;
     private static final int DEFAULT_FPS = 165;
-    private static final int DEFAULT_UPS = 20;
+    private static final int DEFAULT_UPS = 300;
     private static final long FRAME_TIME = 1000_000_000L / DEFAULT_FPS;
     private static final long UPDATE_TIME = 1000_000_000L / DEFAULT_UPS;
     private static final long MAX_FRAME_SKIPS = UPDATE_TIME * 3;
@@ -71,6 +71,7 @@ public class GameFrame {
         updateCount++;
         PSCalculator.update(deltaTime);
         sm.update(deltaTime);
+
         while (updateTimer >= UPDATE_TIME) {
             if (updateTimer > MAX_FRAME_SKIPS) {
                 updateTimer = MAX_FRAME_SKIPS;
@@ -97,7 +98,7 @@ public class GameFrame {
                 long deltaTime = now - startTime;
                 startTime = now;
                 update(deltaTime);
-                LockSupport.parkNanos(1);
+                LockSupport.parkNanos(UPDATE_TIME);
             }
         }).start();
         long startTime = System.nanoTime();

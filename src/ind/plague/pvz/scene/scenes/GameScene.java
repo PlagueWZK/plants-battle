@@ -6,6 +6,7 @@ import ind.plague.pvz.scene.SceneType;
 
 
 import java.awt.*;
+import java.awt.event.KeyEvent;
 
 /**
  * @author PlagueWZK
@@ -31,23 +32,12 @@ public class GameScene extends BasicScene {
     }
 
     @Override
-    public void onEnter() {
-        System.out.println("进入" + getSceneType() + "场景");
-    }
-
-    @Override
-    public void onExit() {
-        System.out.println("退出" + getSceneType() + "场景");
-    }
-
-    @Override
     public void onInput() {
-
+        ifKey(KeyEvent.VK_9, () -> {
+            System.out.println(getSceneType());
+        });
+        ifKey(KeyEvent.VK_ESCAPE, () -> {
+            manager.switchScene(SceneType.MENU_SCENE);
+        });
     }
-
-    @Override
-    public SceneType getSceneType() {
-        return SceneType.GAME_SCENE;
-    }
-
 }

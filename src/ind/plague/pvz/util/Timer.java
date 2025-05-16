@@ -35,6 +35,11 @@ public class Timer {
         this.callback = callback;
     }
 
+    public Timer(boolean loop, Runnable callback) {
+        this.loop = loop;
+        this.callback = callback;
+    }
+
     public void reset() {
         passedTime = 0;
         finished = false;
