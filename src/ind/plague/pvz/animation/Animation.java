@@ -1,8 +1,10 @@
 package ind.plague.pvz.animation;
 
+import ind.plague.pvz.util.Painter;
+import ind.plague.pvz.util.Vector2;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
 
 /**
  * @author PlagueWZK
@@ -48,9 +50,15 @@ public class Animation {
     public void draw(Graphics2D g, int x, int y) {
         Painter.draw(g, getFrame(), x, y);
     }
+    public void draw(Graphics2D g, Vector2 positon) {
+        Painter.draw(g, getFrame(), positon.getX(), positon.getY());
+    }
 
     public void draw(Graphics2D g, int x, int y, float alpha) {
         Painter.draw(g, getFrame(), x, y, alpha);
+    }
+    public void draw(Graphics2D g, Vector2 positon, float alpha) {
+        Painter.draw(g, getFrame(), positon.getX(), positon.getY(), alpha);
     }
 
     public void reset() {

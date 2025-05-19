@@ -21,8 +21,10 @@ public class SceneManager implements Manager {
 
     private Scene currentScene;
 
+
     public void update(long deltaTime) {
         currentScene.update(deltaTime);
+
     }
 
     public void draw(Graphics2D g) {

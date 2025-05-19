@@ -47,21 +47,20 @@ public abstract class BasicScene implements Scene {
 
     @Override
     public void onEnter() {
-        System.out.println("进入" + getSceneType() + "场景");
+
     }
 
     @Override
     public void onExit() {
-        System.out.println("退出" + getSceneType() + "场景");
-        banInput(1000);
+        banInput(200);
     }
 
     public void ifKey(int keyCode, Runnable runnable) {
         if (inputHandler.getKeyState(keyCode)) runnable.run();
     }
 
-    public void ifHaveKey(Runnable runnable) {
-        if (inputHandler.ifHaveKey()) {
+    public void ifHaveKeyPressed(Runnable runnable) {
+        if (inputHandler.ifHaveKeyPressed()) {
             runnable.run();
         }
     }

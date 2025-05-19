@@ -94,9 +94,11 @@ public class InputManager implements InputHandler {
     }
 
     @Override
-    public boolean ifHaveKey() {
-        for (boolean b : currentKeyState) {
-            if (b) return true;
+    public boolean ifHaveKeyPressed() {
+        for (int i = 0; i < currentKeyState.length; i++) {
+            if (ifKeyPressed(i)) {
+                return true;
+            }
         }
         return false;
     }

@@ -1,13 +1,13 @@
 package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.animation.Sticker;
+import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.ResourceGetter;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 /**
  * @author PlagueWZK
@@ -18,6 +18,11 @@ import java.awt.event.KeyEvent;
 public class MenuScene extends BasicScene {
 
     private final Sticker backGround = ResourceGetter.IMAGE_MENU_BACKGROUND;
+    private final Audio BGM;
+
+    {
+        BGM = ResourceGetter.AUDIO_MENU_BGM;
+    }
 
     public MenuScene(Manager manager, InputHandler inputHandler) {
         super(manager, inputHandler);
@@ -33,10 +38,21 @@ public class MenuScene extends BasicScene {
         backGround.draw(g, 0, 0);
     }
 
+    @Override
+    public void onEnter() {
+        super.onEnter();
+        BGM.play(true);
+    }
+
+    @Override
+    public void onExit() {
+        super.onExit();
+        BGM.stop();
+    }
 
     @Override
     public void onInput() {
-        ifHaveKey(() -> {
+        ifHaveKeyPressed(() -> {
             manager.switchScene(SceneType.SELECT_SCENE);
         });
     }

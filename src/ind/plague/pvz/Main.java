@@ -25,7 +25,7 @@ public class Main {
         for (SceneType sceneType : SceneType.values()) {
             sm.registerScene(sceneType, SceneFactory.createScene(sceneType, sm, ih));
         }
-        sm.switchScene(SceneType.MENU_SCENE);
+        sm.switchScene(SceneType.SELECT_SCENE);
         return new GameFrame(sm, ih);
     }
 }

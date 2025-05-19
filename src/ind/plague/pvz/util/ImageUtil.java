@@ -15,12 +15,13 @@ import java.util.Objects;
 public class ImageUtil {
     /**
      * 从相对路径中加载图片
+     *
      * @param filePath 类资源加载路径
      * @return 路径对应的图片
      */
     public static BufferedImage loadImage(String filePath) {
         try {
-            return ImageIO.read(Objects.requireNonNull(ImageUtil.class.getResource(filePath)));
+            return ImageIO.read(Objects.requireNonNull(ImageUtil.class.getResource(filePath), filePath + "为null"));
         } catch (IOException e) {
             throw new RuntimeException("加载图片失败: " + filePath, e);
         }

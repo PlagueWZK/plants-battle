@@ -1,6 +1,8 @@
 package ind.plague.pvz.util;
 
+import ind.plague.pvz.animation.Atlas;
 import ind.plague.pvz.animation.Sticker;
+import ind.plague.pvz.audio.Audio;
 
 import java.awt.image.BufferedImage;
 
@@ -11,8 +13,52 @@ import java.awt.image.BufferedImage;
  */
 
 public class ResourceGetter {
-    public static final Sticker IMAGE_MENU_BACKGROUND = newSticker("/image/scene/menu_background.png");
-    public static final Sticker IMAGE_SELECTOR_BACKGROUND = newSticker("/image/scene/selector_background.png");
+    public static final Sticker IMAGE_MENU_BACKGROUND = newSticker("/image/scene/menu/menu_background.png");
+    public static final Sticker IMAGE_SELECTOR_BACKGROUND = newSticker("/image/scene/selector/selector_background.png");
+
+
+
+
+    public static final Atlas ATLAS_SUNFLOWER_RUN_RIGHT = new Atlas("/image/role/sunflowers/sunflower_run_%d.png", 5);
+    public static final Atlas ATLAS_SUNFLOWER_RUN_LEFT = ATLAS_SUNFLOWER_RUN_RIGHT.flipAtlas();
+
+    public static final Atlas ATLAS_SUNFLOWER_ATTACK_RIGHT = new Atlas("/image/role/sunflowers/sunflower_attack_ex_%d.png", 9);
+    public static final Atlas ATLAS_SUNFLOWER_ATTACK_LEFT = ATLAS_SUNFLOWER_ATTACK_RIGHT.flipAtlas();
+
+    public static final Atlas ATLAS_SUNFLOWER_IDLE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_idle_%d.png", 8);
+    public static final Atlas ATLAS_SUNFLOWER_IDLE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+    public static final Atlas ATLAS_SUNFLOWER_DIE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_die_%d.png", 2);
+    public static final Atlas ATLAS_SUNFLOWER_DIE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+
+
+
+    public static final Atlas ATLAS_PEASHOOTER_RUN_RIGHT = new Atlas("/image/role/peashooter/peashooter_run_%d.png", 5);
+    public static final Atlas ATLAS_PEASHOOTER_RUN_LEFT = ATLAS_SUNFLOWER_RUN_RIGHT.flipAtlas();
+
+    public static final Atlas ATLAS_PEASHOOTER_ATTACK_RIGHT = new Atlas("/image/role/peashooter/peashooter_attack_ex_%d.png", 3);
+    public static final Atlas ATLAS_PEASHOOTER_ATTACK_LEFT = ATLAS_SUNFLOWER_ATTACK_RIGHT.flipAtlas();
+
+    public static final Atlas ATLAS_PEASHOOTER_IDLE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 9);
+    public static final Atlas ATLAS_PEASHOOTER_IDLE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+    public static final Atlas ATLAS_PEASHOOTER_DIE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 4);
+    public static final Atlas ATLAS_PEASHOOTER_DIE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+
+
+    public static final Sticker IMAGE_VS = newSticker("/image/scene/selector/VS.png");
+    public static final Sticker IMAGE_1P = newSticker("/image/scene/selector/1P.png");
+    public static final Sticker IMAGE_1P_DESC = newSticker("/image/scene/selector/1P_desc.png");
+    public static final Sticker IMAGE_2P = newSticker("/image/scene/selector/2P.png");
+    public static final Sticker IMAGE_2P_DESC = newSticker("/image/scene/selector/2P_desc.png");
+    public static final Sticker IMAGE_GRAVESTONE = newSticker("/image/scene/selector/gravestone.png");
+    public static final Sticker IMAGE_SELECTOR_TIP = newSticker("/image/scene/selector/selector_tip.png");
+
+
+
+
+
+    public static final Audio AUDIO_MENU_BGM = new Audio("/sound/BGM/bgm_menu.wav");
+    //public static final Audio AUDIO_SELECT_BGM = new Audio("/sound/BGM/bgm_menu.wav");
+    public static final Audio AUDIO_GAME_BGM = new Audio("/sound/BGM/bgm_game.wav");
 
 
     private static Sticker newSticker(String path) {

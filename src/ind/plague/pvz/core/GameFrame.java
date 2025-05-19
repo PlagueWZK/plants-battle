@@ -24,6 +24,7 @@ public class GameFrame {
     private static final long UPDATE_TIME = 1000_000_000L / DEFAULT_UPS;
     private static final long MAX_FRAME_SKIPS = UPDATE_TIME * 3;
 
+    private final JFrame frame;
     private final GamePanel panel;
     private final Manager sm;
     private final InputHandler  ih;
@@ -37,7 +38,7 @@ public class GameFrame {
     private int UPS;
 
     {
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -71,7 +72,6 @@ public class GameFrame {
         updateCount++;
         PSCalculator.update(deltaTime);
         sm.update(deltaTime);
-
         while (updateTimer >= UPDATE_TIME) {
             if (updateTimer > MAX_FRAME_SKIPS) {
                 updateTimer = MAX_FRAME_SKIPS;
@@ -182,5 +182,12 @@ public class GameFrame {
             ih.setMouseX(e.getX());
             ih.setMouseY(e.getY());
         }
+    }
+
+    public static int getWidth() {
+        return DEFAULT_WIDTH;
+    }
+    public static int getHeight() {
+        return DEFAULT_HEIGHT;
     }
 }

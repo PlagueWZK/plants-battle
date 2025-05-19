@@ -15,6 +15,14 @@ import java.util.ArrayList;
 public class Atlas {
     private final ArrayList<BufferedImage> images = new ArrayList<>();
 
+
+    public Atlas() {
+    }
+
+    public Atlas(String pathTemplate, int num) {
+        loadFromFile(pathTemplate, num);
+    }
+
     /**
      * 加载同一目录一系列的图片。图片名称要求以数字区分，从1开始
      *

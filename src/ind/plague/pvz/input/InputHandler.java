@@ -11,7 +11,7 @@ public interface InputHandler {
     boolean getKeyState(int keyCode);
     boolean ifKeyPressed(int keyCode);
     boolean ifKeyReleased(int keyCode);
-    boolean ifHaveKey();
+    boolean ifHaveKeyPressed();
 
     void setMouseState(int buttonCode, boolean state);
     boolean getMouseState(int buttonCode);
