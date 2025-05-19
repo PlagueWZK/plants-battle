@@ -2,8 +2,10 @@ package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.GameKeyEvent;
+import ind.plague.pvz.event.events.SceneChangeEvent;
 import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.ResourceGetter;
 
@@ -24,8 +26,7 @@ public class MenuScene extends BasicScene {
         BGM = ResourceGetter.AUDIO_MENU_BGM;
     }
 
-    public MenuScene(Manager manager, InputHandler inputHandler) {
-        super(manager, inputHandler);
+    public MenuScene() {
     }
 
     @Override
@@ -51,9 +52,18 @@ public class MenuScene extends BasicScene {
     }
 
     @Override
-    public void onInput() {
-        ifHaveKeyPressed(() -> {
-            manager.switchScene(SceneType.SELECT_SCENE);
-        });
+    public void onInput(GameKeyEvent event) {
+
+    }
+
+    @Override
+    protected void keyReleased(int keyCode) {
+
+    }
+
+    @Override
+    protected void keyPressed(int keyCode) {
+        System.out.println("按下按键");
+        EventBus.instance.publish(new SceneChangeEvent(SceneType.SELECT_SCENE));
     }
 }

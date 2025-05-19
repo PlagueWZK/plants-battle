@@ -1,7 +1,8 @@
 package ind.plague.pvz.core;
 
-import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.scene.Manager;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.GameKeyEvent;
+import ind.plague.pvz.scene.SceneManager;
 import ind.plague.pvz.util.Timer;
 
 import javax.swing.*;
@@ -26,8 +27,7 @@ public class GameFrame {
 
     private final JFrame frame;
     private final GamePanel panel;
-    private final Manager sm;
-    private final InputHandler  ih;
+    private final SceneManager sm;
     private final Timer PSCalculator;
 
     private long drawTimer;
@@ -62,9 +62,8 @@ public class GameFrame {
         });
     }
 
-    public GameFrame(Manager sceneManager, InputHandler inputHandler) {
+    public GameFrame(SceneManager sceneManager) {
         sm = sceneManager;
-        ih = inputHandler;
     }
 
     public void update(long deltaTime) {
@@ -130,7 +129,7 @@ public class GameFrame {
         }
     }
 
-    private class Listener implements KeyListener, MouseListener, MouseMotionListener {
+    private static class Listener implements KeyListener, MouseListener, MouseMotionListener {
 
         @Override
         public void keyTyped(KeyEvent e) {
@@ -139,12 +138,12 @@ public class GameFrame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            ih.setKeyState(e.getKeyCode(), true);
+            EventBus.instance.publish(new GameKeyEvent(e.getKeyCode(), GameKeyEvent.Action.KEY_PRESS));
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            ih.setKeyState(e.getKeyCode(), false);
+            EventBus.instance.publish(new GameKeyEvent(e.getKeyCode(), GameKeyEvent.Action.KEY_RELEASE));
         }
 
         @Override
@@ -154,7 +153,7 @@ public class GameFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            ih.setMouseState(e.getButton(), true);
+            EventBus.instance.publish(new GameKeyEvent(e.getButton(), GameKeyEvent.Action.KEY_PRESS));
         }
 
         @Override

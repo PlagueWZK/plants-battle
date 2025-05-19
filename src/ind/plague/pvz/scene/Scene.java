@@ -1,5 +1,7 @@
 package ind.plague.pvz.scene;
 
+import ind.plague.pvz.event.events.GameKeyEvent;
+
 import java.awt.*;
 
 /**
@@ -13,6 +15,6 @@ public interface Scene {
     void draw(Graphics2D g);
     void onEnter();
     void onExit();
-    void onInput();
+    void onInput(GameKeyEvent event);
     SceneType getSceneType();
 }

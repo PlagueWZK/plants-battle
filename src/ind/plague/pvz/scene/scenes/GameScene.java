@@ -1,7 +1,7 @@
 package ind.plague.pvz.scene.scenes;
 
+import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.scene.SceneType;
 
 
@@ -16,8 +16,7 @@ import java.awt.event.KeyEvent;
 
 public class GameScene extends BasicScene {
 
-    public GameScene(Manager manager, InputHandler inputHandler) {
-        super(manager, inputHandler);
+    public GameScene() {
     }
 
     @Override
@@ -32,12 +31,17 @@ public class GameScene extends BasicScene {
     }
 
     @Override
-    public void onInput() {
-        ifKey(KeyEvent.VK_9, () -> {
-            System.out.println(getSceneType());
-        });
-        ifKey(KeyEvent.VK_ESCAPE, () -> {
-            manager.switchScene(SceneType.MENU_SCENE);
-        });
+    public void onInput(GameKeyEvent event) {
+
+    }
+
+    @Override
+    protected void keyPressed(int keyCode) {
+
+    }
+
+    @Override
+    protected void keyReleased(int keyCode) {
+
     }
 }

@@ -3,16 +3,14 @@ package ind.plague.pvz.scene.scenes;
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
-import ind.plague.pvz.core.Camera;
 import ind.plague.pvz.core.GameFrame;
+import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.scene.Manager;
 import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Vector2;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 
 /**
  * @author PlagueWZK
@@ -101,15 +99,30 @@ public class SelectScene extends BasicScene {
     }
 
     @Override
-    public void onInput() {
-        ifKeyPressed(KeyEvent.VK_H, () -> System.out.println("按下H"));
-        ifKeyReleased(KeyEvent.VK_H, () -> System.out.println("松开H"));
-        ifMousePressed(MouseEvent.BUTTON1, () -> System.out.println("鼠标左键按下"));
-        ifMouseReleased(MouseEvent.BUTTON1, () -> System.out.println("鼠标左键松开"));
-        ifMousePressed(MouseEvent.BUTTON2, () -> System.out.println("鼠标中键按下"));
-        ifMouseReleased(MouseEvent.BUTTON2, () -> System.out.println("鼠标中键松开"));
-        ifMousePressed(MouseEvent.BUTTON3, () -> System.out.println("鼠标右键按下"));
-        ifMouseReleased(MouseEvent.BUTTON3, () -> System.out.println("鼠标右键松开"));
-        ifKey(KeyEvent.VK_R, () -> Camera.camera.shake(8, 500));
+    public void onInput(GameKeyEvent event) {
+    }
+
+    @Override
+    protected void keyReleased(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_UP -> {
+                System.out.println("向上按下");
+            }
+            case KeyEvent.VK_DOWN -> {
+                System.out.println("向下按下");
+            }
+        }
+    }
+
+    @Override
+    protected void keyPressed(int keyCode) {
+        switch (keyCode) {
+            case KeyEvent.VK_UP -> {
+                System.out.println("向上松开");
+            }
+            case KeyEvent.VK_DOWN -> {
+                System.out.println("向下松开");
+            }
+        }
     }
 }

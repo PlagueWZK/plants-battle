@@ -1,6 +1,11 @@
 package ind.plague.pvz.scene;
 
 
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.GameEvent;
+import ind.plague.pvz.event.GameEventListener;
+import ind.plague.pvz.event.events.SceneChangeEvent;
+
 import java.awt.*;
 import java.util.HashMap;
 
@@ -10,13 +15,13 @@ import java.util.HashMap;
  * date: 2025/5/12 17:54
  */
 
-public class SceneManager implements Manager {
+public class SceneManager implements GameEventListener {
 
     private final HashMap<SceneType, Scene> scenes;
 
     {
         scenes = new HashMap<>();
-
+        EventBus.instance.subscribe(SceneChangeEvent.class, this);
     }
 
     private Scene currentScene;
@@ -31,7 +36,6 @@ public class SceneManager implements Manager {
         currentScene.draw(g);
     }
 
-    @Override
     public void switchScene(SceneType sceneType) {
         if (currentScene != null) {
             currentScene.onExit();
@@ -44,4 +48,11 @@ public class SceneManager implements Manager {
         scenes.put(sceneType, scene);
     }
 
+
+    @Override
+    public void onEvent(GameEvent event) {
+        if (event instanceof SceneChangeEvent changeEvent) {
+            switchScene(changeEvent.getType());
+        }
+    }
 }

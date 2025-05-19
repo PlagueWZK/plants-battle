@@ -1,8 +1,10 @@
 package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.core.Camera;
-import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.scene.Manager;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.GameEvent;
+import ind.plague.pvz.event.GameEventListener;
+import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.Timer;
@@ -13,7 +15,7 @@ import ind.plague.pvz.util.Timer;
  * date: 2025/5/14 14:52
  */
 
-public abstract class BasicScene implements Scene {
+public abstract class BasicScene implements Scene, GameEventListener {
 
     protected static boolean isListening = true;
     protected static Timer BanInputTimer;
@@ -22,26 +24,18 @@ public abstract class BasicScene implements Scene {
         BanInputTimer = new Timer(0, false, () -> isListening = true);
     }
 
-    protected final Manager manager;
-    protected final InputHandler inputHandler;
     protected int mouseX, mouseY;
 
+    {
+        EventBus.instance.subscribe(GameKeyEvent.class, this);
+    }
 
-    public BasicScene(Manager manager, InputHandler inputHandler) {
-        this.manager = manager;
-        this.inputHandler = inputHandler;
+
+    public BasicScene() {
     }
 
     @Override
     public void update(long deltaTime) {
-        if (isListening) {
-            onInput();
-        } else {
-            BanInputTimer.update(deltaTime);
-        }
-        inputHandler.update();
-        mouseX = inputHandler.getMouseX();
-        mouseY = inputHandler.getMouseY();
         Camera.camera.update(deltaTime);
     }
 
@@ -51,38 +45,22 @@ public abstract class BasicScene implements Scene {
     }
 
     @Override
-    public void onExit() {
-        banInput(200);
-    }
-
-    public void ifKey(int keyCode, Runnable runnable) {
-        if (inputHandler.getKeyState(keyCode)) runnable.run();
-    }
-
-    public void ifHaveKeyPressed(Runnable runnable) {
-        if (inputHandler.ifHaveKeyPressed()) {
-            runnable.run();
+    public void onEvent(GameEvent event) {
+        if (event instanceof GameKeyEvent keyEvent) {
+            switch (keyEvent.getAction()) {
+                case KEY_PRESS -> {
+                    keyPressed(keyEvent.getEvent());
+                }
+                case KEY_RELEASE -> {
+                    keyReleased(keyEvent.getEvent());
+                }
+            }
         }
     }
 
-    public void ifKeyPressed(int keyCode, Runnable runnable) {
-        if (inputHandler.ifKeyPressed(keyCode)) runnable.run();
-    }
+    @Override
+    public void onExit() {
 
-    public void ifKeyReleased(int keyCode, Runnable runnable) {
-        if (inputHandler.ifKeyReleased(keyCode)) runnable.run();
-    }
-
-    public void ifMouse(int buttonCode, Runnable runnable) {
-        if (inputHandler.getMouseState(buttonCode)) runnable.run();
-    }
-
-    public void ifMousePressed(int buttonCode, Runnable runnable) {
-        if (inputHandler.ifMousePressed(buttonCode)) runnable.run();
-    }
-
-    public void ifMouseReleased(int buttonCode, Runnable runnable) {
-        if (inputHandler.ifMouseReleased(buttonCode)) runnable.run();
     }
 
     @Override
@@ -95,4 +73,7 @@ public abstract class BasicScene implements Scene {
         BanInputTimer.reset();
         isListening = false;
     }
+
+    protected abstract void keyPressed(int keyCode);
+    protected abstract void keyReleased(int keyCode);
 }
