@@ -1,9 +1,12 @@
 package ind.plague.pvz.util;
 
+import ind.plague.pvz.core.GameFrame;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -19,6 +22,17 @@ public class GameUtil {
     public static final HashMap<Float, Font> fontCache = new HashMap<>();
 
     public static Font DEFAULT_FONT;
+
+    static {
+        try (InputStream is = GameUtil.class.getResourceAsStream("/font/IPix.ttf")) {
+            if (is == null) {
+                throw new IllegalArgumentException("字体文件无效");
+            }
+            DEFAULT_FONT = Font.createFont(Font.TRUETYPE_FONT, is);
+        } catch (IOException | FontFormatException e) {
+            throw new RuntimeException("加载字体失败", e);
+        }
+    }
 
     /**
      * 从相对路径中加载图片
@@ -64,8 +78,32 @@ public class GameUtil {
     }
 
     public static Font getFont(float size) {
-        if (fontCache.containsKey(size)) {
-            return fontCache.get(size);
-        }
+        return fontCache.computeIfAbsent(size, DEFAULT_FONT::deriveFont);
+    }
+
+    /**
+     * 获取将图片绘制到面板中间时对应的绘制点坐标
+     *
+     * @param img 将要绘制的图片
+     * @return 返回一个Vector2表示坐标
+     */
+    public static float getCenterXDrawPosition(BufferedImage img) {
+        return GameFrame.getWidth() / 2f - img.getWidth() / 2f;
+
+    }
+
+    public static float getCenterYDrawPosition(BufferedImage img) {
+        return GameFrame.getHeight() / 2f - img.getHeight() / 2f;
+    }
+
+    /**
+     * 水平对称
+     *
+     * @param v   源绘制点
+     * @param img 要得到对称点的图片
+     * @return 水平对称点
+     */
+    public static Vector2 horizontalSymmetry(Vector2 v, BufferedImage img) {
+        return new Vector2(GameFrame.getWidth() - v.getX() - img.getWidth(), v.getY());
     }
 }

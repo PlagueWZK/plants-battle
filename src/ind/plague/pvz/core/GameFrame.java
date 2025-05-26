@@ -3,6 +3,8 @@ package ind.plague.pvz.core;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.scene.SceneManager;
+import ind.plague.pvz.util.GameUtil;
+import ind.plague.pvz.util.Painter;
 import ind.plague.pvz.util.Timer;
 
 import javax.swing.*;
@@ -25,7 +27,6 @@ public class GameFrame {
     private static final long UPDATE_TIME = 1000_000_000L / DEFAULT_UPS;
     private static final long MAX_FRAME_SKIPS = UPDATE_TIME * 3;
 
-    private final JFrame frame;
     private final GamePanel panel;
     private final SceneManager sm;
     private final Timer PSCalculator;
@@ -38,7 +39,7 @@ public class GameFrame {
     private int UPS;
 
     {
-        frame = new JFrame();
+        JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
 
@@ -123,9 +124,7 @@ public class GameFrame {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             sm.draw(g2d);
-            g2d.setColor(Color.BLACK);
-            g2d.drawString("FPS: " + FPS, 10, 20);
-            g2d.drawString("UPS: " + UPS, 10, 40);
+            Painter.drawShadedText(g2d, "FPS: " + FPS + " UPS: " + UPS, 10, 10, Color.WHITE, 10);
         }
     }
 

@@ -2,7 +2,6 @@ package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
-import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.event.events.SceneChangeEvent;
 import ind.plague.pvz.scene.SceneType;

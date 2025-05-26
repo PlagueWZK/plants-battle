@@ -43,6 +43,9 @@ public class Vector2 {
         this.set(x + vec.x, y + vec.y);
         return this;
     }
+    public Vector2 addNoModify(Vector2 vec) {
+        return new Vector2(x + vec.x, y + vec.y);
+    }
 
     public Vector2 sub(Vector2 vec) {
         this.set(x - vec.x, y - vec.y);

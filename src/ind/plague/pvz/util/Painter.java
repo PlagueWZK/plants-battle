@@ -30,4 +30,15 @@ public class Painter {
         if (alpha < 0 || alpha > 1) throw new IllegalArgumentException("alpha的值需要满足范围[0,1]");
         return ALPHA_COMPOSITE_CACHE.computeIfAbsent(alpha, (_) -> AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
     }
+
+    public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size, Color shadowColor) {
+        g.setFont(GameUtil.getFont(size));
+        g.setColor(shadowColor);
+        g.drawString(text, Math.round(x - Camera.camera.getPosition().getX() + 1), Math.round(y - Camera.camera.getPosition().getY() + 1));
+        g.setColor(color);
+        g.drawString(text, Math.round(x - Camera.camera.getPosition().getX()), Math.round(y - Camera.camera.getPosition().getY()));
+    }
+    public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size) {
+        drawShadedText(g, text, x, y, color, size, Color.BLACK);
+    }
 }
