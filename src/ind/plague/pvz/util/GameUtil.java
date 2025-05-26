@@ -4,15 +4,22 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
  * @author PlagueWZK
- * description: ImageUtil
+ * description: GameUtil
  * date: 2025/5/14 17:00
  */
 
-public class ImageUtil {
+public class GameUtil {
+
+
+    public static final HashMap<Float, Font> fontCache = new HashMap<>();
+
+    public static Font DEFAULT_FONT;
+
     /**
      * 从相对路径中加载图片
      *
@@ -21,7 +28,7 @@ public class ImageUtil {
      */
     public static BufferedImage loadImage(String filePath) {
         try {
-            return ImageIO.read(Objects.requireNonNull(ImageUtil.class.getResource(filePath), filePath + "为null"));
+            return ImageIO.read(Objects.requireNonNull(GameUtil.class.getResource(filePath), filePath + "为null"));
         } catch (IOException e) {
             throw new RuntimeException("加载图片失败: " + filePath, e);
         }
@@ -54,5 +61,11 @@ public class ImageUtil {
                 image.getWidth(), 0, 0, image.getHeight(),
                 null);
         return flippedImage;
+    }
+
+    public static Font getFont(float size) {
+        if (fontCache.containsKey(size)) {
+            return fontCache.get(size);
+        }
     }
 }

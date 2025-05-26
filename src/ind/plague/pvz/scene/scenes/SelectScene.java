@@ -5,7 +5,6 @@ import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.core.GameFrame;
 import ind.plague.pvz.event.events.GameKeyEvent;
-import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Vector2;
 
@@ -33,7 +32,7 @@ public class SelectScene extends BasicScene {
     private final Animation animationOfFirstSelector;
     private final Animation animationOfSecondSelector;
 
-    private final Vector2 firstSelectorPosition = new Vector2(GameFrame.getWidth()* 19 / 100f, GameFrame.getHeight() / 3f);
+    private final Vector2 firstSelectorPosition = new Vector2(GameFrame.getWidth() * 19 / 100f, GameFrame.getHeight() / 3f);
     private final Vector2 secondSelectorPosition = new Vector2(GameFrame.getWidth() * 3 / 4f, GameFrame.getHeight() / 3f);
 
     private final Vector2 onePPosition = new Vector2(GameFrame.getWidth() / 5f, GameFrame.getHeight() / 10f);
@@ -48,9 +47,7 @@ public class SelectScene extends BasicScene {
     private final Vector2 selectTipPosition = new Vector2(GameFrame.getWidth() * 37 / 100f, GameFrame.getHeight() * 88 / 100f);
 
 
-
-    public SelectScene(Manager manager, InputHandler inputHandler) {
-        super(manager, inputHandler);
+    public SelectScene() {
     }
 
     {
@@ -80,7 +77,6 @@ public class SelectScene extends BasicScene {
         gravestone.draw(g, secondGravestonePosition);
 
 
-
         animationOfFirstSelector.draw(g, firstSelectorPosition);
         animationOfSecondSelector.draw(g, secondSelectorPosition);
 
@@ -88,13 +84,11 @@ public class SelectScene extends BasicScene {
 
     @Override
     public void onEnter() {
-        super.onEnter();
         BGM.play(true);
     }
 
     @Override
     public void onExit() {
-        super.onExit();
         BGM.stop();
     }
 
@@ -106,22 +100,32 @@ public class SelectScene extends BasicScene {
     protected void keyReleased(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_UP -> {
-                System.out.println("向上按下");
+                System.out.println("向上松开");
             }
             case KeyEvent.VK_DOWN -> {
-                System.out.println("向下按下");
+                System.out.println("向下松开");
             }
         }
+    }
+
+    @Override
+    protected void mousePressed(int buttonCode) {
+
+    }
+
+    @Override
+    protected void mouseReleased(int buttonCode) {
+
     }
 
     @Override
     protected void keyPressed(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_UP -> {
-                System.out.println("向上松开");
+                System.out.println("向上按下");
             }
             case KeyEvent.VK_DOWN -> {
-                System.out.println("向下松开");
+                System.out.println("向下按下");
             }
         }
     }

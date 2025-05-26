@@ -1,6 +1,6 @@
 package ind.plague.pvz.animation;
 
-import ind.plague.pvz.util.ImageUtil;
+import ind.plague.pvz.util.GameUtil;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -34,14 +34,14 @@ public class Atlas {
         images.ensureCapacity(num);
         for (int i = 0; i < num; i++) {
             String pathFile = String.format(pathTemplate, i + 1); // 生成文件路径
-            images.add(ImageUtil.loadImage(pathFile));
+            images.add(GameUtil.loadImage(pathFile));
         }
     }
 
     public Atlas flipAtlas() {
         Atlas atlas = new Atlas();
         for (int i = 0; i < size(); i++) {
-            atlas.addImage(ImageUtil.flipImage(getImage(i)));
+            atlas.addImage(GameUtil.flipImage(getImage(i)));
         }
         return atlas;
     }

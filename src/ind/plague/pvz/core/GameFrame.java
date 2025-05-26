@@ -138,12 +138,12 @@ public class GameFrame {
 
         @Override
         public void keyPressed(KeyEvent e) {
-            EventBus.instance.publish(new GameKeyEvent(e.getKeyCode(), GameKeyEvent.Action.KEY_PRESS));
+            EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.KEY_PRESS));
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            EventBus.instance.publish(new GameKeyEvent(e.getKeyCode(), GameKeyEvent.Action.KEY_RELEASE));
+            EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.KEY_RELEASE));
         }
 
         @Override
@@ -153,12 +153,12 @@ public class GameFrame {
 
         @Override
         public void mousePressed(MouseEvent e) {
-            EventBus.instance.publish(new GameKeyEvent(e.getButton(), GameKeyEvent.Action.KEY_PRESS));
+            EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.MOUSE_PRESS));
         }
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            ih.setMouseState(e.getButton(), false);
+            EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.MOUSE_RELEASE));
         }
 
         @Override
@@ -178,8 +178,7 @@ public class GameFrame {
 
         @Override
         public void mouseMoved(MouseEvent e) {
-            ih.setMouseX(e.getX());
-            ih.setMouseY(e.getY());
+            EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.MOUSE_MOVE));
         }
     }
 

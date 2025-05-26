@@ -5,7 +5,6 @@ import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.event.events.SceneChangeEvent;
-import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.ResourceGetter;
 
@@ -41,13 +40,11 @@ public class MenuScene extends BasicScene {
 
     @Override
     public void onEnter() {
-        super.onEnter();
         BGM.play(true);
     }
 
     @Override
     public void onExit() {
-        super.onExit();
         BGM.stop();
     }
 
@@ -62,8 +59,17 @@ public class MenuScene extends BasicScene {
     }
 
     @Override
+    protected void mousePressed(int buttonCode) {
+
+    }
+
+    @Override
+    protected void mouseReleased(int buttonCode) {
+
+    }
+
+    @Override
     protected void keyPressed(int keyCode) {
-        System.out.println("按下按键");
-        EventBus.instance.publish(new SceneChangeEvent(SceneType.SELECT_SCENE));
+        publish(new SceneChangeEvent(SceneType.SELECT_SCENE));
     }
 }

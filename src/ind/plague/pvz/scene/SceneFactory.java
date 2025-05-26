@@ -1,6 +1,6 @@
 package ind.plague.pvz.scene;
 
-import ind.plague.pvz.input.InputHandler;
+import ind.plague.pvz.event.EventBus;
 
 /**
  * @author PlagueWZK
@@ -9,10 +9,10 @@ import ind.plague.pvz.input.InputHandler;
  */
 
 public class SceneFactory {
-    public static Scene createScene(SceneType sceneType, Manager manager, InputHandler inputHandler) {
+    public static Scene createScene(SceneType sceneType) {
         try {
             Class<?> clazz = sceneType.getSceneClass();
-            return (Scene) clazz.getDeclaredConstructor(Manager.class, InputHandler.class).newInstance(manager, inputHandler);
+            return (Scene) clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             throw new RuntimeException("反射创建场景实例失败" + sceneType, e);
         }

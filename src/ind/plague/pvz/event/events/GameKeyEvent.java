@@ -21,7 +21,7 @@ public class GameKeyEvent extends BasicEvent{
         MOUSE_MOVE
     }
 
-    public GameKeyEvent(KeyEvent event, Action action) {
+    public GameKeyEvent(InputEvent event, Action action) {
         this.action = action;
         this.event = event;
     }

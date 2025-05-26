@@ -1,7 +1,6 @@
 package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.event.events.GameKeyEvent;
-import ind.plague.pvz.input.InputHandler;
 import ind.plague.pvz.scene.SceneType;
 
 
@@ -15,6 +14,15 @@ import java.awt.event.KeyEvent;
  */
 
 public class GameScene extends BasicScene {
+    @Override
+    protected void mousePressed(int buttonCode) {
+
+    }
+
+    @Override
+    protected void mouseReleased(int buttonCode) {
+
+    }
 
     public GameScene() {
     }
@@ -31,6 +39,16 @@ public class GameScene extends BasicScene {
     }
 
     @Override
+    public void onEnter() {
+
+    }
+
+    @Override
+    public void onExit() {
+
+    }
+
+    @Override
     public void onInput(GameKeyEvent event) {
 
     }
@@ -44,4 +62,6 @@ public class GameScene extends BasicScene {
     protected void keyReleased(int keyCode) {
 
     }
+
+
 }

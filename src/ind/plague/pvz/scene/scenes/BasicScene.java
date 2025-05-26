@@ -9,6 +9,10 @@ import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.Timer;
 
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
+
 /**
  * @author PlagueWZK
  * description: BasicScene
@@ -39,28 +43,26 @@ public abstract class BasicScene implements Scene, GameEventListener {
         Camera.camera.update(deltaTime);
     }
 
-    @Override
-    public void onEnter() {
-
-    }
 
     @Override
     public void onEvent(GameEvent event) {
         if (event instanceof GameKeyEvent keyEvent) {
+            InputEvent i = keyEvent.getEvent();
             switch (keyEvent.getAction()) {
-                case KEY_PRESS -> {
-                    keyPressed(keyEvent.getEvent());
+                case KEY_PRESS -> keyPressed(((KeyEvent) i).getKeyCode());
+                case KEY_RELEASE -> keyReleased(((KeyEvent) i).getKeyCode());
+                case MOUSE_MOVE -> {
+                    mouseX = ((MouseEvent) i).getX();
+                    mouseY = ((MouseEvent) i).getY();
                 }
-                case KEY_RELEASE -> {
-                    keyReleased(keyEvent.getEvent());
-                }
+                case MOUSE_PRESS -> mousePressed(((MouseEvent) i).getButton());
+                case MOUSE_RELEASE -> mouseReleased(((MouseEvent) i).getButton());
             }
         }
     }
 
-    @Override
-    public void onExit() {
-
+    public void publish(GameEvent event) {
+        EventBus.instance.publish(event);
     }
 
     @Override
@@ -68,6 +70,7 @@ public abstract class BasicScene implements Scene, GameEventListener {
         return SceneType.typeOf(this);
     }
 
+    @Deprecated
     protected void banInput(int ms) {
         BanInputTimer.setInterval(ms);
         BanInputTimer.reset();
@@ -75,5 +78,10 @@ public abstract class BasicScene implements Scene, GameEventListener {
     }
 
     protected abstract void keyPressed(int keyCode);
+
     protected abstract void keyReleased(int keyCode);
+
+    protected abstract void mousePressed(int buttonCode);
+
+    protected abstract void mouseReleased(int buttonCode);
 }

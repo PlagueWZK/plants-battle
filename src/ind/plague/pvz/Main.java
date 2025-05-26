@@ -1,8 +1,6 @@
 package ind.plague.pvz;
 
 import ind.plague.pvz.core.GameFrame;
-import ind.plague.pvz.input.InputHandler;
-import ind.plague.pvz.input.InputManager;
 import ind.plague.pvz.scene.SceneFactory;
 import ind.plague.pvz.scene.SceneManager;
 import ind.plague.pvz.scene.SceneType;
@@ -19,12 +17,11 @@ public class Main {
     }
 
     public static GameFrame initialize() {
-        Manager sm = new SceneManager();
-        InputHandler ih = new InputManager();
+        SceneManager sm = new SceneManager();
         for (SceneType sceneType : SceneType.values()) {
-            sm.registerScene(sceneType, SceneFactory.createScene(sceneType, sm, ih));
+            sm.registerScene(sceneType, SceneFactory.createScene(sceneType));
         }
         sm.switchScene(SceneType.MENU_SCENE);
-        return new GameFrame(sm, ih);
+        return new GameFrame(sm);
     }
 }

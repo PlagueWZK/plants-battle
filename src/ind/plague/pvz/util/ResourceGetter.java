@@ -4,8 +4,6 @@ import ind.plague.pvz.animation.Atlas;
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 
-import java.awt.image.BufferedImage;
-
 /**
  * @author PlagueWZK
  * description: ResourceGetter
@@ -62,6 +60,6 @@ public class ResourceGetter {
 
 
     private static Sticker newSticker(String path) {
-        return new Sticker(ImageUtil.loadImage(path));
+        return new Sticker(GameUtil.loadImage(path));
     }
 }
