@@ -1,5 +1,6 @@
 package ind.plague.pvz.core;
 
+import ind.plague.pvz.Main;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.scene.SceneManager;
@@ -123,7 +124,7 @@ public class GameFrame {
             Graphics2D g2d = (Graphics2D) g;
             g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
             sm.draw(g2d);
-            Painter.drawShadedText(g2d, "FPS: " + FPS + " UPS: " + UPS, 10, 10, Color.WHITE, 10);
+            globalDraw(g2d);
         }
     }
 
@@ -136,6 +137,11 @@ public class GameFrame {
 
         @Override
         public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()) {
+                case KeyEvent.VK_F8 -> {
+                    Main.DEBUG = !Main.DEBUG;
+                }
+            }
             EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.KEY_PRESS));
         }
 
@@ -183,7 +189,15 @@ public class GameFrame {
     public static int getWidth() {
         return DEFAULT_WIDTH;
     }
+
     public static int getHeight() {
         return DEFAULT_HEIGHT;
+    }
+
+    public void globalDraw(Graphics2D g) {
+        Painter.drawText(g, "FPS: " + FPS + " UPS: " + UPS, 10, 10, Color.BLACK, 10);
+        if (Main.DEBUG) {
+            Painter.drawText(g, "DEBUG", GameFrame.getWidth() - 50, 15, Color.RED, 10);
+        }
     }
 }

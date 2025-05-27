@@ -5,7 +5,6 @@ import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
-import ind.plague.pvz.util.Timer;
 
 
 /**
@@ -15,13 +14,6 @@ import ind.plague.pvz.util.Timer;
  */
 
 public abstract class BasicScene implements Scene {
-
-    protected static boolean isListening = true;
-    protected static Timer BanInputTimer;
-
-    static {
-        BanInputTimer = new Timer(0, false, () -> isListening = true);
-    }
 
     protected int mouseX, mouseY;
 
@@ -42,13 +34,6 @@ public abstract class BasicScene implements Scene {
     @Override
     public SceneType getSceneType() {
         return SceneType.typeOf(this);
-    }
-
-    @Deprecated
-    protected void banInput(int ms) {
-        BanInputTimer.setInterval(ms);
-        BanInputTimer.reset();
-        isListening = false;
     }
 
     public abstract void keyPressed(int keyCode);

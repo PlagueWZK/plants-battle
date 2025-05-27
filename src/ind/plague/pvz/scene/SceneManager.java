@@ -25,8 +25,7 @@ public class SceneManager implements GameEventListener {
 
     {
         scenes = new HashMap<>();
-        EventBus.instance.subscribe(SceneChangeEvent.class, this);
-        EventBus.instance.subscribe(GameKeyEvent.class, this);
+        EventBus.instance.subscribe(this, SceneChangeEvent.class, GameKeyEvent.class);
     }
 
     private Scene currentScene;

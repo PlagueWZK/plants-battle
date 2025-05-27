@@ -161,10 +161,6 @@ public class SelectScene extends BasicScene {
                 background1 = player2.backGroundR;
                 switchSound.play(false);
             }
-            case KeyEvent.VK_ENTER -> {
-                EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
-                confirmSound.play(false);
-            }
         }
     }
 
@@ -192,6 +188,10 @@ public class SelectScene extends BasicScene {
             }
             case KeyEvent.VK_RIGHT -> {
                 twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_DOWN_RIGHT;
+            }
+            case KeyEvent.VK_ENTER -> {
+                EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
+                confirmSound.play(false);
             }
         }
     }

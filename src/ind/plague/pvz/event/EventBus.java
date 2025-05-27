@@ -19,8 +19,11 @@ public class EventBus {
     private EventBus() {
     }
 
-    public void subscribe(Class<? extends GameEvent> eventType, GameEventListener listener) {
-        listeners.computeIfAbsent(eventType, _ -> new ArrayList<>()).add(listener);
+    @SafeVarargs
+    public final void subscribe(GameEventListener listener, Class<? extends GameEvent>... eventTypes) {
+        for (Class<? extends GameEvent> eventType : eventTypes) {
+            listeners.computeIfAbsent(eventType, _ -> new ArrayList<>()).add(listener);
+        }
     }
 
     public void publish(GameEvent event) {

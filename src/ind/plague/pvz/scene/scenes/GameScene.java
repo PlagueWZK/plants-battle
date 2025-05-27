@@ -1,7 +1,16 @@
 package ind.plague.pvz.scene.scenes;
 
 
+import ind.plague.pvz.animation.Sticker;
+import ind.plague.pvz.core.Camera;
+import ind.plague.pvz.element.Platform;
+import ind.plague.pvz.util.GameUtil;
+import ind.plague.pvz.util.ResourceGetter;
+import ind.plague.pvz.util.Vector2;
+
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
 
 /**
  * @author PlagueWZK
@@ -10,6 +19,22 @@ import java.awt.*;
  */
 
 public class GameScene extends BasicScene {
+
+    private final Sticker hills = ResourceGetter.IMAGE_HILLS;
+    private final Vector2 hillsPosition = GameUtil.getCenterDrawPosition(hills.getImg());
+    private final Sticker sky = ResourceGetter.IMAGE_SKY;
+    private final Vector2 skyPosition = GameUtil.getCenterDrawPosition(sky.getImg());
+    private final ArrayList<Platform> platforms = new ArrayList<>();
+
+    {
+        platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_LARGE, new Vector2(122, 455), 60));
+        platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(175, 360)));
+        platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(855, 360)));
+        platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(515, 225)));
+        platforms.trimToSize();
+    }
+
+
     @Override
     public void mousePressed(int buttonCode) {
 
@@ -20,8 +45,6 @@ public class GameScene extends BasicScene {
 
     }
 
-    public GameScene() {
-    }
 
     @Override
     public void update(long deltaTime) {
@@ -30,8 +53,12 @@ public class GameScene extends BasicScene {
 
     @Override
     public void draw(Graphics2D g) {
-        g.setColor(Color.PINK);
-        g.fillOval(mouseX - 5, mouseY - 5, 10, 10);
+        sky.draw(g, hillsPosition);
+        hills.draw(g, skyPosition);
+
+        for (Platform platform : platforms) {
+            platform.draw(g);
+        }
     }
 
     @Override
@@ -46,13 +73,15 @@ public class GameScene extends BasicScene {
 
     @Override
     public void keyPressed(int keyCode) {
-
+        switch (keyCode) {
+            case KeyEvent.VK_R -> {
+                Camera.camera.shake(5, 1000);
+            }
+        }
     }
 
     @Override
     public void keyReleased(int keyCode) {
 
     }
-
-
 }

@@ -19,6 +19,9 @@ public class Painter {
     public static void draw(Graphics2D g, BufferedImage img, float x, float y) {
         g.drawImage(img, Math.round(x - Camera.camera.getPosition().getX() - Camera.camera.getShakeOffset().getX()), Math.round(y - Camera.camera.getPosition().getY() - Camera.camera.getShakeOffset().getY()), null);
     }
+    public static void draw(Graphics2D g, BufferedImage img, Vector2 position) {
+        draw(g, img, position.getX(), position.getY());
+    }
 
     public static void draw(Graphics2D g, BufferedImage img, float x, float y, float alpha) {
         g.setComposite(getAlphaComposite(alpha));
@@ -26,9 +29,19 @@ public class Painter {
         g.setComposite(getAlphaComposite(1.0f));
     }
 
+    public static void draw(Graphics2D g, BufferedImage img, Vector2 position, float alpha) {
+        draw(g, img, position.getX(), position.getY(), alpha);
+    }
+
     public static AlphaComposite getAlphaComposite(float alpha) {
         if (alpha < 0 || alpha > 1) throw new IllegalArgumentException("alpha的值需要满足范围[0,1]");
         return ALPHA_COMPOSITE_CACHE.computeIfAbsent(alpha, (_) -> AlphaComposite.getInstance(AlphaComposite.SRC_OVER, alpha));
+    }
+
+    public static void drawText(Graphics2D g, String text, float x, float y, Color color, float size) {
+        g.setFont(GameUtil.getFont(size));
+        g.setColor(color);
+        g.drawString(text, Math.round(x - Camera.camera.getPosition().getX()), Math.round(y - Camera.camera.getPosition().getY()));
     }
 
     public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size, Color shadowColor) {

@@ -11,6 +11,8 @@ import ind.plague.pvz.scene.SceneType;
  * date: 2025/5/12 16:19
  */
 public class Main {
+
+    public static boolean DEBUG = true;
     public static void main(String[] args) {
 
         initialize().startGameLoop();
@@ -21,7 +23,7 @@ public class Main {
         for (SceneType sceneType : SceneType.values()) {
             sm.registerScene(sceneType, SceneFactory.createScene(sceneType));
         }
-        sm.switchScene(SceneType.MENU_SCENE);
+        sm.switchScene(SceneType.GAME_SCENE);
         return new GameFrame(sm);
     }
 }

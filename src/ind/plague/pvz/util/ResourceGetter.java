@@ -4,6 +4,8 @@ import ind.plague.pvz.animation.Atlas;
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 
+import java.awt.image.BufferedImage;
+
 /**
  * @author PlagueWZK
  * description: ResourceGetter
@@ -65,6 +67,12 @@ public class ResourceGetter {
 
     public static final Sticker IMAGE_SUNFLOWER_BACKGROUND_RIGHT = newSticker("/image/scene/selector/sunflower_selector_background.png");
     public static final Sticker IMAGE_SUNFLOWER_BACKGROUND_LEFT = new Sticker(GameUtil.flipImage(IMAGE_SUNFLOWER_BACKGROUND_RIGHT.getImg()));
+
+    public static final Sticker IMAGE_HILLS = newSticker("/image/scene/game/hills.png");
+    public static final Sticker IMAGE_SKY = newSticker("/image/scene/game/sky.png");
+    public static final BufferedImage IMAGE_PLATFORM_LARGE = GameUtil.loadImage("/image/scene/game/platform_large.png");
+    public static final BufferedImage IMAGE_PLATFORM_SMALL = GameUtil.loadImage("/image/scene/game/platform_small.png");
+
 
 
     public static final Audio AUDIO_MENU_BGM = new Audio("/sound/BGM/bgm_menu.wav");
