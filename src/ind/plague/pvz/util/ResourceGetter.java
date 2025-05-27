@@ -47,6 +47,7 @@ public class ResourceGetter {
     public static final Sticker IMAGE_1P_SELECTED_IDLE_LEFT = new Sticker(GameUtil.flipImage(IMAGE_1P_SELECTED_IDLE_RIGHT.getImg()));
     public static final Sticker IMAGE_1P_SELECTED_DOWN_RIGHT = newSticker("/image/scene/selector/1P_selector_btn_down.png");
     public static final Sticker IMAGE_1P_SELECTED_DOWN_LEFT = new Sticker(GameUtil.flipImage(IMAGE_1P_SELECTED_DOWN_RIGHT.getImg()));
+
     public static final Sticker IMAGE_2P = newSticker("/image/scene/selector/2P.png");
     public static final Sticker IMAGE_2P_DESC = newSticker("/image/scene/selector/2P_desc.png");
     public static final Sticker IMAGE_2P_SELECTED_IDLE_RIGHT = newSticker("/image/scene/selector/2P_selector_btn_idle.png");
@@ -54,13 +55,24 @@ public class ResourceGetter {
 
     public static final Sticker IMAGE_2P_SELECTED_DOWN_RIGHT = newSticker("/image/scene/selector/2P_selector_btn_down.png");
     public static final Sticker IMAGE_2P_SELECTED_DOWN_LEFT = new Sticker(GameUtil.flipImage(IMAGE_2P_SELECTED_DOWN_RIGHT.getImg()));
+
+
     public static final Sticker IMAGE_GRAVESTONE = newSticker("/image/scene/selector/gravestone.png");
     public static final Sticker IMAGE_SELECTOR_TIP = newSticker("/image/scene/selector/selector_tip.png");
 
+    public static final Sticker IMAGE_PEASHOOTER_BACKGROUND_RIGHT = newSticker("/image/scene/selector/peashooter_selector_background.png");
+    public static final Sticker IMAGE_PEASHOOTER_BACKGROUND_LEFT = new Sticker(GameUtil.flipImage(IMAGE_PEASHOOTER_BACKGROUND_RIGHT.getImg()));
+
+    public static final Sticker IMAGE_SUNFLOWER_BACKGROUND_RIGHT = newSticker("/image/scene/selector/sunflower_selector_background.png");
+    public static final Sticker IMAGE_SUNFLOWER_BACKGROUND_LEFT = new Sticker(GameUtil.flipImage(IMAGE_SUNFLOWER_BACKGROUND_RIGHT.getImg()));
+
 
     public static final Audio AUDIO_MENU_BGM = new Audio("/sound/BGM/bgm_menu.wav");
-    //public static final Audio AUDIO_SELECT_BGM = new Audio("/sound/BGM/bgm_menu.wav");
     public static final Audio AUDIO_GAME_BGM = new Audio("/sound/BGM/bgm_game.wav");
+    public static final Audio AUDIO_CONFIRM = new Audio("/sound/effect/ui_confirm.wav");
+    public static final Audio AUDIO_SWITCH = new Audio("/sound/effect/ui_switch.wav");
+    public static final Audio AUDIO_WIN = new Audio("/sound/effect/ui_win.wav");
+
 
 
     private static Sticker newSticker(String path) {

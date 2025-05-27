@@ -1,11 +1,7 @@
 package ind.plague.pvz.scene.scenes;
 
-import ind.plague.pvz.event.events.GameKeyEvent;
-import ind.plague.pvz.scene.SceneType;
-
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
 
 /**
  * @author PlagueWZK
@@ -15,12 +11,12 @@ import java.awt.event.KeyEvent;
 
 public class GameScene extends BasicScene {
     @Override
-    protected void mousePressed(int buttonCode) {
+    public void mousePressed(int buttonCode) {
 
     }
 
     @Override
-    protected void mouseReleased(int buttonCode) {
+    public void mouseReleased(int buttonCode) {
 
     }
 
@@ -49,17 +45,12 @@ public class GameScene extends BasicScene {
     }
 
     @Override
-    public void onInput(GameKeyEvent event) {
+    public void keyPressed(int keyCode) {
 
     }
 
     @Override
-    protected void keyPressed(int keyCode) {
-
-    }
-
-    @Override
-    protected void keyReleased(int keyCode) {
+    public void keyReleased(int keyCode) {
 
     }
 

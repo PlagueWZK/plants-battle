@@ -2,7 +2,6 @@ package ind.plague.pvz.scene.scenes;
 
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
-import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.event.events.SceneChangeEvent;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.ResourceGetter;
@@ -18,11 +17,7 @@ import java.awt.*;
 public class MenuScene extends BasicScene {
 
     private final Sticker backGround = ResourceGetter.IMAGE_MENU_BACKGROUND;
-    private final Audio BGM;
-
-    {
-        BGM = ResourceGetter.AUDIO_MENU_BGM;
-    }
+    private final Audio BGM = ResourceGetter.AUDIO_MENU_BGM;
 
     public MenuScene() {
     }
@@ -48,27 +43,22 @@ public class MenuScene extends BasicScene {
     }
 
     @Override
-    public void onInput(GameKeyEvent event) {
+    public void keyReleased(int keyCode) {
 
     }
 
     @Override
-    protected void keyReleased(int keyCode) {
+    public void mousePressed(int buttonCode) {
 
     }
 
     @Override
-    protected void mousePressed(int buttonCode) {
+    public void mouseReleased(int buttonCode) {
 
     }
 
     @Override
-    protected void mouseReleased(int buttonCode) {
-
-    }
-
-    @Override
-    protected void keyPressed(int keyCode) {
+    public void keyPressed(int keyCode) {
         publish(new SceneChangeEvent(SceneType.SELECT_SCENE));
     }
 }

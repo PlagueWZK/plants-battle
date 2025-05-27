@@ -3,7 +3,6 @@ package ind.plague.pvz.core;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.scene.SceneManager;
-import ind.plague.pvz.util.GameUtil;
 import ind.plague.pvz.util.Painter;
 import ind.plague.pvz.util.Timer;
 

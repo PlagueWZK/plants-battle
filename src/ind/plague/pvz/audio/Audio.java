@@ -29,6 +29,9 @@ public class Audio {
     public void play(boolean loop) {
         if (loop) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
+        } else {
+            stop();
+            reset();
         }
         clip.start();
     }

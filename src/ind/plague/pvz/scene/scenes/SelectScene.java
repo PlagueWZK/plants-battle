@@ -4,8 +4,11 @@ import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.core.GameFrame;
-import ind.plague.pvz.event.events.GameKeyEvent;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.SceneChangeEvent;
+import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.GameUtil;
+import ind.plague.pvz.util.Painter;
 import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Vector2;
 
@@ -13,7 +16,6 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 
 /**
  * @author PlagueWZK
@@ -24,6 +26,9 @@ import java.util.HashMap;
 public class SelectScene extends BasicScene {
 
     private static final ArrayList<RoleType> ROLE_MAP = new ArrayList<>();
+    private static final Vector2 ZERO = Vector2.ZERO;
+    private static final Vector2 HALF = Vector2.ZERO.addNoModify(new Vector2(GameFrame.getWidth() * 57f / 100, 0));
+
 
     static {
         ROLE_MAP.addAll(Arrays.asList(RoleType.values()));
@@ -49,27 +54,33 @@ public class SelectScene extends BasicScene {
 
     private RoleType player1 = ROLE_MAP.getFirst();
     private RoleType player2 = ROLE_MAP.get(1);
+    private Sticker background1 = player2.backGroundR;
+    private Sticker background2 = player1.backGroundL;
 
     private final Vector2 firstPlayerPosition = new Vector2(GameFrame.getWidth() * 16f / 100, GameFrame.getHeight() * 32f / 100);
     private final Vector2 onePPosition = new Vector2(GameFrame.getWidth() * 16f / 100, GameFrame.getHeight() / 10f);
     private final Vector2 onePDescPosition = new Vector2(GameFrame.getWidth() * 9f / 100, GameFrame.getHeight() * 3 / 4f);
     private final Vector2 firstGravestonePosition = new Vector2(GameFrame.getWidth() / 12f, GameFrame.getHeight() / 5f);
-    private final Vector2 onePSelectorRPosition = firstPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 10f, 0));
-    private final Vector2 onePSelectorLPosition = firstPlayerPosition.addNoModify(new Vector2(- GameFrame.getWidth() / 16f, 0));
+    private final Vector2 onePSelectorRPosition = firstPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 6f, GameFrame.getHeight() / 10f));
+    private final Vector2 onePSelectorLPosition = firstPlayerPosition.addNoModify(new Vector2(-GameFrame.getWidth() / 8f, GameFrame.getHeight() / 10f));
+    private final Vector2 onePRoleNamePosition = firstPlayerPosition.addNoModify(new Vector2(0, GameFrame.getHeight() / 5f));
 
 
-
-    private final Vector2 secondPlayerPosition = GameUtil.horizontalSymmetry(firstPlayerPosition, player1.getAnimation().getFrame());
+    private final Vector2 secondPlayerPosition = GameUtil.horizontalSymmetry(firstPlayerPosition, player1.animation.getFrame());
     private final Vector2 twoPPosition = GameUtil.horizontalSymmetry(onePPosition, twoP.getImg());
     private final Vector2 twoPDescPosition = GameUtil.horizontalSymmetry(onePDescPosition, twoPDesc.getImg());
     private final Vector2 secondGravestonePosition = GameUtil.horizontalSymmetry(firstGravestonePosition, gravestone.getImg());
-    private final Vector2 twoPSelectorRPosition = secondPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 10f, 0));
-    private final Vector2 twoPSelectorLPosition = secondPlayerPosition.addNoModify(new Vector2(- GameFrame.getWidth() / 16f, 0));
+    private final Vector2 twoPSelectorRPosition = secondPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 6f, GameFrame.getHeight() / 10f));
+    private final Vector2 twoPSelectorLPosition = secondPlayerPosition.addNoModify(new Vector2(-GameFrame.getWidth() / 8f, GameFrame.getHeight() / 10f));
+    private final Vector2 twoPRoleNamePosition = secondPlayerPosition.addNoModify(new Vector2(0, GameFrame.getHeight() / 5f));
 
 
     private final Vector2 vsPosition = new Vector2(GameUtil.getCenterXDrawPosition(VS.getImg()), GameUtil.getCenterYDrawPosition(VS.getImg()));
     private final Vector2 selectTipPosition = new Vector2(GameUtil.getCenterXDrawPosition(selectorTip.getImg()), GameFrame.getHeight() * 88 / 100f);
 
+
+    private final Audio switchSound = ResourceGetter.AUDIO_SWITCH;
+    private final Audio confirmSound = ResourceGetter.AUDIO_CONFIRM;
 
     public SelectScene() {
     }
@@ -78,13 +89,17 @@ public class SelectScene extends BasicScene {
     @Override
     public void update(long deltaTime) {
         super.update(deltaTime);
-        player1.getAnimation().update(deltaTime);
-        player2.getAnimation().update(deltaTime);
+        player1.animation.update(deltaTime);
+        if (player1 != player2) {
+            player2.animation.update(deltaTime);
+        }
     }
 
     @Override
     public void draw(Graphics2D g) {
         selectorBackground.draw(g, 0, 0);
+        background1.draw(g, ZERO, 0.8f);
+        background2.draw(g, HALF, 0.8f);
         VS.draw(g, vsPosition);
 
         selectorTip.draw(g, selectTipPosition);
@@ -97,14 +112,16 @@ public class SelectScene extends BasicScene {
         gravestone.draw(g, secondGravestonePosition);
 
 
-        player1.getAnimation().draw(g, firstPlayerPosition);
-        player2.getAnimation().draw(g, secondPlayerPosition);
+        player1.animation.draw(g, firstPlayerPosition);
+        player2.animation.draw(g, secondPlayerPosition);
 
         onePSelectorL.draw(g, onePSelectorLPosition);
         onePSelectorR.draw(g, onePSelectorRPosition);
         twoPSelectorL.draw(g, twoPSelectorLPosition);
         twoPSelectorR.draw(g, twoPSelectorRPosition);
 
+        Painter.drawShadedText(g, player1.name, onePRoleNamePosition, Color.WHITE, 25);
+        Painter.drawShadedText(g, player2.name, twoPRoleNamePosition, Color.WHITE, 25);
     }
 
     @Override
@@ -118,43 +135,51 @@ public class SelectScene extends BasicScene {
     }
 
     @Override
-    public void onInput(GameKeyEvent event) {
-    }
-
-    @Override
-    protected void keyReleased(int keyCode) {
+    public void keyReleased(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_A -> {
                 onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_IDLE_LEFT;
                 player1 = ROLE_MAP.get((player1.ordinal() + 1) % ROLE_MAP.size());
+                background2 = player1.backGroundL;
+                switchSound.play(false);
             }
             case KeyEvent.VK_D -> {
                 onePSelectorR = ResourceGetter.IMAGE_1P_SELECTED_IDLE_RIGHT;
                 player1 = ROLE_MAP.get((player1.ordinal() + ROLE_MAP.size() - 1) % ROLE_MAP.size());
+                background2 = player1.backGroundL;
+                switchSound.play(false);
             }
             case KeyEvent.VK_LEFT -> {
                 twoPSelectorL = ResourceGetter.IMAGE_2P_SELECTED_IDLE_LEFT;
                 player2 = ROLE_MAP.get((player2.ordinal() + ROLE_MAP.size() - 1) % ROLE_MAP.size());
+                background1 = player2.backGroundR;
+                switchSound.play(false);
             }
             case KeyEvent.VK_RIGHT -> {
                 twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_IDLE_RIGHT;
                 player2 = ROLE_MAP.get((player2.ordinal() + 1) % ROLE_MAP.size());
+                background1 = player2.backGroundR;
+                switchSound.play(false);
+            }
+            case KeyEvent.VK_ENTER -> {
+                EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
+                confirmSound.play(false);
             }
         }
     }
 
     @Override
-    protected void mousePressed(int buttonCode) {
+    public void mousePressed(int buttonCode) {
 
     }
 
     @Override
-    protected void mouseReleased(int buttonCode) {
+    public void mouseReleased(int buttonCode) {
 
     }
 
     @Override
-    protected void keyPressed(int keyCode) {
+    public void keyPressed(int keyCode) {
         switch (keyCode) {
             case KeyEvent.VK_A -> {
                 onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_DOWN_LEFT;
@@ -172,17 +197,19 @@ public class SelectScene extends BasicScene {
     }
 
     private enum RoleType {
-        PEASHOOTER(new Animation(ResourceGetter.ATLAS_PEASHOOTER_IDLE_RIGHT, 100, true)),
-        SUNFLOWER(new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 100, true));
+        PEASHOOTER("婉逗射手", new Animation(ResourceGetter.ATLAS_PEASHOOTER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_LEFT),
+        SUNFLOWER("龙日葵", new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_LEFT);
 
-        private final Animation animation;
+        public final String name;
+        public final Animation animation;
+        public final Sticker backGroundR;
+        public final Sticker backGroundL;
 
-        RoleType(Animation animation) {
+        RoleType(String name, Animation animation, Sticker backGround1, Sticker backGround2) {
+            this.name = name;
             this.animation = animation;
-        }
-
-        public Animation getAnimation() {
-            return animation;
+            this.backGroundR = backGround1;
+            this.backGroundL = backGround2;
         }
     }
 }

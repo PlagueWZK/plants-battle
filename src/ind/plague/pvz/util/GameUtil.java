@@ -78,7 +78,7 @@ public class GameUtil {
     }
 
     public static Font getFont(float size) {
-        return fontCache.computeIfAbsent(size, DEFAULT_FONT::deriveFont);
+        return fontCache.computeIfAbsent(size, s -> DEFAULT_FONT.deriveFont(Font.BOLD, s));
     }
 
     /**

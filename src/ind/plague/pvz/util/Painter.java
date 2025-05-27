@@ -34,11 +34,14 @@ public class Painter {
     public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size, Color shadowColor) {
         g.setFont(GameUtil.getFont(size));
         g.setColor(shadowColor);
-        g.drawString(text, Math.round(x - Camera.camera.getPosition().getX() + 1), Math.round(y - Camera.camera.getPosition().getY() + 1));
+        g.drawString(text, Math.round(x - Camera.camera.getPosition().getX() + 2), Math.round(y - Camera.camera.getPosition().getY() + 2));
         g.setColor(color);
         g.drawString(text, Math.round(x - Camera.camera.getPosition().getX()), Math.round(y - Camera.camera.getPosition().getY()));
     }
     public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size) {
         drawShadedText(g, text, x, y, color, size, Color.BLACK);
+    }
+    public static void drawShadedText(Graphics2D g, String text, Vector2 position, Color color, float size) {
+        drawShadedText(g, text, position.getX(), position.getY(), color, size, Color.BLACK);
     }
 }

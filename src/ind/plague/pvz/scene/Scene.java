@@ -1,6 +1,5 @@
 package ind.plague.pvz.scene;
 
-import ind.plague.pvz.event.events.GameKeyEvent;
 
 import java.awt.*;
 
@@ -12,9 +11,24 @@ import java.awt.*;
 
 public interface Scene {
     void update(long deltaTime);
+
     void draw(Graphics2D g);
+
     void onEnter();
+
     void onExit();
-    void onInput(GameKeyEvent event);
+
+    void keyPressed(int code);
+
+    void keyReleased(int code);
+
+    void mousePressed(int code);
+
+    void mouseReleased(int code);
+
+    void setMouseX(int mouseX);
+
+    void setMouseY(int mouseY);
+
     SceneType getSceneType();
 }

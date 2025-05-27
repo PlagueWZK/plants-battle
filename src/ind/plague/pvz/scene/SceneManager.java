@@ -4,9 +4,13 @@ package ind.plague.pvz.scene;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
 import ind.plague.pvz.event.GameEventListener;
+import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.event.events.SceneChangeEvent;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.HashMap;
 
 /**
@@ -22,6 +26,7 @@ public class SceneManager implements GameEventListener {
     {
         scenes = new HashMap<>();
         EventBus.instance.subscribe(SceneChangeEvent.class, this);
+        EventBus.instance.subscribe(GameKeyEvent.class, this);
     }
 
     private Scene currentScene;
@@ -53,6 +58,19 @@ public class SceneManager implements GameEventListener {
     public void onEvent(GameEvent event) {
         if (event instanceof SceneChangeEvent changeEvent) {
             switchScene(changeEvent.getType());
+        }
+        if (event instanceof GameKeyEvent keyEvent) {
+            InputEvent i = keyEvent.getEvent();
+            switch (keyEvent.getAction()) {
+                case KEY_PRESS -> currentScene.keyPressed(((KeyEvent) i).getKeyCode());
+                case KEY_RELEASE -> currentScene.keyReleased(((KeyEvent) i).getKeyCode());
+                case MOUSE_MOVE -> {
+                    currentScene.setMouseX(((MouseEvent) i).getX());
+                    currentScene.setMouseY(((MouseEvent) i).getY());
+                }
+                case MOUSE_PRESS -> currentScene.mousePressed(((MouseEvent) i).getButton());
+                case MOUSE_RELEASE -> currentScene.mouseReleased(((MouseEvent) i).getButton());
+            }
         }
     }
 }
