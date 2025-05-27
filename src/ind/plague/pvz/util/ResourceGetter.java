@@ -59,7 +59,8 @@ public class ResourceGetter {
     public static final Sticker IMAGE_2P_SELECTED_DOWN_LEFT = new Sticker(GameUtil.flipImage(IMAGE_2P_SELECTED_DOWN_RIGHT.getImg()));
 
 
-    public static final Sticker IMAGE_GRAVESTONE = newSticker("/image/scene/selector/gravestone.png");
+    public static final Sticker IMAGE_GRAVESTONE_RIGHT = newSticker("/image/scene/selector/gravestone.png");
+    public static final Sticker IMAGE_GRAVESTONE_LEFT = new Sticker(GameUtil.flipImage(IMAGE_GRAVESTONE_RIGHT.getImg()));
     public static final Sticker IMAGE_SELECTOR_TIP = newSticker("/image/scene/selector/selector_tip.png");
 
     public static final Sticker IMAGE_PEASHOOTER_BACKGROUND_RIGHT = newSticker("/image/scene/selector/peashooter_selector_background.png");
@@ -74,13 +75,11 @@ public class ResourceGetter {
     public static final BufferedImage IMAGE_PLATFORM_SMALL = GameUtil.loadImage("/image/scene/game/platform_small.png");
 
 
-
     public static final Audio AUDIO_MENU_BGM = new Audio("/sound/BGM/bgm_menu.wav");
     public static final Audio AUDIO_GAME_BGM = new Audio("/sound/BGM/bgm_game.wav");
     public static final Audio AUDIO_CONFIRM = new Audio("/sound/effect/ui_confirm.wav");
     public static final Audio AUDIO_SWITCH = new Audio("/sound/effect/ui_switch.wav");
     public static final Audio AUDIO_WIN = new Audio("/sound/effect/ui_win.wav");
-
 
 
     private static Sticker newSticker(String path) {

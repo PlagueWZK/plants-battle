@@ -4,6 +4,9 @@ package ind.plague.pvz.scene.scenes;
 import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.core.Camera;
 import ind.plague.pvz.element.Platform;
+import ind.plague.pvz.role.roles.Peashooter;
+import ind.plague.pvz.role.roles.Role;
+import ind.plague.pvz.role.roles.Sunflower;
 import ind.plague.pvz.util.GameUtil;
 import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Vector2;
@@ -25,6 +28,7 @@ public class GameScene extends BasicScene {
     private final Sticker sky = ResourceGetter.IMAGE_SKY;
     private final Vector2 skyPosition = GameUtil.getCenterDrawPosition(sky.getImg());
     private final ArrayList<Platform> platforms = new ArrayList<>();
+
 
     {
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_LARGE, new Vector2(122, 455), 60));
@@ -49,6 +53,11 @@ public class GameScene extends BasicScene {
     @Override
     public void update(long deltaTime) {
         super.update(deltaTime);
+        for (Role player : players) {
+            if (player != null) {
+                player.update(deltaTime);
+            }
+        }
     }
 
     @Override
@@ -58,6 +67,11 @@ public class GameScene extends BasicScene {
 
         for (Platform platform : platforms) {
             platform.draw(g);
+        }
+        for (Role player : players) {
+            if (player != null) {
+                player.draw(g);
+            }
         }
     }
 
@@ -73,15 +87,15 @@ public class GameScene extends BasicScene {
 
     @Override
     public void keyPressed(int keyCode) {
-        switch (keyCode) {
-            case KeyEvent.VK_R -> {
-                Camera.camera.shake(5, 1000);
-            }
+        for (Role player : players) {
+            player.keyPressed(keyCode);
         }
     }
 
     @Override
     public void keyReleased(int keyCode) {
-
+        for (Role player : players) {
+            player.keyReleased(keyCode);
+        }
     }
 }

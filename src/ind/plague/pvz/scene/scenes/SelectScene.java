@@ -5,6 +5,7 @@ import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.core.GameFrame;
 import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.RoleRequest;
 import ind.plague.pvz.event.events.SceneChangeEvent;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.GameUtil;
@@ -38,7 +39,8 @@ public class SelectScene extends BasicScene {
     private final Audio BGM = ResourceGetter.AUDIO_MENU_BGM;
 
     private final Sticker selectorTip = ResourceGetter.IMAGE_SELECTOR_TIP;
-    private final Sticker gravestone = ResourceGetter.IMAGE_GRAVESTONE;
+    private final Sticker gravestone1 = ResourceGetter.IMAGE_GRAVESTONE_RIGHT;
+    private final Sticker gravestone2 = ResourceGetter.IMAGE_GRAVESTONE_LEFT;
     private final Sticker VS = ResourceGetter.IMAGE_VS;
     private final Sticker oneP = ResourceGetter.IMAGE_1P;
     private final Sticker onePDesc = ResourceGetter.IMAGE_1P_DESC;
@@ -69,7 +71,7 @@ public class SelectScene extends BasicScene {
     private final Vector2 secondPlayerPosition = GameUtil.horizontalSymmetry(firstPlayerPosition, player1.animation.getFrame());
     private final Vector2 twoPPosition = GameUtil.horizontalSymmetry(onePPosition, twoP.getImg());
     private final Vector2 twoPDescPosition = GameUtil.horizontalSymmetry(onePDescPosition, twoPDesc.getImg());
-    private final Vector2 secondGravestonePosition = GameUtil.horizontalSymmetry(firstGravestonePosition, gravestone.getImg());
+    private final Vector2 secondGravestonePosition = GameUtil.horizontalSymmetry(firstGravestonePosition, gravestone1.getImg());
     private final Vector2 twoPSelectorRPosition = secondPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 6f, GameFrame.getHeight() / 10f));
     private final Vector2 twoPSelectorLPosition = secondPlayerPosition.addNoModify(new Vector2(-GameFrame.getWidth() / 8f, GameFrame.getHeight() / 10f));
     private final Vector2 twoPRoleNamePosition = secondPlayerPosition.addNoModify(new Vector2(0, GameFrame.getHeight() / 5f));
@@ -105,11 +107,11 @@ public class SelectScene extends BasicScene {
         selectorTip.draw(g, selectTipPosition);
         oneP.draw(g, onePPosition);
         onePDesc.draw(g, onePDescPosition);
-        gravestone.draw(g, firstGravestonePosition);
+        gravestone1.draw(g, firstGravestonePosition);
 
         twoP.draw(g, twoPPosition);
         twoPDesc.draw(g, twoPDescPosition);
-        gravestone.draw(g, secondGravestonePosition);
+        gravestone2.draw(g, secondGravestonePosition);
 
 
         player1.animation.draw(g, firstPlayerPosition);
@@ -192,11 +194,13 @@ public class SelectScene extends BasicScene {
             case KeyEvent.VK_ENTER -> {
                 EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
                 confirmSound.play(false);
+                EventBus.instance.publish(new RoleRequest(1, player1));
+                EventBus.instance.publish(new RoleRequest(2, player2));
             }
         }
     }
 
-    private enum RoleType {
+    public enum RoleType {
         PEASHOOTER("婉逗射手", new Animation(ResourceGetter.ATLAS_PEASHOOTER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_LEFT),
         SUNFLOWER("龙日葵", new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_LEFT);
 

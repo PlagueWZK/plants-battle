@@ -26,4 +26,7 @@ public interface Role {
     void setVelocity(Vector2 velocity);
 
     void setVelocity(float x, float y);
+
+    void keyPressed(int keyCode);
+    void keyReleased(int keyCode);
 }

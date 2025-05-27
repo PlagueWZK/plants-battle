@@ -25,11 +25,17 @@ public class EventBus {
             listeners.computeIfAbsent(eventType, _ -> new ArrayList<>()).add(listener);
         }
     }
-
-    public void publish(GameEvent event) {
-        List<GameEventListener> listeners = this.listeners.get(event.getClass());
-        if (listeners != null) {
-            listeners.forEach(listener -> listener.onEvent(event));
-        }
+public void publish(GameEvent event) {
+    List<GameEventListener> listeners = this.listeners.get(event.getClass());
+    if (listeners != null && !listeners.isEmpty()) {
+        new ArrayList<>(listeners).forEach(listener -> listener.onEvent(event));
     }
+}
+
+//    public void publish(GameEvent event) {
+//        List<GameEventListener> listeners = this.listeners.get(event.getClass());
+//        if (listeners != null) {
+//            listeners.forEach(listener -> listener.onEvent(event));
+//        }
+//    }
 }

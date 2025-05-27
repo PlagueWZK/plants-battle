@@ -23,7 +23,7 @@ public class Main {
         for (SceneType sceneType : SceneType.values()) {
             sm.registerScene(sceneType, SceneFactory.createScene(sceneType));
         }
-        sm.switchScene(SceneType.GAME_SCENE);
+        sm.switchScene(SceneType.MENU_SCENE);
         return new GameFrame(sm);
     }
 }

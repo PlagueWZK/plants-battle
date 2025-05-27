@@ -1,7 +1,6 @@
 package ind.plague.pvz.element;
 
 import ind.plague.pvz.Main;
-import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.util.Painter;
 import ind.plague.pvz.util.Vector2;
 
