@@ -192,10 +192,10 @@ public class SelectScene extends BasicScene {
                 twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_DOWN_RIGHT;
             }
             case KeyEvent.VK_ENTER -> {
-                EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
-                confirmSound.play(false);
                 EventBus.instance.publish(new RoleRequest(1, player1));
                 EventBus.instance.publish(new RoleRequest(2, player2));
+                EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
+                confirmSound.play(false);
             }
         }
     }

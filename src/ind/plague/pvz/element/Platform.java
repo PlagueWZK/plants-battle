@@ -28,9 +28,9 @@ public class Platform {
         }
     }
 
-    private final collisionShape shape;
-    private final BufferedImage img;
-    private final Vector2 positon;
+    public final collisionShape shape;
+    public final BufferedImage img;
+    public final Vector2 positon;
 
 
     public Platform(BufferedImage img, Vector2 positon) {

@@ -8,9 +8,11 @@ package ind.plague.pvz.util;
 
 public class Vector2 {
     public static final Vector2 ZERO = new Vector2(0, 0);
+    private static final Vector2 temp = new Vector2();
 
-    private float x;
-    private float y;
+    public float x;
+    public float y;
+
 
     public Vector2(float x, float y) {
         this.x = x;
@@ -43,8 +45,16 @@ public class Vector2 {
         this.set(x + vec.x, y + vec.y);
         return this;
     }
+    public Vector2 add(float x, float y) {
+        this.set(this.x + x, this.y + y);
+        return this;
+    }
     public Vector2 addNoModify(Vector2 vec) {
         return new Vector2(x + vec.x, y + vec.y);
+    }
+    public Vector2 addTemp(Vector2 vec) {
+        temp.set(x + vec.x, y + vec.y);
+        return temp;
     }
 
     public Vector2 sub(Vector2 vec) {
@@ -59,6 +69,10 @@ public class Vector2 {
 
     public Vector2 mulNoModify(float scale) {
         return new Vector2(x * scale, y * scale);
+    }
+    public Vector2 mulTemp(float scale) {
+        temp.set(x * scale, y * scale);
+        return temp;
     }
 
     public void set(float x, float y) {

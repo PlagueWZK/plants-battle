@@ -20,12 +20,8 @@ public interface Role {
     void setPosition(Vector2 position);
 
     void setPosition(int x, int y);
-
-    Vector2 getVelocity();
-
-    void setVelocity(Vector2 velocity);
-
-    void setVelocity(float x, float y);
+    void attack();
+    void attackEx();
 
     void keyPressed(int keyCode);
     void keyReleased(int keyCode);

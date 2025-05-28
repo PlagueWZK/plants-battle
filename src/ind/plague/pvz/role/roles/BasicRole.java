@@ -1,15 +1,16 @@
 package ind.plague.pvz.role.roles;
 
 import ind.plague.pvz.animation.Animation;
-import ind.plague.pvz.event.EventBus;
-import ind.plague.pvz.event.GameEvent;
-import ind.plague.pvz.event.GameEventListener;
-import ind.plague.pvz.event.events.GameKeyEvent;
+import ind.plague.pvz.element.Platform;
+import ind.plague.pvz.scene.Scene;
+import ind.plague.pvz.scene.scenes.GameScene;
 import ind.plague.pvz.util.ResourceGetter;
+import ind.plague.pvz.util.Timer;
 import ind.plague.pvz.util.Vector2;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.io.InputStream;
+import java.util.List;
 
 /**
  * @author PlagueWZK
@@ -19,20 +20,40 @@ import java.io.InputStream;
 
 public abstract class BasicRole implements Role {
 
+    protected static GameScene SCENE;
+    protected boolean isExAttack = false;
+
+    int mp = 100;
+    int hp = 100;
+
+    final float gravity = 2.8e-3f;
+    final float runVelocity = 0.45f;
+    final float jumpVelocity = -1.0f;
+
     final PlayerID ID;
     final Vector2 position = new Vector2(0, 0);
     final Vector2 velocity = new Vector2(0, 0);
-    boolean goLeftDown = false;
-    boolean  goRightDown = false;
-    boolean isFacingRight = true;
+    final Vector2 size = new Vector2(0, 0);
+    int goLeftDown = 0;
+    int goRightDown = 0;
+    boolean isFacingRight;
+
+    int attackCdTime = 500;
+    boolean canAttack = true;
+    Timer attackCdTimer = new Timer(attackCdTime, false, () -> canAttack = true);
 
     Animation animationIdleLeft;
     Animation animationIdleRight;
     Animation animationRunLeft;
     Animation animationRunRight;
+    Animation animationAttackExRight;
+    Animation animationAttackExLeft;
+
+    Animation currentAnimation;
 
     public BasicRole(PlayerID id) {
         this.ID = id;
+        isFacingRight = ID == PlayerID.PLAYER_1;
     }
 
     @Override
@@ -51,24 +72,62 @@ public abstract class BasicRole implements Role {
     }
 
     @Override
-    public Vector2 getVelocity() {
-        return velocity;
-    }
-
-    @Override
-    public void setVelocity(Vector2 velocity) {
-        this.velocity.set(velocity);
-    }
-
-    @Override
-    public void setVelocity(float x, float y) {
-        this.velocity.set(x, y);
-    }
-
-    @Override
     public void update(long deltaTime) {
-        isFacingRight = goRightDown && !goLeftDown;
+        int direction = goRightDown - goLeftDown;
+        if (direction != 0) {
+            isFacingRight = direction > 0;
+            currentAnimation = isFacingRight ? animationRunRight : animationRunLeft;
 
+            float distance = direction * runVelocity * deltaTime / 1000000;
+            run(distance);
+        } else {
+            currentAnimation = isFacingRight ? animationIdleRight : animationIdleLeft;
+        }
+        if (isExAttack) {
+            currentAnimation  = isFacingRight ? animationAttackExRight : animationAttackExLeft;
+        }
+        currentAnimation.update(deltaTime);
+        moveAndCollide((int) (deltaTime / 1000000));
+        attackCdTimer.update(deltaTime);
+    }
+
+    public void run(float distance) {
+        if (isExAttack) return;
+        position.add(distance, 0);
+    }
+
+    public void jump() {
+        if (velocity.getY() != 0 || isExAttack) {
+            return;
+        }
+        velocity.add(0, jumpVelocity);
+    }
+
+    public void moveAndCollide(int delta) {
+        velocity.add(0, gravity * delta);
+        position.add(velocity.mulTemp(delta));
+        if (velocity.getY() > 0) {
+            List<Platform> platforms = SCENE.getPlatforms();
+            for (Platform platform : platforms) {
+                boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
+                boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
+                if (isCollideX && isCollideY) {
+                    float deltaPosY = velocity.getY() * delta;
+                    float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
+                    if (lastTickFootPosY <= platform.shape.y) {
+                        position.set(position.getX(), platform.shape.y - size.getY());
+                        velocity.set(velocity.getX(), 0);
+
+                        break;
+                    }
+                }
+            }
+        }
+    }
+
+    @Override
+    public void draw(Graphics2D g) {
+        currentAnimation.draw(g, position);
     }
 
     @Override
@@ -77,20 +136,20 @@ public abstract class BasicRole implements Role {
             case PLAYER_1 -> {
                 switch (keyCode) {
                     case KeyEvent.VK_A -> {
-                        goLeftDown = false;
+                        goLeftDown = 0;
                     }
                     case KeyEvent.VK_D -> {
-                        goRightDown = false;
+                        goRightDown = 0;
                     }
                 }
             }
             case PLAYER_2 -> {
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT -> {
-                        goLeftDown = false;
+                        goLeftDown = 0;
                     }
                     case KeyEvent.VK_RIGHT -> {
-                        goRightDown = false;
+                        goRightDown = 0;
                     }
                 }
             }
@@ -103,23 +162,59 @@ public abstract class BasicRole implements Role {
             case PLAYER_1 -> {
                 switch (keyCode) {
                     case KeyEvent.VK_A -> {
-                        goLeftDown = true;
+                        goLeftDown = 1;
                     }
                     case KeyEvent.VK_D -> {
-                        goRightDown = true;
+                        goRightDown = 1;
+                    }
+                    case KeyEvent.VK_W -> {
+                        jump();
+                    }
+                    case KeyEvent.VK_F -> {
+                        if (canAttack) {
+                            attack();
+                            canAttack = false;
+                            attackCdTimer.reset();
+                        }
+                    }
+                    case KeyEvent.VK_G -> {
+                        if (mp >= 100) {
+                            attackEx();
+                            //mp = 0;
+                        }
                     }
                 }
             }
             case PLAYER_2 -> {
                 switch (keyCode) {
                     case KeyEvent.VK_LEFT -> {
-                        goLeftDown = true;
+                        goLeftDown = 1;
                     }
                     case KeyEvent.VK_RIGHT -> {
-                        goRightDown = true;
+                        goRightDown = 1;
+                    }
+                    case KeyEvent.VK_UP -> {
+                        jump();
+                    }
+                    case KeyEvent.VK_PERIOD -> {
+                        if (canAttack) {
+                            attack();
+                            canAttack = false;
+                            attackCdTimer.reset();
+                        }
+                    }
+                    case KeyEvent.VK_SLASH -> {
+                        if (mp >= 100) {
+                            attackEx();
+                            mp = 0;
+                        }
                     }
                 }
             }
         }
+    }
+
+    public static void setScene(Scene scene) {
+        SCENE = (GameScene) scene;
     }
 }

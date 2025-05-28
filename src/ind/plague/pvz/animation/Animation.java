@@ -50,6 +50,7 @@ public class Animation {
     public void draw(Graphics2D g, int x, int y) {
         Painter.draw(g, getFrame(), x, y);
     }
+
     public void draw(Graphics2D g, Vector2 positon) {
         Painter.draw(g, getFrame(), positon.getX(), positon.getY());
     }
@@ -57,6 +58,7 @@ public class Animation {
     public void draw(Graphics2D g, int x, int y, float alpha) {
         Painter.draw(g, getFrame(), x, y, alpha);
     }
+
     public void draw(Graphics2D g, Vector2 positon, float alpha) {
         Painter.draw(g, getFrame(), positon.getX(), positon.getY(), alpha);
     }

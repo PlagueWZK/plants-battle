@@ -7,8 +7,6 @@ import ind.plague.pvz.event.GameEventListener;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.event.events.RoleRequest;
 import ind.plague.pvz.event.events.SceneChangeEvent;
-import ind.plague.pvz.scene.scenes.GameScene;
-import ind.plague.pvz.scene.scenes.SelectScene;
 
 import java.awt.*;
 import java.awt.event.InputEvent;
