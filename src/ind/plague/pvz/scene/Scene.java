@@ -1,6 +1,7 @@
 package ind.plague.pvz.scene;
 
 
+import ind.plague.pvz.role.roles.PlayerID;
 import ind.plague.pvz.role.roles.Role;
 import ind.plague.pvz.scene.scenes.SelectScene;
 
@@ -35,6 +36,4 @@ public interface Scene {
     void setMouseY(int mouseY);
 
     SceneType getSceneType();
-
-    void setPlayer(int playerType, SelectScene.RoleType roleType);
 }

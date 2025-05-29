@@ -1,5 +1,6 @@
 package ind.plague.pvz.role.roles;
 
+import ind.plague.pvz.Main;
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.element.Platform;
 import ind.plague.pvz.scene.Scene;
@@ -36,6 +37,7 @@ public abstract class BasicRole implements Role {
     final Vector2 size = new Vector2(0, 0);
     int goLeftDown = 0;
     int goRightDown = 0;
+    boolean isJumping = false;
     boolean isFacingRight;
 
     int attackCdTime = 500;
@@ -48,7 +50,6 @@ public abstract class BasicRole implements Role {
     Animation animationRunRight;
     Animation animationAttackExRight;
     Animation animationAttackExLeft;
-
     Animation currentAnimation;
 
     public BasicRole(PlayerID id) {
@@ -86,6 +87,10 @@ public abstract class BasicRole implements Role {
         if (isExAttack) {
             currentAnimation  = isFacingRight ? animationAttackExRight : animationAttackExLeft;
         }
+        if (isJumping) {
+            jump();
+            isJumping = false;
+        }
         currentAnimation.update(deltaTime);
         moveAndCollide((int) (deltaTime / 1000000));
         attackCdTimer.update(deltaTime);
@@ -94,6 +99,11 @@ public abstract class BasicRole implements Role {
     public void run(float distance) {
         if (isExAttack) return;
         position.add(distance, 0);
+    }
+
+    @Override
+    public Vector2 getSize() {
+        return size;
     }
 
     public void jump() {
@@ -117,7 +127,6 @@ public abstract class BasicRole implements Role {
                     if (lastTickFootPosY <= platform.shape.y) {
                         position.set(position.getX(), platform.shape.y - size.getY());
                         velocity.set(velocity.getX(), 0);
-
                         break;
                     }
                 }
@@ -168,7 +177,7 @@ public abstract class BasicRole implements Role {
                         goRightDown = 1;
                     }
                     case KeyEvent.VK_W -> {
-                        jump();
+                        isJumping = true;
                     }
                     case KeyEvent.VK_F -> {
                         if (canAttack) {
@@ -180,7 +189,8 @@ public abstract class BasicRole implements Role {
                     case KeyEvent.VK_G -> {
                         if (mp >= 100) {
                             attackEx();
-                            //mp = 0;
+                            if (Main.DEBUG) return;
+                            mp = 0;
                         }
                     }
                 }
@@ -194,7 +204,7 @@ public abstract class BasicRole implements Role {
                         goRightDown = 1;
                     }
                     case KeyEvent.VK_UP -> {
-                        jump();
+                        isJumping = true;
                     }
                     case KeyEvent.VK_PERIOD -> {
                         if (canAttack) {
@@ -206,9 +216,18 @@ public abstract class BasicRole implements Role {
                     case KeyEvent.VK_SLASH -> {
                         if (mp >= 100) {
                             attackEx();
+                            if (Main.DEBUG) return;
                             mp = 0;
                         }
                     }
+                }
+            }
+        }
+
+        if (Main.DEBUG) {
+            switch (keyCode) {
+                case KeyEvent.VK_1 -> {
+                    mp += 100;
                 }
             }
         }

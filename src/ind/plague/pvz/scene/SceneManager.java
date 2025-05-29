@@ -5,7 +5,6 @@ import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
 import ind.plague.pvz.event.GameEventListener;
 import ind.plague.pvz.event.events.GameKeyEvent;
-import ind.plague.pvz.event.events.RoleRequest;
 import ind.plague.pvz.event.events.SceneChangeEvent;
 
 import java.awt.*;
@@ -27,7 +26,7 @@ public class SceneManager implements GameEventListener {
 
     {
         scenes = new HashMap<>();
-        EventBus.instance.subscribe(this, SceneChangeEvent.class, GameKeyEvent.class, RoleRequest.class);
+        EventBus.instance.subscribe(this, SceneChangeEvent.class, GameKeyEvent.class);
     }
 
     private Scene currentScene;
@@ -56,22 +55,24 @@ public class SceneManager implements GameEventListener {
 
     @Override
     public void onEvent(GameEvent event) {
-        if (event instanceof SceneChangeEvent changeEvent) {
-            switchScene(changeEvent.getType());
-        } else if (event instanceof GameKeyEvent keyEvent) {
-            InputEvent i = keyEvent.getEvent();
-            switch (keyEvent.getAction()) {
-                case KEY_PRESS -> currentScene.keyPressed(((KeyEvent) i).getKeyCode());
-                case KEY_RELEASE -> currentScene.keyReleased(((KeyEvent) i).getKeyCode());
-                case MOUSE_MOVE -> {
-                    currentScene.setMouseX(((MouseEvent) i).getX());
-                    currentScene.setMouseY(((MouseEvent) i).getY());
-                }
-                case MOUSE_PRESS -> currentScene.mousePressed(((MouseEvent) i).getButton());
-                case MOUSE_RELEASE -> currentScene.mouseReleased(((MouseEvent) i).getButton());
+        switch (event) {
+            case SceneChangeEvent e -> switchScene(e.getType());
+            case GameKeyEvent e -> handleKeyEvent(e);
+            default -> throw new IllegalStateException("Unexpected value: " + event);
+        }
+    }
+
+    private void handleKeyEvent(GameKeyEvent keyEvent) {
+        InputEvent i = keyEvent.getEvent();
+        switch (keyEvent.getAction()) {
+            case KEY_PRESS -> currentScene.keyPressed(((KeyEvent) i).getKeyCode());
+            case KEY_RELEASE -> currentScene.keyReleased(((KeyEvent) i).getKeyCode());
+            case MOUSE_MOVE -> {
+                currentScene.setMouseX(((MouseEvent) i).getX());
+                currentScene.setMouseY(((MouseEvent) i).getY());
             }
-        } else if (event instanceof RoleRequest rr) {
-            currentScene.setPlayer(rr.getPlayerType(), rr.getRoleType());
+            case MOUSE_PRESS -> currentScene.mousePressed(((MouseEvent) i).getButton());
+            case MOUSE_RELEASE -> currentScene.mouseReleased(((MouseEvent) i).getButton());
         }
     }
 }

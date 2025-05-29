@@ -20,23 +20,21 @@ public class ResourceGetter {
     public static final Atlas ATLAS_SUNFLOWER_RUN_RIGHT = new Atlas("/image/role/sunflowers/sunflower_run_%d.png", 5);
     public static final Atlas ATLAS_SUNFLOWER_RUN_LEFT = ATLAS_SUNFLOWER_RUN_RIGHT.flipAtlas();
 
-    public static final Atlas ATLAS_SUNFLOWER_ATTACK_RIGHT = new Atlas("/image/role/sunflowers/sunflower_attack_ex_%d.png", 9);
-    public static final Atlas ATLAS_SUNFLOWER_ATTACK_LEFT = ATLAS_SUNFLOWER_ATTACK_RIGHT.flipAtlas();
-
+    public static final Atlas ATLAS_SUNFLOWER_ATTACK_EX_RIGHT = new Atlas("/image/role/sunflowers/sunflower_attack_ex_%d.png", 9);
+    public static final Atlas ATLAS_SUNFLOWER_ATTACK_EX_LEFT = ATLAS_SUNFLOWER_ATTACK_EX_RIGHT.flipAtlas();
     public static final Atlas ATLAS_SUNFLOWER_IDLE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_idle_%d.png", 8);
     public static final Atlas ATLAS_SUNFLOWER_IDLE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
     public static final Atlas ATLAS_SUNFLOWER_DIE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_die_%d.png", 2);
     public static final Atlas ATLAS_SUNFLOWER_DIE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+    public static final Atlas ATLAS_SUNFLOWER_TEXT = new Atlas("/image/role/sunflowers/sun_text_%d.png", 6);
+
 
 
     public static final Atlas ATLAS_PEASHOOTER_RUN_RIGHT = new Atlas("/image/role/peashooter/peashooter_run_%d.png", 5);
     public static final Atlas ATLAS_PEASHOOTER_RUN_LEFT = ATLAS_PEASHOOTER_RUN_RIGHT.flipAtlas();
 
-    public static final Atlas ATLAS_PEASHOOTER_ATTACK_RIGHT = new Atlas("/image/role/peashooter/peashooter_attack_ex_%d.png", 3);
-    public static final Atlas ATLAS_PEASHOOTER_ATTACK_LEFT = ATLAS_PEASHOOTER_ATTACK_RIGHT.flipAtlas();
     public static final Atlas ATLAS_PEASHOOTER_ATTACK_EX_RIGHT = new Atlas("/image/role/peashooter/peashooter_attack_ex_%d.png", 3);
     public static final Atlas ATLAS_PEASHOOTER_ATTACK_EX_LEFT = ATLAS_PEASHOOTER_ATTACK_EX_RIGHT.flipAtlas();
-
     public static final Atlas ATLAS_PEASHOOTER_IDLE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 9);
     public static final Atlas ATLAS_PEASHOOTER_IDLE_LEFT = ATLAS_PEASHOOTER_IDLE_RIGHT.flipAtlas();
     public static final Atlas ATLAS_PEASHOOTER_DIE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 4);
@@ -102,6 +100,8 @@ public class ResourceGetter {
     public static final Audio AUDIO_PEASHOOTER_ATTACK_1 = new Audio("/sound/effect/pea_shoot_1.wav");
     public static final Audio AUDIO_PEASHOOTER_ATTACK_2 = new Audio("/sound/effect/pea_shoot_2.wav");
     public static final Audio AUDIO_PEASHOOTER_ATTACK_EX = new Audio("/sound/effect/pea_shoot_ex.wav");
+
+    public static final Audio AUDIO_SUNFLOWER_TEXT = new Audio("/sound/effect/sun_text.wav");
 
     private static Sticker newSticker(String path) {
         return new Sticker(GameUtil.loadImage(path));

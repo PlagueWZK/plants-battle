@@ -1,6 +1,8 @@
 package ind.plague.pvz.element.bullet;
 
+import ind.plague.pvz.core.Entity;
 import ind.plague.pvz.core.GameFrame;
+import ind.plague.pvz.event.events.AddEntityEvent;
 import ind.plague.pvz.role.roles.PlayerID;
 import ind.plague.pvz.util.Vector2;
 
@@ -12,7 +14,7 @@ import java.awt.*;
  * date: 2025/5/28 18:56
  */
 
-public abstract class Bullet {
+public abstract class Bullet implements Entity {
     protected Vector2 position = new Vector2();
     protected Vector2 size = new Vector2();
     protected Vector2 velocity = new Vector2();
@@ -48,6 +50,7 @@ public abstract class Bullet {
                 this.position.y + this.size.y <= 0 ||
                 this.position.y >= GameFrame.getHeight();
     }
+
     public boolean checkCanRemove() {
         return canRemove;
     }
@@ -72,6 +75,10 @@ public abstract class Bullet {
         this.position = position;
     }
 
+    public void setPosition(float x, float y) {
+        this.position.set(x, y);
+    }
+
     public Vector2 getSize() {
         return size;
     }
@@ -86,6 +93,10 @@ public abstract class Bullet {
 
     public void setVelocity(Vector2 velocity) {
         this.velocity = velocity;
+    }
+
+    public void setVelocity(float x, float y) {
+        this.velocity.set(x, y);
     }
 
     public int getDamage() {

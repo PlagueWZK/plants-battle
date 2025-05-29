@@ -5,8 +5,9 @@ import ind.plague.pvz.animation.Sticker;
 import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.core.GameFrame;
 import ind.plague.pvz.event.EventBus;
-import ind.plague.pvz.event.events.RoleRequest;
 import ind.plague.pvz.event.events.SceneChangeEvent;
+import ind.plague.pvz.event.events.SetPlayerEvent;
+import ind.plague.pvz.role.roles.PlayerID;
 import ind.plague.pvz.scene.SceneType;
 import ind.plague.pvz.util.GameUtil;
 import ind.plague.pvz.util.Painter;
@@ -192,8 +193,8 @@ public class SelectScene extends BasicScene {
                 twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_DOWN_RIGHT;
             }
             case KeyEvent.VK_ENTER -> {
-                EventBus.instance.publish(new RoleRequest(1, player1));
-                EventBus.instance.publish(new RoleRequest(2, player2));
+                EventBus.instance.publish(new SetPlayerEvent(PlayerID.PLAYER_1, player1));
+                EventBus.instance.publish(new SetPlayerEvent(PlayerID.PLAYER_2, player2));
                 EventBus.instance.publish(new SceneChangeEvent(SceneType.GAME_SCENE));
                 confirmSound.play(false);
             }

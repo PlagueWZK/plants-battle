@@ -3,10 +3,6 @@ package ind.plague.pvz.scene.scenes;
 import ind.plague.pvz.core.Camera;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
-import ind.plague.pvz.role.roles.Peashooter;
-import ind.plague.pvz.role.roles.PlayerID;
-import ind.plague.pvz.role.roles.Role;
-import ind.plague.pvz.role.roles.Sunflower;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.SceneType;
 
@@ -19,12 +15,8 @@ import ind.plague.pvz.scene.SceneType;
 
 public abstract class BasicScene implements Scene {
 
-    final static Role[] players = new Role[2];
 
     protected int mouseX, mouseY;
-
-
-
 
 
     public BasicScene() {
@@ -61,15 +53,5 @@ public abstract class BasicScene implements Scene {
     @Override
     public void setMouseY(int mouseY) {
         this.mouseY = mouseY;
-    }
-
-    @Override
-    public void setPlayer(int playerType, SelectScene.RoleType roleType) {
-        if (players[playerType - 1] == null) {
-            players[playerType - 1] = switch (roleType) {
-                case PEASHOOTER -> new Peashooter(PlayerID.getPlayerID(playerType));
-                case SUNFLOWER -> new Sunflower(PlayerID.getPlayerID(playerType));
-            };
-        }
     }
 }

@@ -4,6 +4,8 @@ import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.core.Camera;
 import ind.plague.pvz.element.bullet.Bullet;
 import ind.plague.pvz.element.bullet.PeaBullet;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.AddEntityEvent;
 import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Timer;
 import ind.plague.pvz.util.Vector2;
@@ -82,6 +84,6 @@ public class Peashooter extends BasicRole {
 
         bullet.setTargetID(ID == PlayerID.PLAYER_1 ? PlayerID.PLAYER_2 : PlayerID.PLAYER_1);
         bullet.setCallback(() -> mp += 25);
-        SCENE.bullets.add(bullet);
+        EventBus.instance.publish(new AddEntityEvent(bullet));
     }
 }
