@@ -22,7 +22,7 @@ import java.awt.image.BufferedImage;
 public class Sunflower extends BasicRole {
     Animation animationText = new Animation(ResourceGetter.ATLAS_SUNFLOWER_TEXT, 100, false);
     boolean showText = false;
-    final Vector2 sunSpeed = new Vector2(0.25f, -0.5f);
+    final Vector2 sunSpeed = new Vector2(0.25f, -0.6f);
     final float exSunSpeed = 0.15f;
 
     public Sunflower(PlayerID id) {

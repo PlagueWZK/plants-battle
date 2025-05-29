@@ -2,6 +2,7 @@ package ind.plague.pvz.element.bullet;
 
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.animation.Sticker;
+import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.util.ResourceGetter;
 
 import java.awt.*;
@@ -14,7 +15,9 @@ import java.awt.*;
 
 public class PeaBullet extends Bullet {
 
-    Animation breakAnimation = new Animation(ResourceGetter.ATLAS_BULLET_PEA_BREAK, 100, false, () -> canRemove = true);
+    Animation breakAnimation = new Animation(ResourceGetter.ATLAS_BULLET_PEA_BREAK, 100, false, () -> {
+        canRemove = true;
+     } );
     Sticker img = new Sticker(ResourceGetter.IMAGE_BULLET_PEA);
 
     public PeaBullet() {
@@ -25,8 +28,9 @@ public class PeaBullet extends Bullet {
 
     @Override
     public void update(long deltaTime) {
-        position.add(velocity.mulTemp((float) deltaTime / 1_000_000));
-        if (!valid) {
+        if (valid) {
+            position.add(velocity.mulTemp((float) deltaTime / 1_000_000));
+        } else {
             breakAnimation.update(deltaTime);
         }
         if (checkOutBounds()) {
@@ -35,9 +39,13 @@ public class PeaBullet extends Bullet {
     }
 
     @Override
+
+
     public void draw(Graphics2D g) {
         if (valid) {
             img.draw(g, position);
+        } else {
+            breakAnimation.draw(g, position);
         }
     }
 

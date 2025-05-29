@@ -82,6 +82,7 @@ public class GameScene extends BasicScene implements GameEventListener {
     public void update(long deltaTime) {
         super.update(deltaTime);
         players.forEach((id, role) -> role.update(deltaTime));
+        bullets.removeIf(Bullet::checkCanRemove);
         for (Bullet bullet : bullets) {
             bullet.update(deltaTime);
         }
@@ -95,10 +96,13 @@ public class GameScene extends BasicScene implements GameEventListener {
         for (Platform platform : platforms) {
             platform.draw(g);
         }
+
+        players.forEach((_, role) -> role.draw(g));
+        
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
-        players.forEach((_, role) -> role.draw(g));
+
     }
 
     @Override
@@ -154,9 +158,8 @@ public class GameScene extends BasicScene implements GameEventListener {
     private <T> void handleTraversal(CollectionTraversalEvent<T> event) {
         Collection<T> collection = (Collection<T>) lists.get(event.listType());
         if (collection == null) return;
-        Consumer<T> consumer = event.consumer();
         for (T o : collection) {
-            consumer.accept(o);
+            if (event.predicate().test(o)) break;
         }
     }
 }

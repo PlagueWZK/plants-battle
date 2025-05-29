@@ -3,6 +3,7 @@ package ind.plague.pvz.role.roles;
 import ind.plague.pvz.Main;
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.element.Platform;
+import ind.plague.pvz.element.bullet.Bullet;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.CollectionTraversalEvent;
 import ind.plague.pvz.scene.Scene;
@@ -120,38 +121,32 @@ public abstract class BasicRole implements Role {
 
 
         }
-        EventBus.instance.publish(new CollectionTraversalEvent<Platform>(
-                GameScene.ListType.PLATFORM,
-                platform -> {
-                    boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
-                    boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
-                    if (isCollideX && isCollideY) {
-                        float deltaPosY = velocity.getY() * delta;
-                        float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
-                        if (lastTickFootPosY <= platform.shape.y) {
-                            position.set(position.getX(), platform.shape.y - size.getY());
-                            velocity.set(velocity.getX(), 0);
-                        }
+        EventBus.instance.publish(new CollectionTraversalEvent<Platform>(GameScene.ListType.PLATFORM, platform -> {
+            boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
+            boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
+            if (isCollideX && isCollideY) {
+                float deltaPosY = velocity.getY() * delta;
+                float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
+                if (lastTickFootPosY <= platform.shape.y) {
+                    position.set(position.getX(), platform.shape.y - size.getY());
+                    velocity.set(velocity.getX(), 0);
+                }
+                return true;
+            }
+            return false;
+        }));
+        EventBus.instance.publish(new CollectionTraversalEvent<Bullet>(
+                GameScene.ListType.BULLET,
+                bullet -> {
+                    if (!bullet.isValid() || !bullet.getTargetID().equals(ID)) return false;
+                    if (bullet.checkCollision(position, size)) {
+                        bullet.onCollide();
+                        bullet.setValid(false);
+                        hp -= bullet.getDamage();
                     }
+                    return false;
                 }
         ));
-
-//        if (velocity.getY() > 0) {
-//            List<Platform> platforms = SCENE.getPlatforms();
-//            for (Platform platform : platforms) {
-//                boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
-//                boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
-//                if (isCollideX && isCollideY) {
-//                    float deltaPosY = velocity.getY() * delta;
-//                    float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
-//                    if (lastTickFootPosY <= platform.shape.y) {
-//                        position.set(position.getX(), platform.shape.y - size.getY());
-//                        velocity.set(velocity.getX(), 0);
-//                        break;
-//                    }
-//                }
-//            }
-//        }
     }
 
     @Override
