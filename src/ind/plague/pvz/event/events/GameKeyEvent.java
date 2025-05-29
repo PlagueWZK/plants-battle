@@ -1,7 +1,6 @@
 package ind.plague.pvz.event.events;
 
 import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
 
 /**
  * @author PlagueWZK
@@ -9,9 +8,10 @@ import java.awt.event.KeyEvent;
  * date: 2025/5/19 13:15
  */
 
-public class GameKeyEvent extends BasicEvent{
+public class GameKeyEvent extends BasicEvent {
     private final Action action;
     private final InputEvent event;
+
     public enum Action {
         KEY_PRESS,
         KEY_RELEASE,

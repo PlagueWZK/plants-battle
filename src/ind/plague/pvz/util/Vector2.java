@@ -23,9 +23,11 @@ public class Vector2 {
         this.x = v.getX();
         this.y = v.getY();
     }
+
     public Vector2() {
         this.set(ZERO);
     }
+
     public float getLength() {
         return (float) Math.sqrt(x * x + y * y);
     }
@@ -45,13 +47,16 @@ public class Vector2 {
         this.set(x + vec.x, y + vec.y);
         return this;
     }
+
     public Vector2 add(float x, float y) {
         this.set(this.x + x, this.y + y);
         return this;
     }
+
     public Vector2 addNoModify(Vector2 vec) {
         return new Vector2(x + vec.x, y + vec.y);
     }
+
     public Vector2 addTemp(Vector2 vec) {
         temp.set(x + vec.x, y + vec.y);
         return temp;
@@ -70,6 +75,7 @@ public class Vector2 {
     public Vector2 mulNoModify(float scale) {
         return new Vector2(x * scale, y * scale);
     }
+
     public Vector2 mulTemp(float scale) {
         temp.set(x * scale, y * scale);
         return temp;

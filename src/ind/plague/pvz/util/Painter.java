@@ -19,6 +19,7 @@ public class Painter {
     public static void draw(Graphics2D g, BufferedImage img, float x, float y) {
         g.drawImage(img, Math.round(x - Camera.camera.getPosition().getX() - Camera.camera.getShakeOffset().getX()), Math.round(y - Camera.camera.getPosition().getY() - Camera.camera.getShakeOffset().getY()), null);
     }
+
     public static void draw(Graphics2D g, BufferedImage img, Vector2 position) {
         draw(g, img, position.getX(), position.getY());
     }
@@ -51,9 +52,11 @@ public class Painter {
         g.setColor(color);
         g.drawString(text, Math.round(x - Camera.camera.getPosition().getX()), Math.round(y - Camera.camera.getPosition().getY()));
     }
+
     public static void drawShadedText(Graphics2D g, String text, float x, float y, Color color, float size) {
         drawShadedText(g, text, x, y, color, size, Color.BLACK);
     }
+
     public static void drawShadedText(Graphics2D g, String text, Vector2 position, Color color, float size) {
         drawShadedText(g, text, position.getX(), position.getY(), color, size, Color.BLACK);
     }

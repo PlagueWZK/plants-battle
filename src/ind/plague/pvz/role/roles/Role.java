@@ -17,14 +17,18 @@ public interface Role extends Entity {
     void update(long deltaTime);
 
     Vector2 getPosition();
+
     Vector2 getSize();
 
     void setPosition(Vector2 position);
 
     void setPosition(int x, int y);
+
     void attack();
+
     void attackEx();
 
     void keyPressed(int keyCode);
+
     void keyReleased(int keyCode);
 }

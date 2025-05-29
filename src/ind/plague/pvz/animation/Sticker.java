@@ -14,9 +14,11 @@ import java.awt.image.BufferedImage;
 
 public class Sticker {
     private BufferedImage img;
+
     public Sticker() {
 
     }
+
     public Sticker(BufferedImage img) {
         this.img = img;
     }
@@ -32,6 +34,7 @@ public class Sticker {
     public void draw(Graphics2D g, int x, int y) {
         Painter.draw(g, img, x, y);
     }
+
     public void draw(Graphics2D g, Vector2 positon) {
         Painter.draw(g, img, positon.getX(), positon.getY());
     }
@@ -39,6 +42,7 @@ public class Sticker {
     public void draw(Graphics2D g, int x, int y, float alpha) {
         Painter.draw(g, img, x, y, alpha);
     }
+
     public void draw(Graphics2D g, Vector2 positon, float alpha) {
         Painter.draw(g, img, positon.getX(), positon.getY(), alpha);
     }

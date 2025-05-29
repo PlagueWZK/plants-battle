@@ -3,7 +3,6 @@ package ind.plague.pvz.audio;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -26,6 +25,7 @@ public class Audio {
             throw new RuntimeException("音频加载失败", e);
         }
     }
+
     public void play(boolean loop) {
         if (loop) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -35,9 +35,11 @@ public class Audio {
         }
         clip.start();
     }
+
     public void stop() {
         clip.stop();
     }
+
     public void reset() {
         clip.setFramePosition(0);
     }

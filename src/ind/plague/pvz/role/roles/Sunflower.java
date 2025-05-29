@@ -31,16 +31,16 @@ public class Sunflower extends BasicRole {
         animationIdleRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 75, true);
         animationRunLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_RUN_LEFT, 75, true);
         animationRunRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_RUN_RIGHT, 75, true);
-        animationAttackExLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_ATTACK_EX_LEFT, 100, false, ()  -> {
-            isExAttack = false;
-            showText = false;
-         });
-        animationAttackExRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_ATTACK_EX_RIGHT, 100, false, ()  -> {
+        animationAttackExLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_ATTACK_EX_LEFT, 100, false, () -> {
             isExAttack = false;
             showText = false;
         });
-        attackCdTime  = 250;
-        size.set(96,96);
+        animationAttackExRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_ATTACK_EX_RIGHT, 100, false, () -> {
+            isExAttack = false;
+            showText = false;
+        });
+        attackCdTime = 250;
+        size.set(96, 96);
     }
 
     @Override
@@ -86,12 +86,13 @@ public class Sunflower extends BasicRole {
         Vector2 bulletSize = bullet.getSize();
 
         GetPlayerRequest request = new GetPlayerRequest(ID == PlayerID.PLAYER_1 ? PlayerID.PLAYER_2 : PlayerID.PLAYER_1);
+        EventBus.instance.publish(request);
         Role target = request.getTarget();
         Vector2 targetPosition = target.getPosition();
         Vector2 targetSize = target.getSize();
 
         bullet.setPosition(targetPosition.x + (targetSize.x - bulletSize.x) / 2, -size.y);
-        bullet.setVelocity(0,  exSunSpeed);
+        bullet.setVelocity(0, exSunSpeed);
 
         bullet.setTargetID(ID == PlayerID.PLAYER_1 ? PlayerID.PLAYER_2 : PlayerID.PLAYER_1);
         bullet.setCallback(() -> mp += 50);

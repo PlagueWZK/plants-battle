@@ -13,12 +13,15 @@ import ind.plague.pvz.role.roles.Role;
 public class GetPlayerRequest implements GameEvent {
     private final PlayerID requestID;
     private Role target;
+
     public GetPlayerRequest(PlayerID playerID) {
         requestID = playerID;
     }
+
     public void setTarget(Role target) {
         this.target = target;
     }
+
     public Role getTarget() {
         return target;
     }

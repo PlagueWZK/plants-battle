@@ -1,6 +1,7 @@
 package ind.plague.pvz.element;
 
 import ind.plague.pvz.Main;
+import ind.plague.pvz.core.Entity;
 import ind.plague.pvz.util.Painter;
 import ind.plague.pvz.util.Vector2;
 
@@ -13,15 +14,17 @@ import java.awt.image.BufferedImage;
  * date: 2025/5/27 19:16
  */
 
-public class Platform {
+public class Platform implements Entity {
     public static class collisionShape {
         public int y;
         public int left, right;
+
         public collisionShape(int y, int left, int right) {
             this.y = y;
             this.left = left;
             this.right = right;
         }
+
         public void draw(Graphics2D g) {
             g.setColor(Color.RED);
             g.drawLine(left, y, right, y);
@@ -38,6 +41,7 @@ public class Platform {
         this.img = img;
         this.positon = positon;
     }
+
     public Platform(BufferedImage img, Vector2 positon, int dy) {
         this.shape = new collisionShape(Math.round(positon.getY() + dy), Math.round(positon.getX()), Math.round(positon.getX() + img.getWidth()));
         this.img = img;

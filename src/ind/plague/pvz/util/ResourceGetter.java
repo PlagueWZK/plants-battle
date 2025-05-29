@@ -29,7 +29,6 @@ public class ResourceGetter {
     public static final Atlas ATLAS_SUNFLOWER_TEXT = new Atlas("/image/role/sunflowers/sun_text_%d.png", 6);
 
 
-
     public static final Atlas ATLAS_PEASHOOTER_RUN_RIGHT = new Atlas("/image/role/peashooter/peashooter_run_%d.png", 5);
     public static final Atlas ATLAS_PEASHOOTER_RUN_LEFT = ATLAS_PEASHOOTER_RUN_RIGHT.flipAtlas();
 

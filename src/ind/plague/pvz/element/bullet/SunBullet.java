@@ -38,7 +38,7 @@ public class SunBullet extends Bullet {
     @Override
     public void update(long deltaTime) {
         if (valid) {
-            int delta =(int) (deltaTime / 1000_000);
+            int delta = (int) (deltaTime / 1000_000);
             velocity.y += gravity * delta;
             position.add(velocity.mulTemp((float) delta));
             idleAnimation.update(deltaTime);

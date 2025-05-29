@@ -8,6 +8,7 @@ import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
 import ind.plague.pvz.event.GameEventListener;
 import ind.plague.pvz.event.events.AddEntityEvent;
+import ind.plague.pvz.event.events.CollectionTraversalEvent;
 import ind.plague.pvz.event.events.GetPlayerRequest;
 import ind.plague.pvz.event.events.SetPlayerEvent;
 import ind.plague.pvz.role.roles.*;
@@ -16,9 +17,9 @@ import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Vector2;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.function.Consumer;
 
 /**
  * @author PlagueWZK
@@ -32,6 +33,8 @@ public class GameScene extends BasicScene implements GameEventListener {
     private final Vector2 hillsPosition = GameUtil.getCenterDrawPosition(hills.getImg());
     private final Sticker sky = ResourceGetter.IMAGE_SKY;
     private final Vector2 skyPosition = GameUtil.getCenterDrawPosition(sky.getImg());
+
+    private final EnumMap<ListType, Collection<?>> lists = new EnumMap<>(ListType.class);
     private final ArrayList<Platform> platforms = new ArrayList<>();
     private final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
     private final HashMap<PlayerID, Role> players = new HashMap<>(2);
@@ -42,8 +45,8 @@ public class GameScene extends BasicScene implements GameEventListener {
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(855, 360), 20));
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(515, 225), 20));
         platforms.trimToSize();
-
-        EventBus.instance.subscribe(this, AddEntityEvent.class, SetPlayerEvent.class);
+        addAllLists(platforms, bullets);
+        EventBus.instance.subscribe(this, AddEntityEvent.class, SetPlayerEvent.class, GetPlayerRequest.class, CollectionTraversalEvent.class);
     }
 
 
@@ -61,17 +64,20 @@ public class GameScene extends BasicScene implements GameEventListener {
     public void onEvent(GameEvent event) {
         switch (event) {
             case AddEntityEvent e -> handleAddEvent(e);
-            case SetPlayerEvent e  -> setPlayer(e);
-            case GetPlayerRequest e  -> e.setTarget(players.get(e.getRequestID()));
+            case SetPlayerEvent e -> setPlayer(e);
+            case GetPlayerRequest e -> e.setTarget(players.get(e.getRequestID()));
+            case CollectionTraversalEvent<?> e -> handleTraversal(e);
             default -> throw new IllegalStateException("Unexpected value: " + event);
         }
     }
+
     private void handleAddEvent(AddEntityEvent e) {
         switch (e.entity()) {
             case Bullet b -> addBullet(b);
             default -> throw new IllegalStateException("Unexpected value: " + e.entity());
         }
     }
+
     @Override
     public void update(long deltaTime) {
         super.update(deltaTime);
@@ -131,5 +137,26 @@ public class GameScene extends BasicScene implements GameEventListener {
             case PEASHOOTER -> new Peashooter(e.id());
             case SUNFLOWER -> new Sunflower(e.id());
         });
+    }
+
+    public enum ListType {
+        PLATFORM,
+        BULLET,
+    }
+
+    private void addAllLists(Collection<?>... list) {
+        for (ListType value : ListType.values()) {
+            lists.put(value, list[value.ordinal()]);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T> void handleTraversal(CollectionTraversalEvent<T> event) {
+        Collection<T> collection = (Collection<T>) lists.get(event.listType());
+        if (collection == null) return;
+        Consumer<T> consumer = event.consumer();
+        for (T o : collection) {
+            consumer.accept(o);
+        }
     }
 }

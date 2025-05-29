@@ -2,7 +2,6 @@ package ind.plague.pvz.element.bullet;
 
 import ind.plague.pvz.core.Entity;
 import ind.plague.pvz.core.GameFrame;
-import ind.plague.pvz.event.events.AddEntityEvent;
 import ind.plague.pvz.role.roles.PlayerID;
 import ind.plague.pvz.util.Vector2;
 

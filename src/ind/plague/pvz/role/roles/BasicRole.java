@@ -3,15 +3,15 @@ package ind.plague.pvz.role.roles;
 import ind.plague.pvz.Main;
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.element.Platform;
+import ind.plague.pvz.event.EventBus;
+import ind.plague.pvz.event.events.CollectionTraversalEvent;
 import ind.plague.pvz.scene.Scene;
 import ind.plague.pvz.scene.scenes.GameScene;
-import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Timer;
 import ind.plague.pvz.util.Vector2;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.util.List;
 
 /**
  * @author PlagueWZK
@@ -85,7 +85,7 @@ public abstract class BasicRole implements Role {
             currentAnimation = isFacingRight ? animationIdleRight : animationIdleLeft;
         }
         if (isExAttack) {
-            currentAnimation  = isFacingRight ? animationAttackExRight : animationAttackExLeft;
+            currentAnimation = isFacingRight ? animationAttackExRight : animationAttackExLeft;
         }
         if (isJumping) {
             jump();
@@ -117,21 +117,41 @@ public abstract class BasicRole implements Role {
         velocity.add(0, gravity * delta);
         position.add(velocity.mulTemp(delta));
         if (velocity.getY() > 0) {
-            List<Platform> platforms = SCENE.getPlatforms();
-            for (Platform platform : platforms) {
-                boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
-                boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
-                if (isCollideX && isCollideY) {
-                    float deltaPosY = velocity.getY() * delta;
-                    float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
-                    if (lastTickFootPosY <= platform.shape.y) {
-                        position.set(position.getX(), platform.shape.y - size.getY());
-                        velocity.set(velocity.getX(), 0);
-                        break;
+
+
+        }
+        EventBus.instance.publish(new CollectionTraversalEvent<Platform>(
+                GameScene.ListType.PLATFORM,
+                platform -> {
+                    boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
+                    boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
+                    if (isCollideX && isCollideY) {
+                        float deltaPosY = velocity.getY() * delta;
+                        float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
+                        if (lastTickFootPosY <= platform.shape.y) {
+                            position.set(position.getX(), platform.shape.y - size.getY());
+                            velocity.set(velocity.getX(), 0);
+                        }
                     }
                 }
-            }
-        }
+        ));
+
+//        if (velocity.getY() > 0) {
+//            List<Platform> platforms = SCENE.getPlatforms();
+//            for (Platform platform : platforms) {
+//                boolean isCollideX = (Math.max(position.getX() + size.getX(), platform.shape.right) - Math.min(position.getX(), platform.shape.left) <= size.getX() + platform.shape.right - platform.shape.left);
+//                boolean isCollideY = platform.shape.y >= position.getY() && platform.shape.y <= position.getY() + size.getY();
+//                if (isCollideX && isCollideY) {
+//                    float deltaPosY = velocity.getY() * delta;
+//                    float lastTickFootPosY = position.getY() + size.getY() - deltaPosY;
+//                    if (lastTickFootPosY <= platform.shape.y) {
+//                        position.set(position.getX(), platform.shape.y - size.getY());
+//                        velocity.set(velocity.getX(), 0);
+//                        break;
+//                    }
+//                }
+//            }
+//        }
     }
 
     @Override

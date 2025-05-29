@@ -88,8 +88,9 @@ public class GameUtil {
      * @return 返回一个Vector2表示坐标
      */
     public static Vector2 getCenterDrawPosition(BufferedImage img) {
-       return new Vector2(getCenterXDrawPosition(img), getCenterYDrawPosition(img));
+        return new Vector2(getCenterXDrawPosition(img), getCenterYDrawPosition(img));
     }
+
     public static float getCenterXDrawPosition(BufferedImage img) {
         return GameFrame.getWidth() / 2f - img.getWidth() / 2f;
 

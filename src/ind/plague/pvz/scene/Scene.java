@@ -1,10 +1,6 @@
 package ind.plague.pvz.scene;
 
 
-import ind.plague.pvz.role.roles.PlayerID;
-import ind.plague.pvz.role.roles.Role;
-import ind.plague.pvz.scene.scenes.SelectScene;
-
 import java.awt.*;
 
 /**

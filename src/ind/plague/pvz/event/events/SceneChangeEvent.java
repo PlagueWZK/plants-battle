@@ -8,11 +8,13 @@ import ind.plague.pvz.scene.SceneType;
  * date: 2025/5/19 13:08
  */
 
-public class SceneChangeEvent extends BasicEvent{
+public class SceneChangeEvent extends BasicEvent {
     private final SceneType type;
+
     public SceneChangeEvent(SceneType type) {
         this.type = type;
     }
+
     public SceneType getType() {
         return type;
     }

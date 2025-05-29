@@ -26,6 +26,7 @@ public class Camera {
     private final Vector2 position;
     private final Vector2 velocity;
     private final Vector2 moveDistance;
+
     {
         shakeOffset = new Vector2(0, 0);
         shakeTimer = new Timer(false, () -> {
@@ -43,7 +44,8 @@ public class Camera {
         moveDistance = new Vector2(0, 0);
     }
 
-    private Camera() {}
+    private Camera() {
+    }
 
     public void update(long deltaTime) {
         move(deltaTime);

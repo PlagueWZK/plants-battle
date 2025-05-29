@@ -13,7 +13,7 @@ import java.awt.*;
  * date: 2025/5/28 18:58
  */
 
-public class SunBulletEx extends Bullet{
+public class SunBulletEx extends Bullet {
     Animation idleAnimation = new Animation(ResourceGetter.ATLAS_BULLET_SUN_EX_IDLE, 50, true);
     Animation explodeAnimation = new Animation(ResourceGetter.ATLAS_BULLET_SUN_EX_EXPLODE, 50, false, () -> canRemove = true);
     Vector2 explodeRenderOffset = new Vector2();

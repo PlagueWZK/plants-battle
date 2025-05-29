@@ -1,7 +1,5 @@
 package ind.plague.pvz.scene;
 
-import ind.plague.pvz.event.EventBus;
-
 /**
  * @author PlagueWZK
  * description: SceneFactory

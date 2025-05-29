@@ -55,7 +55,7 @@ public class Peashooter extends BasicRole {
     public void attack() {
         if (isExAttack) return;
         spawnPeaBullet(peaSpeed);
-        switch ((int)(Math.random() * 2)) {
+        switch ((int) (Math.random() * 2)) {
             case 0 -> {
                 ResourceGetter.AUDIO_PEASHOOTER_ATTACK_1.play(false);
             }
