@@ -1,5 +1,6 @@
 package ind.plague.pvz.element.bullet;
 
+import ind.plague.pvz.Main;
 import ind.plague.pvz.core.Entity;
 import ind.plague.pvz.core.GameFrame;
 import ind.plague.pvz.role.roles.PlayerID;
@@ -28,7 +29,12 @@ public abstract class Bullet implements Entity {
 
     public abstract void update(long deltaTime);
 
-    public abstract void draw(Graphics2D g);
+    public void draw(Graphics2D g) {
+        if (Main.DEBUG) {
+            g.setColor(Color.RED);
+            g.drawRect((int) position.getX(), (int) position.getY(), (int)size.getX(), (int)size.getY());
+        }
+    }
 
     public void onCollide() {
         if (callback != null) {
@@ -38,9 +44,9 @@ public abstract class Bullet implements Entity {
 
     public boolean checkCollision(Vector2 position, Vector2 size) {
         return this.position.x + this.size.x / 2 >= position.x &&
-                this.position.x + this.size.x / 2 <= position.x + size.x / 2 &&
+                this.position.x + this.size.x / 2 <= position.x + size.x &&
                 this.position.y + this.size.y / 2 >= position.y &&
-                this.position.y + this.size.y / 2 <= position.y + size.y / 2;
+                this.position.y + this.size.y / 2 <= position.y + size.y;
     }
 
     public boolean checkOutBounds() {

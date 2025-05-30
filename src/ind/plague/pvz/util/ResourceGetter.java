@@ -16,7 +16,6 @@ public class ResourceGetter {
     public static final Sticker IMAGE_MENU_BACKGROUND = newSticker("/image/scene/menu/menu_background.png");
     public static final Sticker IMAGE_SELECTOR_BACKGROUND = newSticker("/image/scene/selector/selector_background.png");
 
-
     public static final Atlas ATLAS_SUNFLOWER_RUN_RIGHT = new Atlas("/image/role/sunflowers/sunflower_run_%d.png", 5);
     public static final Atlas ATLAS_SUNFLOWER_RUN_LEFT = ATLAS_SUNFLOWER_RUN_RIGHT.flipAtlas();
 
@@ -25,7 +24,7 @@ public class ResourceGetter {
     public static final Atlas ATLAS_SUNFLOWER_IDLE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_idle_%d.png", 8);
     public static final Atlas ATLAS_SUNFLOWER_IDLE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
     public static final Atlas ATLAS_SUNFLOWER_DIE_RIGHT = new Atlas("/image/role/sunflowers/sunflower_die_%d.png", 2);
-    public static final Atlas ATLAS_SUNFLOWER_DIE_LEFT = ATLAS_SUNFLOWER_IDLE_RIGHT.flipAtlas();
+    public static final Atlas ATLAS_SUNFLOWER_DIE_LEFT = ATLAS_SUNFLOWER_DIE_RIGHT.flipAtlas();
     public static final Atlas ATLAS_SUNFLOWER_TEXT = new Atlas("/image/role/sunflowers/sun_text_%d.png", 6);
 
 
@@ -36,8 +35,8 @@ public class ResourceGetter {
     public static final Atlas ATLAS_PEASHOOTER_ATTACK_EX_LEFT = ATLAS_PEASHOOTER_ATTACK_EX_RIGHT.flipAtlas();
     public static final Atlas ATLAS_PEASHOOTER_IDLE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 9);
     public static final Atlas ATLAS_PEASHOOTER_IDLE_LEFT = ATLAS_PEASHOOTER_IDLE_RIGHT.flipAtlas();
-    public static final Atlas ATLAS_PEASHOOTER_DIE_RIGHT = new Atlas("/image/role/peashooter/peashooter_idle_%d.png", 4);
-    public static final Atlas ATLAS_PEASHOOTER_DIE_LEFT = ATLAS_PEASHOOTER_IDLE_RIGHT.flipAtlas();
+    public static final Atlas ATLAS_PEASHOOTER_DIE_RIGHT = new Atlas("/image/role/peashooter/peashooter_die_%d.png", 4);
+    public static final Atlas ATLAS_PEASHOOTER_DIE_LEFT = ATLAS_PEASHOOTER_DIE_RIGHT.flipAtlas();
 
 
     public static final BufferedImage IMAGE_BULLET_PEA = GameUtil.loadImage("/image/bullet/pea/pea.png");
@@ -82,6 +81,19 @@ public class ResourceGetter {
     public static final BufferedImage IMAGE_PLATFORM_LARGE = GameUtil.loadImage("/image/scene/game/platform_large.png");
     public static final BufferedImage IMAGE_PLATFORM_SMALL = GameUtil.loadImage("/image/scene/game/platform_small.png");
 
+
+    public static final BufferedImage IMAGE_AVATAR_PEASHOOTER = GameUtil.loadImage("/image/avatar/avatar_peashooter.png");
+    public static final BufferedImage IMAGE_AVATAR_SUNFLOWER = GameUtil.loadImage("/image/avatar/avatar_sunflower.png");
+
+    public static final BufferedImage IMAGE_WINNER_BAR = GameUtil.loadImage("/image/scene/game/winner_bar.png");
+    public static final BufferedImage IMAGE_1P_WINNER = GameUtil.loadImage("/image/scene/game/1P_winner.png");
+    public static final BufferedImage IMAGE_2P_WINNER = GameUtil.loadImage("/image/scene/game/2P_winner.png");
+    public static final BufferedImage IMAGE_1P_CURSOR = GameUtil.loadImage("/image/scene/game/1P_cursor.png");
+     public static final BufferedImage IMAGE_2P_CURSOR = GameUtil.loadImage("/image/scene/game/2P_cursor.png");
+
+    public static final Atlas ATLAS_RUN_EFFECT = new Atlas("/image/particle/run_effect_%d.png", 4);
+    public static final Atlas ATLAS_JUMP_EFFECT = new Atlas("/image/particle/jump_effect_%d.png", 5);
+    public static final Atlas ATLAS_LAND_EFFECT = new Atlas("/image/particle/land_effect_%d.png", 2);
 
     public static final Audio AUDIO_MENU_BGM = new Audio("/sound/BGM/bgm_menu.wav");
     public static final Audio AUDIO_GAME_BGM = new Audio("/sound/BGM/bgm_game.wav");

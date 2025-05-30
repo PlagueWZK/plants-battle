@@ -27,6 +27,7 @@ import java.util.Arrays;
 
 public class SelectScene extends BasicScene {
 
+
     private static final ArrayList<RoleType> ROLE_MAP = new ArrayList<>();
     private static final Vector2 ZERO = Vector2.ZERO;
     private static final Vector2 HALF = Vector2.ZERO.addNoModify(new Vector2(GameFrame.getWidth() * 57f / 100, 0));
@@ -130,6 +131,10 @@ public class SelectScene extends BasicScene {
     @Override
     public void onEnter() {
         BGM.play(true);
+        player1 = ROLE_MAP.getFirst();
+        player2 = ROLE_MAP.get(1);
+        background1 = player2.backGroundR;
+        background2 = player1.backGroundL;
     }
 
     @Override

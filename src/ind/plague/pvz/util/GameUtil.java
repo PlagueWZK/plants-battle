@@ -48,11 +48,23 @@ public class GameUtil {
         }
     }
 
+    public static BufferedImage getSketchImage(BufferedImage image) {
+        BufferedImage sketchImage = new BufferedImage(image.getWidth(), image.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = sketchImage.createGraphics();
+        g.setColor(Color.WHITE);
+        g.fillRect(0, 0, image.getWidth(), image.getHeight());
+        g.setComposite(AlphaComposite.DstIn);
+        g.drawImage(image, 0, 0, null);
+        g.dispose();
+        return sketchImage;
+    }
+
     public static BufferedImage scaleImage(BufferedImage image, int width, int height) {
         BufferedImage scaledImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g2d = scaledImage.createGraphics();
         g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
         g2d.drawImage(image, 0, 0, width, height, null);
+        g2d.dispose();
         return scaledImage;
     }
 
@@ -74,6 +86,7 @@ public class GameUtil {
         g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(),
                 image.getWidth(), 0, 0, image.getHeight(),
                 null);
+        g.dispose();
         return flippedImage;
     }
 
@@ -91,13 +104,13 @@ public class GameUtil {
         return new Vector2(getCenterXDrawPosition(img), getCenterYDrawPosition(img));
     }
 
-    public static float getCenterXDrawPosition(BufferedImage img) {
-        return GameFrame.getWidth() / 2f - img.getWidth() / 2f;
+    public static int getCenterXDrawPosition(BufferedImage img) {
+        return Math.round(GameFrame.getWidth() / 2f - img.getWidth() / 2f);
 
     }
 
-    public static float getCenterYDrawPosition(BufferedImage img) {
-        return GameFrame.getHeight() / 2f - img.getHeight() / 2f;
+    public static int getCenterYDrawPosition(BufferedImage img) {
+        return Math.round(GameFrame.getHeight() / 2f - img.getHeight() / 2f);
     }
 
     /**

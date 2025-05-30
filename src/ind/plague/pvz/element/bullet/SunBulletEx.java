@@ -56,6 +56,7 @@ public class SunBulletEx extends Bullet {
 
     @Override
     public void draw(Graphics2D g) {
+        super.draw(g);
         if (valid) {
             idleAnimation.draw(g, position);
         } else {

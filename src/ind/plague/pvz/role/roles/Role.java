@@ -31,4 +31,10 @@ public interface Role extends Entity {
     void keyPressed(int keyCode);
 
     void keyReleased(int keyCode);
+
+    int getHp();
+
+    int getMp();
+
+    void setHp(int hp);
 }

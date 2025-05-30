@@ -1,25 +1,33 @@
 package ind.plague.pvz.scene.scenes;
 
 
+import ind.plague.pvz.Main;
 import ind.plague.pvz.animation.Sticker;
+import ind.plague.pvz.core.GameFrame;
 import ind.plague.pvz.element.Platform;
 import ind.plague.pvz.element.bullet.Bullet;
 import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.GameEvent;
 import ind.plague.pvz.event.GameEventListener;
-import ind.plague.pvz.event.events.AddEntityEvent;
-import ind.plague.pvz.event.events.CollectionTraversalEvent;
-import ind.plague.pvz.event.events.GetPlayerRequest;
-import ind.plague.pvz.event.events.SetPlayerEvent;
-import ind.plague.pvz.role.roles.*;
+import ind.plague.pvz.event.events.*;
+import ind.plague.pvz.role.roles.Peashooter;
+import ind.plague.pvz.role.roles.PlayerID;
+import ind.plague.pvz.role.roles.Role;
+import ind.plague.pvz.role.roles.Sunflower;
+import ind.plague.pvz.scene.SceneType;
+import ind.plague.pvz.ui.status_bar.StatusBar;
 import ind.plague.pvz.util.GameUtil;
 import ind.plague.pvz.util.ResourceGetter;
+import ind.plague.pvz.util.Timer;
 import ind.plague.pvz.util.Vector2;
 
 import java.awt.*;
-import java.util.*;
+import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.function.Consumer;
 
 /**
  * @author PlagueWZK
@@ -34,18 +42,35 @@ public class GameScene extends BasicScene implements GameEventListener {
     private final Sticker sky = ResourceGetter.IMAGE_SKY;
     private final Vector2 skyPosition = GameUtil.getCenterDrawPosition(sky.getImg());
 
-    private final EnumMap<ListType, Collection<?>> lists = new EnumMap<>(ListType.class);
-    private final ArrayList<Platform> platforms = new ArrayList<>();
-    private final CopyOnWriteArrayList<Bullet> bullets = new CopyOnWriteArrayList<>();
     private final HashMap<PlayerID, Role> players = new HashMap<>(2);
+    private final HashMap<ListType, Collection<?>> lists = new HashMap<>();
+
+    private final ArrayList<Platform> platforms = new ArrayList<>(4);
+    private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
+
+    private final StatusBar statusBar1 = new StatusBar();
+    private final StatusBar statusBar2 = new StatusBar();
+
+    private final Sticker winnerBar = new Sticker(ResourceGetter.IMAGE_WINNER_BAR);
+    private final Sticker winnerText = new Sticker();
+    private boolean isGameOver = false;
+    private final Vector2 winnerBarPosition = new Vector2();
+    private final Vector2 winnerTextPosition = new Vector2();
+    private int winnerBarDstX;
+    private int winnerTextDstX;
+    private final Timer winnerSlideIn = new Timer(2500, false, () -> isSlideOutStart = true);
+    private final Timer winnerSlideOut = new Timer(1000, false, () -> EventBus.instance.publish(new SceneChangeEvent(SceneType.MENU_SCENE)));
+    private boolean isSlideOutStart = false;
+    private static final float winnerBarSlideSpeed = 3e-6f;
+    private static final float winnerTextSlideSpeed = 1.5e-6f;
+
 
     {
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_LARGE, new Vector2(122, 455), 60));
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(175, 360), 20));
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(855, 360), 20));
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_SMALL, new Vector2(515, 225), 20));
-        platforms.trimToSize();
-        addAllLists(platforms, bullets);
+        putAllLists(platforms, bullets);
         EventBus.instance.subscribe(this, AddEntityEvent.class, SetPlayerEvent.class, GetPlayerRequest.class, CollectionTraversalEvent.class);
     }
 
@@ -81,10 +106,42 @@ public class GameScene extends BasicScene implements GameEventListener {
     @Override
     public void update(long deltaTime) {
         super.update(deltaTime);
-        players.forEach((id, role) -> role.update(deltaTime));
+        players.forEach((_, role) -> role.update(deltaTime));
         bullets.removeIf(Bullet::checkCanRemove);
         for (Bullet bullet : bullets) {
             bullet.update(deltaTime);
+        }
+
+        Role player1 = players.get(PlayerID.PLAYER_1);
+        Role player2 = players.get(PlayerID.PLAYER_2);
+        Vector2 position1 = player1.getPosition();
+        Vector2 position2 = player2.getPosition();
+        if (position1.y > GameFrame.getHeight()) player1.setHp(0);
+        if (position2.y > GameFrame.getHeight()) player2.setHp(0);
+        if (player1.getHp() <= 0 || player2.getHp() <= 0) {
+            if (!isGameOver) {
+                ResourceGetter.AUDIO_GAME_BGM.stop();
+                ResourceGetter.AUDIO_WIN.play(false);
+                winnerText.setImg(player1.getHp() <= 0 ? ResourceGetter.IMAGE_2P_WINNER :  ResourceGetter.IMAGE_1P_WINNER);
+                isGameOver = true;
+            }
+        }
+
+        statusBar1.setHp(players.get(PlayerID.PLAYER_1).getHp());
+        statusBar1.setMp(players.get(PlayerID.PLAYER_1).getMp());
+        statusBar2.setHp(players.get(PlayerID.PLAYER_2).getHp());
+        statusBar2.setMp(players.get(PlayerID.PLAYER_2).getMp());
+
+        if (isGameOver) {
+            winnerBarPosition.x += winnerBarSlideSpeed * deltaTime;
+            winnerTextPosition.x += winnerTextSlideSpeed * deltaTime;
+            if (!isSlideOutStart) {
+                winnerSlideIn.update(deltaTime);
+                if (winnerBarPosition.x > winnerBarDstX) winnerBarPosition.x = winnerBarDstX;
+                if (winnerTextPosition.x > winnerTextDstX) winnerTextPosition.x = winnerTextDstX;
+            } else {
+                winnerSlideOut.update(deltaTime);
+            }
         }
     }
 
@@ -98,38 +155,53 @@ public class GameScene extends BasicScene implements GameEventListener {
         }
 
         players.forEach((_, role) -> role.draw(g));
-        
+
         for (Bullet bullet : bullets) {
             bullet.draw(g);
         }
-
+        if (isGameOver) {
+            winnerBar.draw(g, winnerBarPosition);
+            winnerText.draw(g, winnerTextPosition);
+        } else {
+            statusBar1.draw(g);
+            statusBar2.draw(g);
+        }
     }
 
     @Override
     public void onEnter() {
-        BasicRole.setScene(this);
+        isGameOver = false;
+        isSlideOutStart = false;
+
+        winnerBarPosition.set(-winnerBar.getImg().getWidth(), GameUtil.getCenterYDrawPosition(winnerBar.getImg()));
+        winnerBarDstX = GameUtil.getCenterXDrawPosition(winnerBar.getImg());
+        winnerTextPosition.set(winnerBarPosition.x, GameUtil.getCenterYDrawPosition(ResourceGetter.IMAGE_1P_WINNER));
+        winnerTextDstX = GameUtil.getCenterXDrawPosition(ResourceGetter.IMAGE_1P_WINNER);
+
+        winnerSlideIn.reset();
+        winnerSlideOut.reset();
+
         players.get(PlayerID.PLAYER_1).setPosition(new Vector2(200, 50));
         players.get(PlayerID.PLAYER_2).setPosition(new Vector2(975, 50));
-
+        ResourceGetter.AUDIO_GAME_BGM.play(true);
     }
 
     @Override
     public void onExit() {
+        players.clear();
+        bullets.clear();
+        Main.DEBUG = false;
 
     }
 
     @Override
     public void keyPressed(int keyCode) {
-        players.forEach((id, role) -> role.keyPressed(keyCode));
+        players.forEach((_, role) -> role.keyPressed(keyCode));
     }
 
     @Override
     public void keyReleased(int keyCode) {
-        players.forEach((id, role) -> role.keyReleased(keyCode));
-    }
-
-    public ArrayList<Platform> getPlatforms() {
-        return platforms;
+        players.forEach((_, role) -> role.keyReleased(keyCode));
     }
 
     public void addBullet(Bullet bullet) {
@@ -141,25 +213,43 @@ public class GameScene extends BasicScene implements GameEventListener {
             case PEASHOOTER -> new Peashooter(e.id());
             case SUNFLOWER -> new Sunflower(e.id());
         });
+        if (e.id() == PlayerID.PLAYER_1) {
+            statusBar1.setAvatar(getAvatar(e.role()));
+            statusBar1.setPosition(235, 625);
+        } else {
+            statusBar2.setAvatar(getAvatar(e.role()));
+            statusBar2.setPosition(675, 625);
+        }
     }
 
-    public enum ListType {
-        PLATFORM,
-        BULLET,
+    private BufferedImage getAvatar(SelectScene.RoleType type) {
+        return switch (type) {
+            case PEASHOOTER -> ResourceGetter.IMAGE_AVATAR_PEASHOOTER;
+            case SUNFLOWER -> ResourceGetter.IMAGE_AVATAR_SUNFLOWER;
+        };
     }
 
-    private void addAllLists(Collection<?>... list) {
+    private void putAllLists(Collection<?>... list) {
         for (ListType value : ListType.values()) {
             lists.put(value, list[value.ordinal()]);
         }
     }
 
-    @SuppressWarnings("unchecked")
+    public Timer getWinnerSlideOut() {
+        return winnerSlideOut;
+    }
+
+    public enum ListType {
+        PLATFORM,
+        BULLET
+    }
+
     private <T> void handleTraversal(CollectionTraversalEvent<T> event) {
-        Collection<T> collection = (Collection<T>) lists.get(event.listType());
+        Collection<?> collection = lists.get(event.listType());
         if (collection == null) return;
-        for (T o : collection) {
-            if (event.predicate().test(o)) break;
+        Class<T> type = event.type();
+        for (Object o : collection) {
+            if (event.predicate().test(type.cast(o))) break;
         }
     }
 }

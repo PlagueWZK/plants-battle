@@ -27,6 +27,7 @@ public class GameFrame {
     private static final long UPDATE_TIME = 1000_000_000L / DEFAULT_UPS;
     private static final long MAX_FRAME_SKIPS = UPDATE_TIME * 3;
 
+
     private final GamePanel panel;
     private final SceneManager sm;
     private final Timer PSCalculator;

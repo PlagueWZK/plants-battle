@@ -19,8 +19,8 @@ import java.awt.*;
  */
 
 public class Peashooter extends BasicRole {
-    private final float peaSpeed = 0.75f;
-    private final float peaExSpeed = 1.5f;
+    private static final float peaSpeed = 0.75f;
+    private static final float peaExSpeed = 1.5f;
 
     private final Timer exAttackTimer = new Timer(2500, false, () -> isExAttack = false);
     private final Timer spawnPeaTimer = new Timer(100, true, () -> spawnPeaBullet(peaExSpeed));
@@ -33,6 +33,8 @@ public class Peashooter extends BasicRole {
         animationRunRight = new Animation(ResourceGetter.ATLAS_PEASHOOTER_RUN_RIGHT, 75, true);
         animationAttackExRight = new Animation(ResourceGetter.ATLAS_PEASHOOTER_ATTACK_EX_RIGHT, 75, true);
         animationAttackExLeft = new Animation(ResourceGetter.ATLAS_PEASHOOTER_ATTACK_EX_LEFT, 75, true);
+        animationDieRight = new Animation(ResourceGetter.ATLAS_PEASHOOTER_DIE_RIGHT, 150, false);
+        animationDieLeft = new Animation(ResourceGetter.ATLAS_PEASHOOTER_DIE_LEFT, 150, false);
         size.set(96, 96);
     }
 

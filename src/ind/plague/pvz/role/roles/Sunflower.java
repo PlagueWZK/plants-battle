@@ -39,6 +39,8 @@ public class Sunflower extends BasicRole {
             isExAttack = false;
             showText = false;
         });
+         animationDieLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_LEFT, 150, false);
+         animationDieRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_RIGHT, 150, false);
         attackCdTime = 250;
         size.set(96, 96);
     }
