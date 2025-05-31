@@ -45,6 +45,7 @@ public class GameFrame {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
         frame.setIconImage(ResourceGetter.ICON);
+        frame.setTitle("植物明星大乱斗");
 
         panel = new GamePanel();
         frame.add(panel);

@@ -34,6 +34,7 @@ public class MenuScene extends BasicScene {
 
     @Override
     public void onEnter() {
+        BGM.reset();
         BGM.play(true);
     }
 
