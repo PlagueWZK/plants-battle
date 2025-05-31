@@ -177,6 +177,7 @@ public class GameScene extends BasicScene implements GameEventListener {
 
         players.get(PlayerID.PLAYER_1).setPosition(new Vector2(200, 50));
         players.get(PlayerID.PLAYER_2).setPosition(new Vector2(975, 50));
+        ResourceGetter.AUDIO_GAME_BGM.reset();
         ResourceGetter.AUDIO_GAME_BGM.play(true);
     }
 
