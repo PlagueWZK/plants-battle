@@ -28,19 +28,16 @@ import java.util.Vector;
 
 public abstract class BasicRole implements Role {
 
-    protected boolean isExAttack = false;
-
-    int mp = 100;
-    int hp = 100;
-
     final float gravity = 2.8e-3f;
     final float runVelocity = 0.45f;
     final float jumpVelocity = -1.0f;
-
     final PlayerID ID;
     final Vector2 position = new Vector2(0, 0);
     final Vector2 velocity = new Vector2(0, 0);
     final Vector2 size = new Vector2(0, 0);
+    protected boolean isExAttack = false;
+    int mp = 100;
+    int hp = 100;
     int goLeftDown = 0;
     int goRightDown = 0;
     boolean isJumping = false;
@@ -86,11 +83,10 @@ public abstract class BasicRole implements Role {
     Timer cursorTimer = new Timer(2500, false, () -> showCursor = false);
     float alpha = 1.0f;
     Timer alphaTimer = new Timer(200, true, () -> alpha = Math.max(0, alpha - 0.05f));
-
-    Animation jumpEffect = new Animation(ResourceGetter.ATLAS_JUMP_EFFECT, 25, false, () -> showJumpEffect = false);
-    Animation landEffect = new Animation(ResourceGetter.ATLAS_LAND_EFFECT, 50, false, () -> showLandEffect = false);
     boolean showJumpEffect = false;
+    Animation jumpEffect = new Animation(ResourceGetter.ATLAS_JUMP_EFFECT, 25, false, () -> showJumpEffect = false);
     boolean showLandEffect = false;
+    Animation landEffect = new Animation(ResourceGetter.ATLAS_LAND_EFFECT, 50, false, () -> showLandEffect = false);
     Vector2 jumpEffectPosition = new Vector2();
     Vector2 landEffectPosition = new Vector2();
 
@@ -163,7 +159,6 @@ public abstract class BasicRole implements Role {
         particles.forEach(particle -> particle.update(deltaTime));
 
 
-
         moveAndCollide((int) (deltaTime / 1000000));
     }
 
@@ -223,26 +218,22 @@ public abstract class BasicRole implements Role {
                 return false;
             }));
             if (!isInvulnerable) {
-                EventBus.instance.publish(new CollectionTraversalEvent<>(
-                        GameScene.ListType.BULLET,
-                        Bullet.class,
-                        bullet -> {
-                            if (!bullet.isValid() || !bullet.getTargetID().equals(ID)) return false;
-                            if (bullet.checkCollision(position, size)) {
-                                makeInvulnerable();
-                                bullet.onCollide();
-                                bullet.setValid(false);
-                                hp -= bullet.getDamage();
-                                Vector2 bulletPosition = bullet.getPosition();
-                                lastHurtDirection.set(bulletPosition.x - position.x, bulletPosition.y - position.y);
-                                if (hp <= 0) {
-                                    velocity.x = lastHurtDirection.x < 0 ? 0.35f : -0.35f;
-                                    velocity.y = -1f;
-                                }
-                            }
-                            return false;
+                EventBus.instance.publish(new CollectionTraversalEvent<>(GameScene.ListType.BULLET, Bullet.class, bullet -> {
+                    if (!bullet.isValid() || !bullet.getTargetID().equals(ID)) return false;
+                    if (bullet.checkCollision(position, size)) {
+                        makeInvulnerable();
+                        bullet.onCollide();
+                        bullet.setValid(false);
+                        hp -= bullet.getDamage();
+                        Vector2 bulletPosition = bullet.getPosition();
+                        lastHurtDirection.set(bulletPosition.x - position.x, bulletPosition.y - position.y);
+                        if (hp <= 0) {
+                            velocity.x = lastHurtDirection.x < 0 ? 0.35f : -0.35f;
+                            velocity.y = -1f;
                         }
-                ));
+                    }
+                    return false;
+                }));
             }
         }
     }
@@ -265,12 +256,10 @@ public abstract class BasicRole implements Role {
         }
         if (showCursor) {
             switch (ID) {
-                case PLAYER_1 -> {
-                    cursor1.draw(g, (int) (position.x + (size.x - cursor1.getImg().getWidth()) / 2), (int) (position.y - cursor1.getImg().getHeight()), alpha);
-                }
-                case PLAYER_2 -> {
-                    cursor2.draw(g, (int) (position.x + (size.x - cursor2.getImg().getWidth()) / 2), (int) (position.y - cursor2.getImg().getHeight()), alpha);
-                }
+                case PLAYER_1 ->
+                        cursor1.draw(g, (int) (position.x + (size.x - cursor1.getImg().getWidth()) / 2), (int) (position.y - cursor1.getImg().getHeight()), alpha);
+                case PLAYER_2 ->
+                        cursor2.draw(g, (int) (position.x + (size.x - cursor2.getImg().getWidth()) / 2), (int) (position.y - cursor2.getImg().getHeight()), alpha);
             }
         }
         if (Main.DEBUG) {
@@ -290,22 +279,14 @@ public abstract class BasicRole implements Role {
         switch (ID) {
             case PLAYER_1 -> {
                 switch (keyCode) {
-                    case KeyEvent.VK_A -> {
-                        goLeftDown = 0;
-                    }
-                    case KeyEvent.VK_D -> {
-                        goRightDown = 0;
-                    }
+                    case KeyEvent.VK_A -> goLeftDown = 0;
+                    case KeyEvent.VK_D -> goRightDown = 0;
                 }
             }
             case PLAYER_2 -> {
                 switch (keyCode) {
-                    case KeyEvent.VK_LEFT -> {
-                        goLeftDown = 0;
-                    }
-                    case KeyEvent.VK_RIGHT -> {
-                        goRightDown = 0;
-                    }
+                    case KeyEvent.VK_LEFT -> goLeftDown = 0;
+                    case KeyEvent.VK_RIGHT -> goRightDown = 0;
                 }
             }
         }
@@ -316,15 +297,9 @@ public abstract class BasicRole implements Role {
         switch (ID) {
             case PLAYER_1 -> {
                 switch (keyCode) {
-                    case KeyEvent.VK_A -> {
-                        goLeftDown = 1;
-                    }
-                    case KeyEvent.VK_D -> {
-                        goRightDown = 1;
-                    }
-                    case KeyEvent.VK_W -> {
-                        isJumping = true;
-                    }
+                    case KeyEvent.VK_A -> goLeftDown = 1;
+                    case KeyEvent.VK_D -> goRightDown = 1;
+                    case KeyEvent.VK_W -> isJumping = true;
                     case KeyEvent.VK_F -> {
                         if (canAttack) {
                             attack();
@@ -343,15 +318,9 @@ public abstract class BasicRole implements Role {
             }
             case PLAYER_2 -> {
                 switch (keyCode) {
-                    case KeyEvent.VK_LEFT -> {
-                        goLeftDown = 1;
-                    }
-                    case KeyEvent.VK_RIGHT -> {
-                        goRightDown = 1;
-                    }
-                    case KeyEvent.VK_UP -> {
-                        isJumping = true;
-                    }
+                    case KeyEvent.VK_LEFT -> goLeftDown = 1;
+                    case KeyEvent.VK_RIGHT -> goRightDown = 1;
+                    case KeyEvent.VK_UP -> isJumping = true;
                     case KeyEvent.VK_PERIOD -> {
                         if (canAttack) {
                             attack();
@@ -371,8 +340,8 @@ public abstract class BasicRole implements Role {
         }
 
         if (Main.DEBUG) {
-            switch (keyCode) {
-                case KeyEvent.VK_1 -> mp += 100;
+            if (keyCode == KeyEvent.VK_1) {
+                mp += 100;
             }
         }
     }
@@ -383,12 +352,12 @@ public abstract class BasicRole implements Role {
     }
 
     @Override
-    public int getMp() {
-        return mp;
+    public void setHp(int hp) {
+        this.hp = hp;
     }
 
     @Override
-    public void setHp(int hp) {
-        this.hp = hp;
+    public int getMp() {
+        return mp;
     }
 }

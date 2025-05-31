@@ -89,7 +89,7 @@ public class ResourceGetter {
     public static final BufferedImage IMAGE_1P_WINNER = GameUtil.loadImage("/image/scene/game/1P_winner.png");
     public static final BufferedImage IMAGE_2P_WINNER = GameUtil.loadImage("/image/scene/game/2P_winner.png");
     public static final BufferedImage IMAGE_1P_CURSOR = GameUtil.loadImage("/image/scene/game/1P_cursor.png");
-     public static final BufferedImage IMAGE_2P_CURSOR = GameUtil.loadImage("/image/scene/game/2P_cursor.png");
+    public static final BufferedImage IMAGE_2P_CURSOR = GameUtil.loadImage("/image/scene/game/2P_cursor.png");
 
     public static final Atlas ATLAS_RUN_EFFECT = new Atlas("/image/particle/run_effect_%d.png", 4);
     public static final Atlas ATLAS_JUMP_EFFECT = new Atlas("/image/particle/jump_effect_%d.png", 5);
@@ -106,7 +106,6 @@ public class ResourceGetter {
     public static final Audio AUDIO_BULLET_PEA_BREAK_3 = new Audio("/sound/effect/pea_break_3.wav");
     public static final Audio AUDIO_BULLET_SUN_EXPLODE = new Audio("/sound/effect/sun_explode.wav");
     public static final Audio AUDIO_BULLET_SUN_EX_EXPLODE = new Audio("/sound/effect/sun_explode_ex.wav");
-
 
     public static final Audio AUDIO_PEASHOOTER_ATTACK_1 = new Audio("/sound/effect/pea_shoot_1.wav");
     public static final Audio AUDIO_PEASHOOTER_ATTACK_2 = new Audio("/sound/effect/pea_shoot_2.wav");

@@ -12,13 +12,12 @@ import java.awt.image.BufferedImage;
  * description: status_bar
  * date: 2025/5/30 17:51
  */
-
 public class StatusBar {
-    private int hp;
-    private int mp;
-    private int width = 275;
+    private static final int width = 275;
     private final Vector2 position = new Vector2();
     Sticker avatar = new Sticker();
+    private int hp;
+    private int mp;
 
     public void draw(Graphics2D g) {
         g.drawImage(avatar.getImg(), (int) position.x, (int) position.y, null);
@@ -33,9 +32,9 @@ public class StatusBar {
         float hpBarWidth = width * Math.max(0, hp) / 100.0f;
         float mpBarWidth = width * Math.min(100, mp) / 100.0f;
         g.setColor(Painter.getColor(197, 61, 67));
-        g.fillRoundRect((int) (position.x + 100), (int) (position.y + 10), (int) (hpBarWidth + 3), 23, 8, 8 );
+        g.fillRoundRect((int) (position.x + 100), (int) (position.y + 10), (int) (hpBarWidth + 3), 23, 8, 8);
         g.setColor(Painter.getColor(83, 131, 195));
-        g.fillRoundRect((int) (position.x + 100), (int) (position.y + 45), (int) (mpBarWidth + 3), 23, 8, 8 );
+        g.fillRoundRect((int) (position.x + 100), (int) (position.y + 45), (int) (mpBarWidth + 3), 23, 8, 8);
     }
 
     public void setAvatar(BufferedImage img) {

@@ -15,7 +15,7 @@ import java.util.Objects;
  * description: GameUtil
  * date: 2025/5/14 17:00
  */
-
+@SuppressWarnings("unused")
 public class GameUtil {
 
 
@@ -83,9 +83,7 @@ public class GameUtil {
     public static BufferedImage flipImage(BufferedImage image) {
         BufferedImage flippedImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
         Graphics2D g = flippedImage.createGraphics();
-        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(),
-                image.getWidth(), 0, 0, image.getHeight(),
-                null);
+        g.drawImage(image, 0, 0, image.getWidth(), image.getHeight(), image.getWidth(), 0, 0, image.getHeight(), null);
         g.dispose();
         return flippedImage;
     }

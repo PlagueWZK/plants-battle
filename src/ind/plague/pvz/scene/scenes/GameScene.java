@@ -23,9 +23,7 @@ import ind.plague.pvz.util.Vector2;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -37,33 +35,28 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameScene extends BasicScene implements GameEventListener {
 
+    private static final float winnerBarSlideSpeed = 3e-6f;
+    private static final float winnerTextSlideSpeed = 1.5e-6f;
     private final Sticker hills = ResourceGetter.IMAGE_HILLS;
     private final Vector2 hillsPosition = GameUtil.getCenterDrawPosition(hills.getImg());
     private final Sticker sky = ResourceGetter.IMAGE_SKY;
     private final Vector2 skyPosition = GameUtil.getCenterDrawPosition(sky.getImg());
-
     private final HashMap<PlayerID, Role> players = new HashMap<>(2);
     private final HashMap<ListType, Collection<?>> lists = new HashMap<>();
-
     private final ArrayList<Platform> platforms = new ArrayList<>(4);
     private final List<Bullet> bullets = new CopyOnWriteArrayList<>();
-
     private final StatusBar statusBar1 = new StatusBar();
     private final StatusBar statusBar2 = new StatusBar();
-
     private final Sticker winnerBar = new Sticker(ResourceGetter.IMAGE_WINNER_BAR);
     private final Sticker winnerText = new Sticker();
-    private boolean isGameOver = false;
     private final Vector2 winnerBarPosition = new Vector2();
     private final Vector2 winnerTextPosition = new Vector2();
+    private final Timer winnerSlideOut = new Timer(1000, false, () -> EventBus.instance.publish(new SceneChangeEvent(SceneType.MENU_SCENE)));
+    private boolean isGameOver = false;
     private int winnerBarDstX;
     private int winnerTextDstX;
-    private final Timer winnerSlideIn = new Timer(2500, false, () -> isSlideOutStart = true);
-    private final Timer winnerSlideOut = new Timer(1000, false, () -> EventBus.instance.publish(new SceneChangeEvent(SceneType.MENU_SCENE)));
     private boolean isSlideOutStart = false;
-    private static final float winnerBarSlideSpeed = 3e-6f;
-    private static final float winnerTextSlideSpeed = 1.5e-6f;
-
+    private final Timer winnerSlideIn = new Timer(2500, false, () -> isSlideOutStart = true);
 
     {
         platforms.add(new Platform(ResourceGetter.IMAGE_PLATFORM_LARGE, new Vector2(122, 455), 60));
@@ -97,9 +90,10 @@ public class GameScene extends BasicScene implements GameEventListener {
     }
 
     private void handleAddEvent(AddEntityEvent e) {
-        switch (e.entity()) {
-            case Bullet b -> addBullet(b);
-            default -> throw new IllegalStateException("Unexpected value: " + e.entity());
+        if (Objects.requireNonNull(e.entity()) instanceof Bullet b) {
+            addBullet(b);
+        } else {
+            throw new IllegalStateException("Unexpected value: " + e.entity());
         }
     }
 
@@ -122,7 +116,7 @@ public class GameScene extends BasicScene implements GameEventListener {
             if (!isGameOver) {
                 ResourceGetter.AUDIO_GAME_BGM.stop();
                 ResourceGetter.AUDIO_WIN.play(false);
-                winnerText.setImg(player1.getHp() <= 0 ? ResourceGetter.IMAGE_2P_WINNER :  ResourceGetter.IMAGE_1P_WINNER);
+                winnerText.setImg(player1.getHp() <= 0 ? ResourceGetter.IMAGE_2P_WINNER : ResourceGetter.IMAGE_1P_WINNER);
                 isGameOver = true;
             }
         }
@@ -235,15 +229,6 @@ public class GameScene extends BasicScene implements GameEventListener {
         }
     }
 
-    public Timer getWinnerSlideOut() {
-        return winnerSlideOut;
-    }
-
-    public enum ListType {
-        PLATFORM,
-        BULLET
-    }
-
     private <T> void handleTraversal(CollectionTraversalEvent<T> event) {
         Collection<?> collection = lists.get(event.listType());
         if (collection == null) return;
@@ -251,5 +236,9 @@ public class GameScene extends BasicScene implements GameEventListener {
         for (Object o : collection) {
             if (event.predicate().test(type.cast(o))) break;
         }
+    }
+
+    public enum ListType {
+        PLATFORM, BULLET
     }
 }

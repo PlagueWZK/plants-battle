@@ -20,10 +20,10 @@ import java.awt.image.BufferedImage;
  */
 
 public class Sunflower extends BasicRole {
-    Animation animationText = new Animation(ResourceGetter.ATLAS_SUNFLOWER_TEXT, 100, false);
-    boolean showText = false;
     final Vector2 sunSpeed = new Vector2(0.25f, -0.6f);
     final float exSunSpeed = 0.15f;
+    Animation animationText = new Animation(ResourceGetter.ATLAS_SUNFLOWER_TEXT, 100, false);
+    boolean showText = false;
 
     public Sunflower(PlayerID id) {
         super(id);
@@ -39,8 +39,8 @@ public class Sunflower extends BasicRole {
             isExAttack = false;
             showText = false;
         });
-         animationDieLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_LEFT, 150, false);
-         animationDieRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_RIGHT, 150, false);
+        animationDieLeft = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_LEFT, 150, false);
+        animationDieRight = new Animation(ResourceGetter.ATLAS_SUNFLOWER_DIE_RIGHT, 150, false);
         attackCdTime = 250;
         size.set(96, 96);
     }

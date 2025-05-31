@@ -14,11 +14,10 @@ import java.awt.*;
  */
 
 public class SunBullet extends Bullet {
+    private static final float gravity = 1e-3f;
     Animation idleAnimation = new Animation(ResourceGetter.ATLAS_BULLET_SUN_IDLE, 50, true);
     Animation explodeAnimation = new Animation(ResourceGetter.ATLAS_BULLET_SUN_EXPLODE, 50, false, () -> canRemove = true);
     Vector2 explodeRenderOffset = new Vector2();
-
-    private static final float gravity = 1e-3f;
 
 
     public SunBullet() {

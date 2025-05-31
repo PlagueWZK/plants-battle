@@ -10,7 +10,7 @@ import java.awt.*;
  * description: Role
  * date: 2025/5/14 19:40
  */
-
+@SuppressWarnings("unused")
 public interface Role extends Entity {
     void draw(Graphics2D g);
 
@@ -18,9 +18,9 @@ public interface Role extends Entity {
 
     Vector2 getPosition();
 
-    Vector2 getSize();
-
     void setPosition(Vector2 position);
+
+    Vector2 getSize();
 
     void setPosition(int x, int y);
 
@@ -34,7 +34,7 @@ public interface Role extends Entity {
 
     int getHp();
 
-    int getMp();
-
     void setHp(int hp);
+
+    int getMp();
 }

@@ -13,7 +13,7 @@ import java.awt.*;
  * description: Bullet
  * date: 2025/5/28 18:56
  */
-
+@SuppressWarnings("unused")
 public abstract class Bullet implements Entity {
     protected Vector2 position = new Vector2();
     protected Vector2 size = new Vector2();
@@ -32,7 +32,7 @@ public abstract class Bullet implements Entity {
     public void draw(Graphics2D g) {
         if (Main.DEBUG) {
             g.setColor(Color.RED);
-            g.drawRect((int) position.getX(), (int) position.getY(), (int)size.getX(), (int)size.getY());
+            g.drawRect((int) position.getX(), (int) position.getY(), (int) size.getX(), (int) size.getY());
         }
     }
 
@@ -43,17 +43,11 @@ public abstract class Bullet implements Entity {
     }
 
     public boolean checkCollision(Vector2 position, Vector2 size) {
-        return this.position.x + this.size.x / 2 >= position.x &&
-                this.position.x + this.size.x / 2 <= position.x + size.x &&
-                this.position.y + this.size.y / 2 >= position.y &&
-                this.position.y + this.size.y / 2 <= position.y + size.y;
+        return this.position.x + this.size.x / 2 >= position.x && this.position.x + this.size.x / 2 <= position.x + size.x && this.position.y + this.size.y / 2 >= position.y && this.position.y + this.size.y / 2 <= position.y + size.y;
     }
 
     public boolean checkOutBounds() {
-        return this.position.x + this.size.x <= 0 ||
-                this.position.x >= GameFrame.getWidth() ||
-                this.position.y + this.size.y <= 0 ||
-                this.position.y >= GameFrame.getHeight();
+        return this.position.x + this.size.x <= 0 || this.position.x >= GameFrame.getWidth() || this.position.y + this.size.y <= 0 || this.position.y >= GameFrame.getHeight();
     }
 
     public boolean checkCanRemove() {
@@ -68,16 +62,16 @@ public abstract class Bullet implements Entity {
         return position;
     }
 
+    public void setPosition(Vector2 position) {
+        this.position = position;
+    }
+
     public boolean isValid() {
         return valid;
     }
 
     public void setValid(boolean valid) {
         this.valid = valid;
-    }
-
-    public void setPosition(Vector2 position) {
-        this.position = position;
     }
 
     public void setPosition(float x, float y) {

@@ -2,7 +2,6 @@ package ind.plague.pvz.element.bullet;
 
 import ind.plague.pvz.animation.Animation;
 import ind.plague.pvz.animation.Sticker;
-import ind.plague.pvz.audio.Audio;
 import ind.plague.pvz.util.ResourceGetter;
 
 import java.awt.*;
@@ -15,9 +14,7 @@ import java.awt.*;
 
 public class PeaBullet extends Bullet {
 
-    Animation breakAnimation = new Animation(ResourceGetter.ATLAS_BULLET_PEA_BREAK, 100, false, () -> {
-        canRemove = true;
-     } );
+    Animation breakAnimation = new Animation(ResourceGetter.ATLAS_BULLET_PEA_BREAK, 100, false, () -> canRemove = true);
     Sticker img = new Sticker(ResourceGetter.IMAGE_BULLET_PEA);
 
     public PeaBullet() {
@@ -54,15 +51,9 @@ public class PeaBullet extends Bullet {
     public void onCollide() {
         super.onCollide();
         switch ((int) (Math.random() * 3)) {
-            case 0 -> {
-                ResourceGetter.AUDIO_BULLET_PEA_BREAK_1.play(false);
-            }
-            case 1 -> {
-                ResourceGetter.AUDIO_BULLET_PEA_BREAK_2.play(false);
-            }
-            case 2 -> {
-                ResourceGetter.AUDIO_BULLET_PEA_BREAK_3.play(false);
-            }
+            case 0 -> ResourceGetter.AUDIO_BULLET_PEA_BREAK_1.play(false);
+            case 1 -> ResourceGetter.AUDIO_BULLET_PEA_BREAK_2.play(false);
+            case 2 -> ResourceGetter.AUDIO_BULLET_PEA_BREAK_3.play(false);
         }
     }
 }

@@ -11,7 +11,7 @@ import java.awt.image.BufferedImage;
  * description: Animation
  * date: 2025/5/14 20:11
  */
-
+@SuppressWarnings("unused")
 public class Animation {
 
     private int timer;
@@ -93,5 +93,4 @@ public class Animation {
         if (loop) return false;
         return frameIndex == atlas.size() - 1;
     }
-
 }

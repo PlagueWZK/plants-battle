@@ -22,8 +22,7 @@ public class SunBulletEx extends Bullet {
     public SunBulletEx() {
         size = new Vector2(288, 288);
         damage = 20;
-        explodeRenderOffset.set((idleAnimation.getFrame().getWidth() - explodeAnimation.getFrame().getWidth()) / 2f,
-                (idleAnimation.getFrame().getHeight() - explodeAnimation.getFrame().getHeight()) / 2f);
+        explodeRenderOffset.set((idleAnimation.getFrame().getWidth() - explodeAnimation.getFrame().getWidth()) / 2f, (idleAnimation.getFrame().getHeight() - explodeAnimation.getFrame().getHeight()) / 2f);
         velocity = new Vector2(0, 0.28f);
     }
 

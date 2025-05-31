@@ -3,8 +3,6 @@ package ind.plague.pvz.audio;
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
-import javax.sound.sampled.LineUnavailableException;
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -15,13 +13,10 @@ import java.util.Objects;
 
 public class Audio {
     Clip clip;
-    private final AudioInputStream ais;
 
     public Audio(String path) {
         try {
-
             AudioInputStream ais = AudioSystem.getAudioInputStream(Objects.requireNonNull(Audio.class.getResource(path)));
-            this.ais = ais;
             clip = AudioSystem.getClip();
             clip.open(ais);
         } catch (Exception e) {

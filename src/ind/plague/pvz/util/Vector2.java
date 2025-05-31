@@ -5,7 +5,7 @@ package ind.plague.pvz.util;
  * description: Vector2
  * date: 2025/5/12 16:21
  */
-
+@SuppressWarnings("unused")
 public class Vector2 {
     public static final Vector2 ZERO = new Vector2(0, 0);
     private static final Vector2 temp = new Vector2();
@@ -113,10 +113,6 @@ public class Vector2 {
 
     @Override
     public String toString() {
-        return "Vector(" +
-                x +
-                "," +
-                y +
-                ")";
+        return "Vector(" + x + "," + y + ")";
     }
 }

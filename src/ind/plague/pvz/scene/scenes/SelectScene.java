@@ -46,21 +46,8 @@ public class SelectScene extends BasicScene {
     private final Sticker VS = ResourceGetter.IMAGE_VS;
     private final Sticker oneP = ResourceGetter.IMAGE_1P;
     private final Sticker onePDesc = ResourceGetter.IMAGE_1P_DESC;
-    private Sticker onePSelectorR = ResourceGetter.IMAGE_1P_SELECTED_IDLE_RIGHT;
-    private Sticker onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_IDLE_LEFT;
-
-
     private final Sticker twoP = ResourceGetter.IMAGE_2P;
     private final Sticker twoPDesc = ResourceGetter.IMAGE_2P_DESC;
-    private Sticker twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_IDLE_RIGHT;
-    private Sticker twoPSelectorL = ResourceGetter.IMAGE_2P_SELECTED_IDLE_LEFT;
-
-
-    private RoleType player1 = ROLE_MAP.getFirst();
-    private RoleType player2 = ROLE_MAP.get(1);
-    private Sticker background1 = player2.backGroundR;
-    private Sticker background2 = player1.backGroundL;
-
     private final Vector2 firstPlayerPosition = new Vector2(GameFrame.getWidth() * 16f / 100, GameFrame.getHeight() * 32f / 100);
     private final Vector2 onePPosition = new Vector2(GameFrame.getWidth() * 16f / 100, GameFrame.getHeight() / 10f);
     private final Vector2 onePDescPosition = new Vector2(GameFrame.getWidth() * 9f / 100, GameFrame.getHeight() * 3 / 4f);
@@ -68,23 +55,25 @@ public class SelectScene extends BasicScene {
     private final Vector2 onePSelectorRPosition = firstPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 6f, GameFrame.getHeight() / 10f));
     private final Vector2 onePSelectorLPosition = firstPlayerPosition.addNoModify(new Vector2(-GameFrame.getWidth() / 8f, GameFrame.getHeight() / 10f));
     private final Vector2 onePRoleNamePosition = firstPlayerPosition.addNoModify(new Vector2(0, GameFrame.getHeight() / 5f));
-
-
-    private final Vector2 secondPlayerPosition = GameUtil.horizontalSymmetry(firstPlayerPosition, player1.animation.getFrame());
     private final Vector2 twoPPosition = GameUtil.horizontalSymmetry(onePPosition, twoP.getImg());
     private final Vector2 twoPDescPosition = GameUtil.horizontalSymmetry(onePDescPosition, twoPDesc.getImg());
     private final Vector2 secondGravestonePosition = GameUtil.horizontalSymmetry(firstGravestonePosition, gravestone1.getImg());
+    private final Vector2 vsPosition = new Vector2(GameUtil.getCenterXDrawPosition(VS.getImg()), GameUtil.getCenterYDrawPosition(VS.getImg()));
+    private final Vector2 selectTipPosition = new Vector2(GameUtil.getCenterXDrawPosition(selectorTip.getImg()), GameFrame.getHeight() * 88 / 100f);
+    private final Audio switchSound = ResourceGetter.AUDIO_SWITCH;
+    private final Audio confirmSound = ResourceGetter.AUDIO_CONFIRM;
+    private Sticker onePSelectorR = ResourceGetter.IMAGE_1P_SELECTED_IDLE_RIGHT;
+    private Sticker onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_IDLE_LEFT;
+    private Sticker twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_IDLE_RIGHT;
+    private Sticker twoPSelectorL = ResourceGetter.IMAGE_2P_SELECTED_IDLE_LEFT;
+    private RoleType player1 = ROLE_MAP.getFirst();
+    private final Vector2 secondPlayerPosition = GameUtil.horizontalSymmetry(firstPlayerPosition, player1.animation.getFrame());
     private final Vector2 twoPSelectorRPosition = secondPlayerPosition.addNoModify(new Vector2(GameFrame.getWidth() / 6f, GameFrame.getHeight() / 10f));
     private final Vector2 twoPSelectorLPosition = secondPlayerPosition.addNoModify(new Vector2(-GameFrame.getWidth() / 8f, GameFrame.getHeight() / 10f));
     private final Vector2 twoPRoleNamePosition = secondPlayerPosition.addNoModify(new Vector2(0, GameFrame.getHeight() / 5f));
-
-
-    private final Vector2 vsPosition = new Vector2(GameUtil.getCenterXDrawPosition(VS.getImg()), GameUtil.getCenterYDrawPosition(VS.getImg()));
-    private final Vector2 selectTipPosition = new Vector2(GameUtil.getCenterXDrawPosition(selectorTip.getImg()), GameFrame.getHeight() * 88 / 100f);
-
-
-    private final Audio switchSound = ResourceGetter.AUDIO_SWITCH;
-    private final Audio confirmSound = ResourceGetter.AUDIO_CONFIRM;
+    private RoleType player2 = ROLE_MAP.get(1);
+    private Sticker background1 = player2.backGroundR;
+    private Sticker background2 = player1.backGroundL;
 
     public SelectScene() {
     }
@@ -185,18 +174,10 @@ public class SelectScene extends BasicScene {
     @Override
     public void keyPressed(int keyCode) {
         switch (keyCode) {
-            case KeyEvent.VK_A -> {
-                onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_DOWN_LEFT;
-            }
-            case KeyEvent.VK_D -> {
-                onePSelectorR = ResourceGetter.IMAGE_1P_SELECTED_DOWN_RIGHT;
-            }
-            case KeyEvent.VK_LEFT -> {
-                twoPSelectorL = ResourceGetter.IMAGE_2P_SELECTED_DOWN_LEFT;
-            }
-            case KeyEvent.VK_RIGHT -> {
-                twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_DOWN_RIGHT;
-            }
+            case KeyEvent.VK_A -> onePSelectorL = ResourceGetter.IMAGE_1P_SELECTED_DOWN_LEFT;
+            case KeyEvent.VK_D -> onePSelectorR = ResourceGetter.IMAGE_1P_SELECTED_DOWN_RIGHT;
+            case KeyEvent.VK_LEFT -> twoPSelectorL = ResourceGetter.IMAGE_2P_SELECTED_DOWN_LEFT;
+            case KeyEvent.VK_RIGHT -> twoPSelectorR = ResourceGetter.IMAGE_2P_SELECTED_DOWN_RIGHT;
             case KeyEvent.VK_ENTER -> {
                 EventBus.instance.publish(new SetPlayerEvent(PlayerID.PLAYER_1, player1));
                 EventBus.instance.publish(new SetPlayerEvent(PlayerID.PLAYER_2, player2));
@@ -207,8 +188,7 @@ public class SelectScene extends BasicScene {
     }
 
     public enum RoleType {
-        PEASHOOTER("婉逗射手", new Animation(ResourceGetter.ATLAS_PEASHOOTER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_LEFT),
-        SUNFLOWER("龙日葵", new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_LEFT);
+        PEASHOOTER("婉逗射手", new Animation(ResourceGetter.ATLAS_PEASHOOTER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_PEASHOOTER_BACKGROUND_LEFT), SUNFLOWER("龙日葵", new Animation(ResourceGetter.ATLAS_SUNFLOWER_IDLE_RIGHT, 100, true), ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_RIGHT, ResourceGetter.IMAGE_SUNFLOWER_BACKGROUND_LEFT);
 
         public final String name;
         public final Animation animation;

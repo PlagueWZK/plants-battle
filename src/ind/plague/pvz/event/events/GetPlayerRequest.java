@@ -18,12 +18,12 @@ public class GetPlayerRequest implements GameEvent {
         requestID = playerID;
     }
 
-    public void setTarget(Role target) {
-        this.target = target;
-    }
-
     public Role getTarget() {
         return target;
+    }
+
+    public void setTarget(Role target) {
+        this.target = target;
     }
 
     public PlayerID getRequestID() {

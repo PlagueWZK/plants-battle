@@ -12,15 +12,6 @@ public class GameKeyEvent extends BasicEvent {
     private final Action action;
     private final InputEvent event;
 
-    public enum Action {
-        KEY_PRESS,
-        KEY_RELEASE,
-        MOUSE_PRESS,
-        MOUSE_RELEASE,
-        MOUSE_CLICK,
-        MOUSE_MOVE
-    }
-
     public GameKeyEvent(InputEvent event, Action action) {
         this.action = action;
         this.event = event;
@@ -32,5 +23,14 @@ public class GameKeyEvent extends BasicEvent {
 
     public InputEvent getEvent() {
         return event;
+    }
+
+    public enum Action {
+        KEY_PRESS,
+        KEY_RELEASE,
+        MOUSE_PRESS,
+        MOUSE_RELEASE,
+        MOUSE_CLICK,
+        MOUSE_MOVE
     }
 }

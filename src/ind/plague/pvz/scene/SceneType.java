@@ -26,10 +26,6 @@ public enum SceneType {
         this.sceneClass = clazz;
     }
 
-    public Class<?> getSceneClass() {
-        return sceneClass;
-    }
-
     public static SceneType typeOf(Scene scene) {
         return TYPE_MAP.computeIfAbsent(scene, k -> {
             for (SceneType value : values()) {
@@ -39,5 +35,9 @@ public enum SceneType {
             }
             return null;
         });
+    }
+
+    public Class<?> getSceneClass() {
+        return sceneClass;
     }
 }

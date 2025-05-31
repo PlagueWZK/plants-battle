@@ -22,15 +22,12 @@ import java.util.HashMap;
 public class SceneManager implements GameEventListener {
 
     private final HashMap<SceneType, Scene> scenes;
-
+    private Scene currentScene;
 
     {
         scenes = new HashMap<>();
         EventBus.instance.subscribe(this, SceneChangeEvent.class, GameKeyEvent.class);
     }
-
-    private Scene currentScene;
-
 
     public void update(long deltaTime) {
         currentScene.update(deltaTime);

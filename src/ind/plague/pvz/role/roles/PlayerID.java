@@ -7,10 +7,5 @@ package ind.plague.pvz.role.roles;
  */
 
 public enum PlayerID {
-    PLAYER_1,
-    PLAYER_2;
-
-    public static PlayerID getPlayerID(int id) {
-        return id == 1 ? PLAYER_1 : PLAYER_2;
-    }
+    PLAYER_1, PLAYER_2
 }

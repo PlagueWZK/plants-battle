@@ -8,7 +8,7 @@ import ind.plague.pvz.util.Vector2;
  * description: Camera
  * date: 2025/5/14 23:41
  */
-
+@SuppressWarnings("unused")
 public class Camera {
     public final static Camera camera;
 
@@ -16,16 +16,13 @@ public class Camera {
         camera = new Camera();
     }
 
-
-    private boolean isShaking = false;
     private final Timer shakeTimer;
-    //private final Timer shakingInterval;
     private final Vector2 shakeOffset;
-    private float shakeStrength;
-
     private final Vector2 position;
     private final Vector2 velocity;
     private final Vector2 moveDistance;
+    private boolean isShaking = false;
+    private float shakeStrength;
 
     {
         shakeOffset = new Vector2(0, 0);
@@ -33,12 +30,6 @@ public class Camera {
             isShaking = false;
             shakeOffset.reset();
         });
-//        shakingInterval = new Timer(true, () -> {
-//            if (isShaking) {
-//                shakeOffset.set((float) (Math.random() * 2 - 1) * shakeStrength, (float) (Math.random() * 2 - 1) * shakeStrength);
-//            }
-//        });
-
         position = new Vector2(0, 0);
         velocity = new Vector2(0, 0);
         moveDistance = new Vector2(0, 0);
@@ -50,7 +41,6 @@ public class Camera {
     public void update(long deltaTime) {
         move(deltaTime);
         shakeTimer.update(deltaTime);
-        //shakingInterval.update(deltaTime);
         if (isShaking) {
             shakeOffset.set((float) (Math.random() * 2 - 1) * shakeStrength, (float) (Math.random() * 2 - 1) * shakeStrength);
         }

@@ -68,6 +68,14 @@ public class GameFrame {
         sm = sceneManager;
     }
 
+    public static int getWidth() {
+        return DEFAULT_WIDTH;
+    }
+
+    public static int getHeight() {
+        return DEFAULT_HEIGHT;
+    }
+
     public void update(long deltaTime) {
         updateTimer += deltaTime;
         updateCount++;
@@ -113,19 +121,10 @@ public class GameFrame {
 
     }
 
-    private class GamePanel extends JPanel {
-        public GamePanel() {
-            setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
-            setDoubleBuffered(true);
-        }
-
-        @Override
-        protected void paintComponent(Graphics g) {
-            super.paintComponent(g);
-            Graphics2D g2d = (Graphics2D) g;
-            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            sm.draw(g2d);
-            globalDraw(g2d);
+    public void globalDraw(Graphics2D g) {
+        Painter.drawText(g, "FPS: " + FPS + " UPS: " + UPS, 10, 10, Color.BLACK, 10);
+        if (Main.DEBUG) {
+            Painter.drawText(g, "DEBUG", GameFrame.getWidth() - 50, 15, Color.RED, 10);
         }
     }
 
@@ -136,12 +135,11 @@ public class GameFrame {
 
         }
 
+        @SuppressWarnings("all")
         @Override
         public void keyPressed(KeyEvent e) {
             switch (e.getKeyCode()) {
-                case KeyEvent.VK_F8 -> {
-                    Main.DEBUG = !Main.DEBUG;
-                }
+                case KeyEvent.VK_F8 -> Main.DEBUG = !Main.DEBUG;
             }
             EventBus.instance.publish(new GameKeyEvent(e, GameKeyEvent.Action.KEY_PRESS));
         }
@@ -187,18 +185,19 @@ public class GameFrame {
         }
     }
 
-    public static int getWidth() {
-        return DEFAULT_WIDTH;
-    }
+    private class GamePanel extends JPanel {
+        public GamePanel() {
+            setPreferredSize(new Dimension(DEFAULT_WIDTH, DEFAULT_HEIGHT));
+            setDoubleBuffered(true);
+        }
 
-    public static int getHeight() {
-        return DEFAULT_HEIGHT;
-    }
-
-    public void globalDraw(Graphics2D g) {
-        Painter.drawText(g, "FPS: " + FPS + " UPS: " + UPS, 10, 10, Color.BLACK, 10);
-        if (Main.DEBUG) {
-            Painter.drawText(g, "DEBUG", GameFrame.getWidth() - 50, 15, Color.RED, 10);
+        @Override
+        protected void paintComponent(Graphics g) {
+            super.paintComponent(g);
+            Graphics2D g2d = (Graphics2D) g;
+            g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            sm.draw(g2d);
+            globalDraw(g2d);
         }
     }
 }

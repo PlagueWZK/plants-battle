@@ -8,7 +8,7 @@ import java.awt.*;
  * description: Scene
  * date: 2025/5/12 16:59
  */
-
+@SuppressWarnings("unused")
 public interface Scene {
 
     void update(long deltaTime);

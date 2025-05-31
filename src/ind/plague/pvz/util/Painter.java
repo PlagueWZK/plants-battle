@@ -5,18 +5,18 @@ import ind.plague.pvz.core.Camera;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
-import java.util.HashSet;
 
 /**
  * @author PlagueWZK
  * description: Painter
  * date: 2025/5/15 17:59
  */
-
+@SuppressWarnings("unused")
 public class Painter {
 
     private static final HashMap<Float, AlphaComposite> ALPHA_COMPOSITE_CACHE = new HashMap<>();
     private static final HashMap<Integer, Color> COLOR_CACHE = new HashMap<>();
+
     public static void draw(Graphics2D g, BufferedImage img, float x, float y) {
         g.drawImage(img, Math.round(x - Camera.camera.getPosition().getX() - Camera.camera.getShakeOffset().getX()), Math.round(y - Camera.camera.getPosition().getY() - Camera.camera.getShakeOffset().getY()), null);
     }
@@ -66,6 +66,7 @@ public class Painter {
         int rgb = (alpha << 24) | (r << 16) | (g << 8) | b;
         return COLOR_CACHE.computeIfAbsent(rgb, (_) -> new Color(r, g, b, alpha));
     }
+
     public static Color getColor(int r, int g, int b) {
         int rgb = (r << 16) | (g << 8) | b;
         return COLOR_CACHE.computeIfAbsent(rgb, (_) -> new Color(r, g, b));
