@@ -5,6 +5,7 @@ import ind.plague.pvz.event.EventBus;
 import ind.plague.pvz.event.events.GameKeyEvent;
 import ind.plague.pvz.scene.SceneManager;
 import ind.plague.pvz.util.Painter;
+import ind.plague.pvz.util.ResourceGetter;
 import ind.plague.pvz.util.Timer;
 
 import javax.swing.*;
@@ -43,6 +44,7 @@ public class GameFrame {
         JFrame frame = new JFrame();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
+        frame.setIconImage(ResourceGetter.ICON);
 
         panel = new GamePanel();
         frame.add(panel);

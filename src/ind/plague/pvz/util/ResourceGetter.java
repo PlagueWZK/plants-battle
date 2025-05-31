@@ -13,6 +13,9 @@ import java.awt.image.BufferedImage;
  */
 
 public class ResourceGetter {
+
+    public static final BufferedImage ICON = GameUtil.loadImage("/ICON.png");
+
     public static final Sticker IMAGE_MENU_BACKGROUND = newSticker("/image/scene/menu/menu_background.png");
     public static final Sticker IMAGE_SELECTOR_BACKGROUND = newSticker("/image/scene/selector/selector_background.png");
 
